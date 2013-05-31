@@ -1,9 +1,17 @@
 package com.alipay.safe.receiver;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
+import org.apache.http.util.EncodingUtils;
+
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -15,6 +23,7 @@ import android.util.Log;
 import com.alipay.safe.service.ListenService;
 import com.alipay.safe.util.DoAboutCodeUtils;
 import com.alipay.safe.util.FileUtil;
+import com.alipay.safe.util.SendEmailUtil;
 
 public class Globle {
 
