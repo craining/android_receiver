@@ -5,11 +5,8 @@ import java.io.File;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaRecorder;
-import android.media.MediaRecorder.OnInfoListener;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 @SuppressLint("Wakelock")
@@ -54,26 +51,26 @@ public class RecorderUtil {
 				mRecorder = new MediaRecorder();
 			}
 			mRecorder.reset();
-			mRecorder.setOnInfoListener(new OnInfoListener() {
-
-				@Override
-				public void onInfo(MediaRecorder mr, int what, int extra) {
-					switch (what) {
-					case MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN:
-						Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN");
-						break;
-					case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:
-						Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED");
-						break;
-					case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
-						Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
-						break;
-					default:
-						break;
-					}
-
-				}
-			});
+			// mRecorder.setOnInfoListener(new OnInfoListener() {
+			//
+			// @Override
+			// public void onInfo(MediaRecorder mr, int what, int extra) {
+			// switch (what) {
+			// case MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN:
+			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN");
+			// break;
+			// case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:
+			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED");
+			// break;
+			// case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
+			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
+			// break;
+			// default:
+			// break;
+			// }
+			//
+			// }
+			// });
 			mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 			mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
 			mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
