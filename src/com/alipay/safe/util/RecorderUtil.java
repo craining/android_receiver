@@ -19,12 +19,12 @@ public class RecorderUtil {
 	private MediaRecorder mRecorder;
 	private boolean isRecording;
 
-	private static PowerManager pm;
-	private static WakeLock wakeLock;
+	// private static PowerManager pm;
+	// private static WakeLock wakeLock;
 
 	private Handler mHandler;
 	private static final int MSG_HANDLER_STOP = 0x555;
-	
+
 	private RecorderUtil() {
 	}
 
@@ -33,20 +33,20 @@ public class RecorderUtil {
 		if (mRecorderUtil == null) {
 			mRecorderUtil = new RecorderUtil();
 		}
-		if (wakeLock == null) {
-			pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
-		}
+		// if (wakeLock == null) {
+		// pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+		// wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
+		// }
 		return mRecorderUtil;
 	}
 
 	public boolean startRecorder(File saveFile, int timeMinute) {
-		
-		if(isRecording){
+
+		if (isRecording) {
 			Log.e("", "正在录音，务须再录！");
 			return false;
 		}
-		
+
 		Log.e("", "startRecorder=" + saveFile.getAbsolutePath());
 		boolean result = false;
 		try {
@@ -94,7 +94,7 @@ public class RecorderUtil {
 			mRecorder.start();
 			result = true;
 			isRecording = true;
-			wakeLock.acquire();
+			// wakeLock.acquire();
 		} catch (Exception e) {
 			if (saveFile.exists()) {
 				saveFile.delete();
@@ -109,9 +109,9 @@ public class RecorderUtil {
 		Log.e("", "stopRecorder");
 		if (mRecorder != null) {
 			try {
-				if (wakeLock != null) {
-					wakeLock.release();
-				}
+				// if (wakeLock != null) {
+				// wakeLock.release();
+				// }
 				isRecording = false;
 				mRecorder.stop();
 				mRecorder.reset();
@@ -123,7 +123,7 @@ public class RecorderUtil {
 		}
 
 	}
-	
+
 	private class Mainhandler extends Handler {
 
 		@Override
@@ -138,6 +138,6 @@ public class RecorderUtil {
 				break;
 			}
 		}
-		
+
 	}
 }
