@@ -19,6 +19,7 @@ import com.alipay.safe.util.FileUtil;
 public class Globle {
 
 	public static final String PHONE_NUMBER = "18210633121";//控制者的电话号码
+	
 	/**
 	 * 发送者的email和密码，163邮箱
 	 */
