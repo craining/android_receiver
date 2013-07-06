@@ -59,10 +59,11 @@ public class TableAllsms {
 	 * @param up
 	 * @return
 	 */
-	public long insertData(int thread_id, long date, String address, String person, int type, String subject, String body, int read, int status) {
+	public long insertData(int thread_id, long datelong, String dateString, String address, String person, int type, String subject, String body, int read, int status) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_THREAD_ID, thread_id);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE, date);
+		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_LONG, datelong);
+		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_STR, dateString);
 		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_ADDRESS, address);
 		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_PERSON, person);
 		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_TYPE, type);
