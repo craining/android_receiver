@@ -1,2 +1,2 @@
-adb uninstall com.alipay.safe.receiver
+adb uninstall com.android.system.controled
 pause

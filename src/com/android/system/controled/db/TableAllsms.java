@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class TableAllsms {
 
@@ -29,20 +30,35 @@ public class TableAllsms {
 	 * @param up
 	 * @return
 	 */
-	public long insertData(int thread_id, long datelong, String dateString, String address, String person, int type, String subject, String body, int read, int status) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_THREAD_ID, thread_id);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_LONG, datelong);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_STR, dateString);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_ADDRESS, address);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_PERSON, person);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_TYPE, type);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_SUBJECT, subject);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_BODY, body);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_READ, read);
-		initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_STATUS, status);
+	public long insertData(int thread_id, long datelong, String dateString, String address, int personId, String personName, int type, String subject, String body, int read, int status) {
 
-		return mSQLiteDatabase.insert(DatabaseUtil.TABLE_NAME_ALLSMS, DatabaseUtil.ALLSMS_TABLE_COLUMN_ID, initialValues);
+		long result = -1;
+		Cursor cur = null;
+		try {
+			cur = mSQLiteDatabase.query(DatabaseUtil.TABLE_NAME_ALLSMS, null, DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_LONG + "=?", new String[] { datelong + "" }, null, null, null);
+			if (cur != null && cur.getCount() > 0) {
+				Log.e(TAG, "already exists this data!");
+			} else {
+				ContentValues initialValues = new ContentValues();
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_THREAD_ID, thread_id);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_LONG, datelong);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_STR, dateString);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_ADDRESS, address);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_PERSON_ID, personId);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_PERSON_NAME, personName);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_TYPE, type);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_SUBJECT, subject);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_BODY, body);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_READ, read);
+				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_STATUS, status);
+				result = mSQLiteDatabase.insert(DatabaseUtil.TABLE_NAME_ALLSMS, DatabaseUtil.ALLSMS_TABLE_COLUMN_ID, initialValues);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 	/**

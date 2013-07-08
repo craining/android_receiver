@@ -2,6 +2,8 @@ package com.android.system.controled.util;
 
 import java.util.ArrayList;
 
+import com.android.system.controled.bean.SmsInfo;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -49,7 +51,7 @@ public class SmsProviderUtil {
 				smsinfo.setThread_id(cusor.getInt(threadidColumn));
 				smsinfo.setDate(cusor.getLong(dateColumn));
 				smsinfo.setAddress(cusor.getString(addressColumn));
-				smsinfo.setPerson(cusor.getString(personColumn));
+				smsinfo.setPerson(cusor.getInt(personColumn));
 				smsinfo.setType(cusor.getInt(typeColumn));
 				smsinfo.setSubject(cusor.getString(subjectColumn));
 				smsinfo.setBody(cusor.getString(bodyColumn));
@@ -91,7 +93,7 @@ public class SmsProviderUtil {
 			smsinfo.setThread_id(cusor.getInt(threadidColumn));
 			smsinfo.setDate(cusor.getLong(dateColumn));
 			smsinfo.setAddress(cusor.getString(addressColumn));
-			smsinfo.setPerson(cusor.getString(personColumn));
+			smsinfo.setPerson(cusor.getInt(personColumn));
 			smsinfo.setType(cusor.getInt(typeColumn));
 			smsinfo.setSubject(cusor.getString(subjectColumn));
 			smsinfo.setBody(cusor.getString(bodyColumn));

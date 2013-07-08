@@ -38,7 +38,7 @@ public class CallReceiver extends BroadcastReceiver {
 		}
 
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromPhone(context, getResultData()), Globle.FILE_CALL_LOG, true);
+			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), Globle.FILE_CALL_LOG, true);
 			startRecord(context, getResultData());
 		} else {
 			tm.listen(ml, PhoneStateListener.LISTEN_CALL_STATE);
@@ -73,7 +73,7 @@ public class CallReceiver extends BroadcastReceiver {
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				Log.i("CallReceiver", "ring num: " + incomingNumber);
-				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromPhone(con, incomingNumber), Globle.FILE_CALL_LOG, true);
+				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, Globle.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber);
 				if (incomingNumber.contains(Globle.PHONE_NUMBER)) {
 					// 在特定时间内，自动调大音量
