@@ -218,4 +218,23 @@ public class Globle {
 
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 * @description 判断连接的网络是否是2g/3g
+	 */
+	public static boolean isConnectInternetMobile(Context context) {
+		ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+		if (wifi != State.CONNECTED) {
+			State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
+			if (mobile == State.CONNECTED) {
+				return true;
+			}
+		}
+		return false;
+
+	}
 }
