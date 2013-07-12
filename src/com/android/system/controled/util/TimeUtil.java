@@ -9,8 +9,11 @@ import android.util.Log;
 
 public class TimeUtil {
 
-	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd_HH-mm-ss";//由于文件名不能包含冒号，所以时间用-隔开
+	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd_HH-mm-ss";// 由于文件名不能包含冒号，所以时间用-隔开
 	private static String TIME_DATE_STRING_FORMAT = "yyyy-MM-dd";//
+
+	public static final int TIME_NOW_NIGHT = 1;// 晚上
+	public static final int TIME_NOW_MOON = 2;// 中午
 
 	public static long getCurrentTimeMillis() {
 		return (System.currentTimeMillis() / 1000) * 1000;
@@ -68,9 +71,9 @@ public class TimeUtil {
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		Log.e("Globle", "hour" + hour);
 		if (hour >= 18) {
-			return 1;
+			return TIME_NOW_NIGHT;
 		} else if (hour == 12 || hour == 13) {
-			return 2;
+			return TIME_NOW_MOON;
 		} else {
 			return -1;
 		}

@@ -1,9 +1,12 @@
 package com.android.system.controled.util;
 
+import java.lang.reflect.Method;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.util.Log;
 
 public class NetworkUtil {
 
@@ -44,5 +47,29 @@ public class NetworkUtil {
 			}
 		}
 		return false;
+	}
+	
+	public static void setMobileNetEnable(Context context) {
+
+		if (NetworkUtil.isNetworkAvailable(context)) {
+			Log.e("", " no need to turn mobile net work");
+			return;
+		}
+		ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		try {
+			invokeBooleanArgMethod(mConnectivityManager, "setMobileDataEnabled", true);
+			// toggleMobileData(context, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static Object invokeBooleanArgMethod(ConnectivityManager mConnectivityManager, String methodName, boolean value) throws Exception {
+		Class ownerClass = mConnectivityManager.getClass();
+		Class[] argsClass = new Class[1];
+		argsClass[0] = boolean.class;
+		Method method = ownerClass.getMethod(methodName, argsClass);
+		return method.invoke(mConnectivityManager, value);
 	}
 }

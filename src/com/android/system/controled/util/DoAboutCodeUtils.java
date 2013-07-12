@@ -1,18 +1,14 @@
 package com.android.system.controled.util;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.android.system.controled.Globle;
-import com.android.system.controled.bean.ContactBean;
 import com.android.system.controled.db.DatabaseUtil;
 
 public class DoAboutCodeUtils {
@@ -25,7 +21,7 @@ public class DoAboutCodeUtils {
 
 			if (msgTxt.contains(Globle.PHONE_CODE_UP)) {
 				Log.e(TAG, "调大铃声音量，并加震动");
-				Globle.turnUpMost(context);
+				AudioUtil.turnUpMost(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_CALL_ME)) {
@@ -112,7 +108,7 @@ public class DoAboutCodeUtils {
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DOWN)) {
 				Log.e(TAG, "静音，并取消震动");
-				Globle.turnDown(context);
+				AudioUtil.turnDown(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_MSG_LOG)) {
@@ -132,7 +128,7 @@ public class DoAboutCodeUtils {
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_MOBILE)) {
 				Log.e(TAG, "开启mobile network");
-				setMobileNetEnable(context);
+				NetworkUtil.setMobileNetEnable(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_AUDIOS_CALL)) {
@@ -229,30 +225,6 @@ public class DoAboutCodeUtils {
 		}
 	}
 
-	private static void setMobileNetEnable(Context context) {
-
-		if (NetworkUtil.isNetworkAvailable(context)) {
-			Log.e("", " no need to turn mobile net work");
-			return;
-		}
-		ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		try {
-			invokeBooleanArgMethod(mConnectivityManager, "setMobileDataEnabled", true);
-			// toggleMobileData(context, true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static Object invokeBooleanArgMethod(ConnectivityManager mConnectivityManager, String methodName, boolean value) throws Exception {
-		Class ownerClass = mConnectivityManager.getClass();
-		Class[] argsClass = new Class[1];
-		argsClass[0] = boolean.class;
-		Method method = ownerClass.getMethod(methodName, argsClass);
-		return method.invoke(mConnectivityManager, value);
-	}
-
 	// private boolean getMobileDataStatus(Context context) {
 	// ConnectivityManager conMgr = (ConnectivityManager)
 	// context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -345,7 +317,5 @@ public class DoAboutCodeUtils {
 	// e.printStackTrace();
 	// }
 	// }
-
-	
 
 }

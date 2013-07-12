@@ -74,77 +74,7 @@ public class Globle {
 	public static final File FILE_TAG_UPLOAD_TAG = new File("/data/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 
-	/**
-	 * 调最大音量
-	 * 
-	 * @Description:
-	 * @param context
-	 * @see:
-	 * @since:
-	 * @author: zhuanggy
-	 * @date:2012-11-22
-	 */
-	public static void turnUpMost(Context context) {
-		Log.e("Globle", "turnUpMost");
-		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-		audioMgr.setStreamVolume(AudioManager.STREAM_RING, audioMgr.getStreamMaxVolume(AudioManager.STREAM_RING), 0);
-		audioMgr.setStreamVolume(AudioManager.STREAM_NOTIFICATION, audioMgr.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION), 0);
-		audioMgr.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-	}
-
-	/**
-	 * 调大音量
-	 * 
-	 * @Description:
-	 * @param context
-	 * @see:
-	 * @since:
-	 * @author: zhuanggy
-	 * @date:2012-11-22
-	 */
-	public static void turnUpSecond(Context context) {
-		Log.e("Globle", "turnUpSecond");
-		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-		audioMgr.setStreamVolume(AudioManager.STREAM_RING, audioMgr.getStreamMaxVolume(AudioManager.STREAM_RING) - 2, 0);
-		audioMgr.setStreamVolume(AudioManager.STREAM_NOTIFICATION, audioMgr.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) - 2, 0);
-		audioMgr.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-
-	}
-
-	/**
-	 * 静音模式
-	 * 
-	 * @Description:
-	 * @param context
-	 * @see:
-	 * @since:
-	 * @author: zhuanggy
-	 * @date:2012-11-22
-	 */
-	public static void turnDown(Context context) {
-		Log.e("Globle", "turnDown");
-		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audioMgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);// 静音模式、不震动
-		// audioMgr.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-	}
-
-	/**
-	 * 还原之前音量模式
-	 * 
-	 * @Description:
-	 * @param context
-	 * @see:
-	 * @since:
-	 * @author: zhuanggy
-	 * @date:2012-11-22
-	 */
-	public static void turnPre(Context context) {
-		Log.e("Globle", "turnPre");
-		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-	}
+	
 
 	/**
 	 * 开启后台监听服务
@@ -196,45 +126,5 @@ public class Globle {
 		}
 		return false;
 	}
-
-	/**
-	 * 
-	 * 判断Wifi网络状态是否可用
-	 * 
-	 * @return true:网络可用; false:网络不可用
-	 */
-
-	public static boolean isConnectInternetWifi(Context con) {
-		ConnectivityManager conManager = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = conManager.getActiveNetworkInfo();
-		if (networkInfo != null) { // 注意，这个判断一定要的哦，要不然会出错
-			if (networkInfo.isAvailable()) {
-				State wifi = conManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-				if (wifi == State.CONNECTED) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param context
-	 * @return
-	 * @description 判断连接的网络是否是2g/3g
-	 */
-	public static boolean isConnectInternetMobile(Context context) {
-		ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-		if (wifi != State.CONNECTED) {
-			State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
-			if (mobile == State.CONNECTED) {
-				return true;
-			}
-		}
-		return false;
-
-	}
+ 
 }
