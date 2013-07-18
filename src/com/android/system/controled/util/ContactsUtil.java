@@ -183,8 +183,8 @@ public class ContactsUtil {
 	public static String getContactNameById(Context con, int id, String number) {
 		String result = number;
 		Log.e(TAG, "id=" + id);
-		if(id>0) {
-			//手机通讯录里有
+		if (id > 0) {
+			// 手机通讯录里有
 			String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME };
 			Cursor cursor = null;
 			try {
@@ -203,27 +203,26 @@ public class ContactsUtil {
 
 			}
 		} else {
-			//尝试从sim卡里取
+			// 尝试从sim卡里取
 			result = getNameFromContactsByNumber(con, number);
 		}
-		
-		
 
 		return result;
 
 	}
-	
+
 	/**
 	 * 生成通讯录文件
+	 * 
 	 * @Description:
 	 * @param con
-	 * @see: 
-	 * @since: 
+	 * @see:
+	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-7-8
 	 */
 	public static void createContactsFile(Context con) {
-		
+
 		boolean isNull = true;
 		ArrayList<ContactBean> contacts = ContactsUtil.getAllContactsFromLocal(con);
 		if (contacts != null && contacts.size() > 0) {
