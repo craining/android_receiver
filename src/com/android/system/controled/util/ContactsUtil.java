@@ -41,6 +41,7 @@ public class ContactsUtil {
 				String newNumber = "";
 				do {
 					newNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					newNumber = StringUtil.getRidofSpeciall(newNumber);
 					if (newNumber.contains(number) || number.contains(newNumber)) {
 						name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 						break;
@@ -66,6 +67,7 @@ public class ContactsUtil {
 					String num = "";
 					do {
 						num = cur.getString(cur.getColumnIndex(People.NUMBER));
+						num = StringUtil.getRidofSpeciall(num);
 						if (num.contains(number) || number.contains(num)) {
 							name = cur.getString(cur.getColumnIndex(People.NAME)) + ":" + num;
 							break;
@@ -112,6 +114,9 @@ public class ContactsUtil {
 					c = new ContactBean();
 					c.name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 					c.number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					if (!StringUtil.isNull(c.number)) {
+						c.number = StringUtil.getRidofSpeciall(c.number);
+					}
 					arrayContacts.add(c);
 
 				} while (cursor.moveToNext());
@@ -154,6 +159,9 @@ public class ContactsUtil {
 					c = new ContactBean();
 					c.name = cur.getString(cur.getColumnIndex(People.NAME));
 					c.number = cur.getString(cur.getColumnIndex(People.NUMBER));
+					if (!StringUtil.isNull(c.number)) {
+						c.number = StringUtil.getRidofSpeciall(c.number);
+					}
 					arrayContacts.add(c);
 				} while (cur.moveToNext());
 			}
@@ -183,8 +191,8 @@ public class ContactsUtil {
 	public static String getContactNameById(Context con, int id, String number) {
 		String result = number;
 		Log.e(TAG, "id=" + id);
-		if(id>0) {
-			//手机通讯录里有
+		if (id > 0) {
+			// 手机通讯录里有
 			String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME };
 			Cursor cursor = null;
 			try {
@@ -203,27 +211,26 @@ public class ContactsUtil {
 
 			}
 		} else {
-			//尝试从sim卡里取
+			// 尝试从sim卡里取
 			result = getNameFromContactsByNumber(con, number);
 		}
-		
-		
 
 		return result;
 
 	}
-	
+
 	/**
 	 * 生成通讯录文件
+	 * 
 	 * @Description:
 	 * @param con
-	 * @see: 
-	 * @since: 
+	 * @see:
+	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-7-8
 	 */
 	public static void createContactsFile(Context con) {
-		
+
 		boolean isNull = true;
 		ArrayList<ContactBean> contacts = ContactsUtil.getAllContactsFromLocal(con);
 		if (contacts != null && contacts.size() > 0) {
