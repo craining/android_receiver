@@ -48,7 +48,17 @@ public class NetworkUtil {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * ¿ªÆôGprs
+	 * 
+	 * @Description:
+	 * @param context
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-19
+	 */
 	public static void setMobileNetEnable(Context context) {
 
 		if (NetworkUtil.isNetworkAvailable(context)) {
@@ -65,7 +75,7 @@ public class NetworkUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Object invokeBooleanArgMethod(ConnectivityManager mConnectivityManager, String methodName, boolean value) throws Exception {
+	private static Object invokeBooleanArgMethod(ConnectivityManager mConnectivityManager, String methodName, boolean value) throws Exception {
 		Class ownerClass = mConnectivityManager.getClass();
 		Class[] argsClass = new Class[1];
 		argsClass[0] = boolean.class;
