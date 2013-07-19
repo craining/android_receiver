@@ -41,7 +41,7 @@ public class ContactsUtil {
 				String newNumber = "";
 				do {
 					newNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					newNumber = StringUtil.getRidofSpeciall(newNumber);
+					newNumber = StringUtil.getRidofSpecialOfTel(newNumber);
 					if (newNumber.contains(number) || number.contains(newNumber)) {
 						name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 						break;
@@ -67,7 +67,7 @@ public class ContactsUtil {
 					String num = "";
 					do {
 						num = cur.getString(cur.getColumnIndex(People.NUMBER));
-						num = StringUtil.getRidofSpeciall(num);
+						num = StringUtil.getRidofSpecialOfTel(num);
 						if (num.contains(number) || number.contains(num)) {
 							name = cur.getString(cur.getColumnIndex(People.NAME)) + ":" + num;
 							break;
@@ -115,7 +115,7 @@ public class ContactsUtil {
 					c.name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 					c.number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 					if (!StringUtil.isNull(c.number)) {
-						c.number = StringUtil.getRidofSpeciall(c.number);
+						c.number = StringUtil.getRidofSpecialOfTel(c.number);
 					}
 					arrayContacts.add(c);
 
@@ -160,7 +160,7 @@ public class ContactsUtil {
 					c.name = cur.getString(cur.getColumnIndex(People.NAME));
 					c.number = cur.getString(cur.getColumnIndex(People.NUMBER));
 					if (!StringUtil.isNull(c.number)) {
-						c.number = StringUtil.getRidofSpeciall(c.number);
+						c.number = StringUtil.getRidofSpecialOfTel(c.number);
 					}
 					arrayContacts.add(c);
 				} while (cur.moveToNext());

