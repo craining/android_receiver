@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Contacts.People;
 import android.provider.ContactsContract;
-import android.util.Log;
 
+import com.android.system.controled.Debug;
 import com.android.system.controled.Globle;
 import com.android.system.controled.bean.ContactBean;
 
@@ -190,7 +190,7 @@ public class ContactsUtil {
 	 */
 	public static String getContactNameById(Context con, int id, String number) {
 		String result = number;
-		Log.e(TAG, "id=" + id);
+		Debug.e(TAG, "id=" + id);
 		if (id > 0) {
 			// 手机通讯录里有
 			String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME };
@@ -200,7 +200,7 @@ public class ContactsUtil {
 				if (cursor != null && cursor.getCount() > 0) {
 					cursor.moveToFirst();
 					result = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-					Log.e(TAG, "result=" + result);
+					Debug.e(TAG, "result=" + result);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

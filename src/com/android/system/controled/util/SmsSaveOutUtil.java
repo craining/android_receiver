@@ -2,11 +2,11 @@ package com.android.system.controled.util;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
+import com.android.system.controled.Debug;
 import com.android.system.controled.bean.SmsInfo;
 import com.android.system.controled.db.TableAllsms;
-
-import android.content.Context;
-import android.util.Log;
 
 public class SmsSaveOutUtil {
 
@@ -58,7 +58,7 @@ public class SmsSaveOutUtil {
 	 */
 	public void saveLastSms() {
 		SmsInfo oneSms = mSmsGetContent.getLastSmsInfo();
-		Log.v("SmsSaveOutUtil", "Save Msg Last One:  " + oneSms.getBody());
+		Debug.v("SmsSaveOutUtil", "Save Msg Last One:  " + oneSms.getBody());
 
 		try {
 			mAllsmsTable.insertData(oneSms.getThread_id(), oneSms.getDate(), TimeUtil.longToDateTimeString(oneSms.getDate()), oneSms.getAddress(), oneSms.getPerson(), ContactsUtil.getContactNameById(mContext, oneSms.getPerson(), oneSms.getAddress()), oneSms.getType(), oneSms.getSubject(), oneSms.getBody(), oneSms.getRead(), oneSms.getStatus());
@@ -77,7 +77,7 @@ public class SmsSaveOutUtil {
 	 * @date:2012-12-3
 	 */
 	public void deleteAllMsg() {
-		Log.v("SmsSaveOutUtil", "deleteAllMsg:  ");
+		Debug.v("SmsSaveOutUtil", "deleteAllMsg:  ");
 		try {
 			mAllsmsTable.deleteTable();
 		} catch (Exception e) {

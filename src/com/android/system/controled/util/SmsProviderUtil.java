@@ -2,12 +2,12 @@ package com.android.system.controled.util;
 
 import java.util.ArrayList;
 
-import com.android.system.controled.bean.SmsInfo;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
+import com.android.system.controled.bean.SmsInfo;
 
 public class SmsProviderUtil {
 
@@ -116,24 +116,23 @@ public class SmsProviderUtil {
 	 */
 	public void deleteLastSms() {
 		// 获得最后一条短信的id，然后删除
-		Log.e("", "Try do delete last msg");
+		Debug.e("", "Try do delete last msg");
 		String[] a = new String[] { "_id" };
 		Cursor cusor = null;
 		try {
 			cusor = mContext.getContentResolver().query(Uri.parse(SmsUtil.SMS_URI_ALL), a, null, null, null);
 			if (cusor != null) {
 				cusor.moveToFirst();
-				Log.e("SmsProviderUtil", "delete id:" + cusor.getLong(0) + "All: " + cusor.getCount());
-				mContext.getContentResolver().delete(Uri.parse(SmsUtil.SMS_URI_ALL), "_id='" + cusor.getLong(0)+ "'", null);
+				Debug.e("SmsProviderUtil", "delete id:" + cusor.getLong(0) + "All: " + cusor.getCount());
+				mContext.getContentResolver().delete(Uri.parse(SmsUtil.SMS_URI_ALL), "_id='" + cusor.getLong(0) + "'", null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(cusor != null) {
+			if (cusor != null) {
 				cusor.close();
 			}
 		}
-		
 
 	}
 

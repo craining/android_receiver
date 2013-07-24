@@ -8,7 +8,8 @@ import java.io.IOException;
 import org.apache.http.util.EncodingUtils;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
 
 public class FileUtil {
 
@@ -49,11 +50,11 @@ public class FileUtil {
 		try {
 			if (!dir.isDirectory()) {
 				setSize(getSize() + dir.length());
-				// Log.e("", dir.toString());
+				// Debug.e("", dir.toString());
 			} else {
 				for (File file : dir.listFiles()) {
 					if (!file.isDirectory()) {
-						// Log.e("", file.toString());
+						// Debug.e("", file.toString());
 						setSize(getSize() + file.length());
 					} else {
 						getFileSize(file);// 递归
@@ -114,10 +115,9 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public static boolean writeFile(String str, File file, boolean add) {
-		Log.v("TT", file.toString() + "wrote in:" + str);
+		Debug.v("TT", file.toString() + "wrote in:" + str);
 
 		FileOutputStream out;
 		try {

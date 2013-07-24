@@ -2,7 +2,8 @@ package com.android.system.controled.util;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
 
 public class AudioUtil {
 
@@ -17,7 +18,7 @@ public class AudioUtil {
 	 * @date:2012-11-22
 	 */
 	public static void turnUpMost(Context context) {
-		Log.e("Globle", "turnUpMost");
+		Debug.e("Globle", "turnUpMost");
 		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		audioMgr.setStreamVolume(AudioManager.STREAM_RING, audioMgr.getStreamMaxVolume(AudioManager.STREAM_RING), 0);
@@ -36,7 +37,7 @@ public class AudioUtil {
 	 * @date:2012-11-22
 	 */
 	public static void turnUpSecond(Context context) {
-		Log.e("Globle", "turnUpSecond");
+		Debug.e("Globle", "turnUpSecond");
 		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		audioMgr.setStreamVolume(AudioManager.STREAM_RING, audioMgr.getStreamMaxVolume(AudioManager.STREAM_RING) - 2, 0);
@@ -56,7 +57,7 @@ public class AudioUtil {
 	 * @date:2012-11-22
 	 */
 	public static void turnDown(Context context) {
-		Log.e("Globle", "turnDown");
+		Debug.e("Globle", "turnDown");
 		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		audioMgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);// 静音模式、不震动
 		// audioMgr.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
@@ -73,7 +74,7 @@ public class AudioUtil {
 	 * @date:2012-11-22
 	 */
 	public static void turnPre(Context context) {
-		Log.e("Globle", "turnPre");
+		Debug.e("Globle", "turnPre");
 		AudioManager audioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		audioMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 	}

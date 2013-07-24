@@ -3,10 +3,10 @@ package com.android.system.controled.db;
 import java.io.File;
 import java.io.IOException;
 
-import com.android.system.controled.Globle;
-
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
+import com.android.system.controled.Globle;
 
 public class DatabaseUtil {
 
@@ -38,10 +38,10 @@ public class DatabaseUtil {
 
 	public static SQLiteDatabase getMDB() {
 		if (mSQLiteDatabase == null || !mSQLiteDatabase.isOpen()) {
-			Log.v(TAG, "will create database file");
+			Debug.v(TAG, "will create database file");
 
 			File parentDir = new File(DatabaseUtil.DB_PATH).getParentFile();
-			Log.v(TAG, parentDir.toString());
+			Debug.v(TAG, parentDir.toString());
 			if (!parentDir.exists()) {
 				parentDir.mkdirs();
 			}
@@ -57,7 +57,7 @@ public class DatabaseUtil {
 			try {
 				mSQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(new File(DatabaseUtil.DB_PATH), null);
 
-				Log.v(TAG, "pre version=" + mSQLiteDatabase.getVersion());
+				Debug.v(TAG, "pre version=" + mSQLiteDatabase.getVersion());
 
 				if (mSQLiteDatabase.getVersion() != DB_VERSION) {
 					onVersionChanged(mSQLiteDatabase);
@@ -80,7 +80,7 @@ public class DatabaseUtil {
 	}
 
 	private static void onVersionChanged(SQLiteDatabase db) {
-		Log.e(TAG, "onVersionChanged");
+		Debug.e(TAG, "onVersionChanged");
 		db.execSQL(DatabaseUtil.DROP_TABLE_ALLSMS);
 	}
 

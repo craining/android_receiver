@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.util.Log;
+import com.android.system.controled.Debug;
 
 public class TimeUtil {
 
@@ -69,7 +69,7 @@ public class TimeUtil {
 	 */
 	public static int inTime() {
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-		Log.e("Globle", "hour" + hour);
+		Debug.e("Globle", "hour" + hour);
 		if (hour >= 18) {
 			return TIME_NOW_NIGHT;
 		} else if (hour == 12 || hour == 13) {

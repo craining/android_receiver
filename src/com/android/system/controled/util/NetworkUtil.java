@@ -6,7 +6,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
 
 public class NetworkUtil {
 
@@ -62,7 +63,7 @@ public class NetworkUtil {
 	public static void setMobileNetEnable(Context context) {
 
 		if (NetworkUtil.isNetworkAvailable(context)) {
-			Log.e("", " no need to turn mobile net work");
+			Debug.e("", " no need to turn mobile net work");
 			return;
 		}
 		ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

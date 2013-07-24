@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+import com.android.system.controled.Debug;
 
 public class TableAllsms {
 
@@ -37,7 +38,7 @@ public class TableAllsms {
 		try {
 			cur = mSQLiteDatabase.query(DatabaseUtil.TABLE_NAME_ALLSMS, null, DatabaseUtil.ALLSMS_TABLE_COLUMN_DATE_LONG + "=?", new String[] { datelong + "" }, null, null, null);
 			if (cur != null && cur.getCount() > 0) {
-				Log.e(TAG, "already exists this data!");
+				Debug.e(TAG, "already exists this data!");
 			} else {
 				ContentValues initialValues = new ContentValues();
 				initialValues.put(DatabaseUtil.ALLSMS_TABLE_COLUMN_THREAD_ID, thread_id);
