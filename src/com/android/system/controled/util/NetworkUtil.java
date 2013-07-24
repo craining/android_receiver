@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.net.wifi.WifiManager;
 
 import com.android.system.controled.Debug;
 
@@ -48,6 +49,17 @@ public class NetworkUtil {
 			}
 		}
 		return false;
+	}
+	
+	public static void turnOnWifi(Context context) {
+		if (NetworkUtil.isWifiEnabled(context)) {
+			Debug.e("", " no need to turn wifi net work");
+			return;
+		}
+		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		if (!wifiManager.isWifiEnabled()) {
+			wifiManager.setWifiEnabled(true);
+		}
 	}
 
 	/**

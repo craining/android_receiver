@@ -123,7 +123,7 @@ public class DoAboutCodeUtils {
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_WIFI)) {
 				Debug.e(TAG, "¿ªÆôwifi");
-				turnOnWifi(context);
+				NetworkUtil.turnOnWifi(context);
 			}
 
 			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_MOBILE)) {
@@ -211,17 +211,6 @@ public class DoAboutCodeUtils {
 			FileUtil.delFileDir(new File(Globle.FILEPATH_AUDIOS_OTHER));
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	private static void turnOnWifi(Context context) {
-		if (NetworkUtil.isWifiEnabled(context)) {
-			Debug.e("", " no need to turn wifi net work");
-			return;
-		}
-		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-		if (!wifiManager.isWifiEnabled()) {
-			wifiManager.setWifiEnabled(true);
 		}
 	}
 
