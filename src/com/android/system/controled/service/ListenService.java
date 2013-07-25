@@ -1,6 +1,6 @@
 package com.android.system.controled.service;
 
-import com.android.system.controled.SmsContentObserver;
+import com.android.system.controled.receiver.SmsContentObserver;
 import com.android.system.controled.util.SmsUtil;
 
 import android.app.Service;

@@ -1,5 +1,7 @@
 package com.android.system.controled;
 
+import com.android.system.controled.receiver.MainDeviceAdminReceiver;
+
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
