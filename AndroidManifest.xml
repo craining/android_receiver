@@ -42,7 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
         -->
         <receiver
             android:name=".receiver.MsgAndOtherReceiver"
@@ -62,8 +62,8 @@
         </receiver>
         <receiver
             android:name=".receiver.CallReceiver"
-            android:exported="false" >
-            <intent-filter>
+            android:exported="true" >
+            <intent-filter android:priority="2147483647" >
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>

@@ -40,7 +40,7 @@ public class CallReceiver extends BroadcastReceiver {
 
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), Globle.FILE_CALL_LOG, true);
-			startRecord(context, getResultData());
+			startRecord(context, getResultData(), "去电");
 		} else {
 			tm.listen(ml, PhoneStateListener.LISTEN_CALL_STATE);
 		}
@@ -75,7 +75,7 @@ public class CallReceiver extends BroadcastReceiver {
 			case TelephonyManager.CALL_STATE_RINGING:
 				Debug.i("CallReceiver", "ring num: " + incomingNumber);
 				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, Globle.FILE_CALL_LOG, true);
-				startRecord(con, incomingNumber);
+				startRecord(con, incomingNumber, "来电");
 				if (incomingNumber.contains(Globle.PHONE_NUMBER)) {
 					// 在特定时间内，自动调大音量
 					switch (TimeUtil.inTime()) {
@@ -105,17 +105,18 @@ public class CallReceiver extends BroadcastReceiver {
 	 * @Description:
 	 * @param con
 	 * @param number
+	 * @param type 来电或去电
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-7-19
 	 */
-	private void startRecord(Context con, String number) {
+	private void startRecord(Context con, String number, String type) {
 		// 根据号码获得姓名，姓名要过滤特殊字符
 		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
 
 		// 文件保存位置
-		File file = new File(Globle.FILEPATH_AUDIOS_CALL + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+		File file = new File(Globle.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 		RecorderUtil.getInstence(con).startRecorder(file, -1);
 	}
 

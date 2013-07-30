@@ -15,7 +15,7 @@ import android.util.Log;
 public class Debug {
 
 	// 发布时关闭log
-	private static final boolean LOG = false;// true
+	private static final boolean LOG = true;// true
 	// 用来防止msg为空时的异常
 	private static final String NULL_STR = "msg is null!";
 

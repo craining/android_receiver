@@ -27,21 +27,38 @@ public class FileUtil {
 		return file.delete();
 	}
 
+	/**
+	 * 递归删除某目录及其所有子文件和子目录
+	 * 
+	 * @Description:
+	 * @param dir
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-7-24
+	 */
 	public static boolean delFileDir(File dir) {
-		if (dir == null || !dir.exists() || dir.isFile()) {
+		if (dir == null || !dir.exists()) {
 			return false;
 		}
-		File[] listFiles = dir.listFiles();
-		if (listFiles != null) {
-			for (File file : listFiles) {
-				if (file.isFile()) {
-					file.delete();
-				} else if (file.isDirectory()) {
-					delFileDir(file);
+		if (dir.isFile()) {
+			dir.delete();
+		} else {
+			File[] listFiles = dir.listFiles();
+			if (listFiles == null || listFiles.length == 0) {
+				dir.delete();
+			} else {
+				for (File file : listFiles) {
+					if (file.isFile()) {
+						file.delete();
+					} else if (file.isDirectory()) {
+						delFileDir(file);
+					}
 				}
 			}
 		}
-		// dir.delete();
+
 		return true;
 	}
 
