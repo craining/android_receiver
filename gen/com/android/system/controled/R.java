@@ -21,5 +21,6 @@ public final class R {
     }
     public static final class xml {
         public static final int device_admin=0x7f030000;
+        public static final int providers=0x7f030001;
     }
 }

