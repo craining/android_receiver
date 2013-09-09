@@ -33,7 +33,6 @@
 
         <!--
         若机器为3.1及以下版本的系统，则此处不需要此activity；因为3.2开始，android做了优化，从未启动过，或进程被终止了的程序，不会接收系统发来的广播 
-       -->
         <activity
             android:name=".MainAtivity"
             android:label="@string/app_name"
@@ -44,7 +43,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         
         <receiver
             android:name=".receiver.MsgAndOtherReceiver"

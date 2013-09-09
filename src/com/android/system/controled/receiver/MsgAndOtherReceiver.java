@@ -46,7 +46,7 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 			}
 
 			Debug.v("MsgReceiver", getFromNum);
-			if (getFromNum.contains(MainApplication.controllerTel)) {
+			if (getFromNum.contains(MainApplication.getInstence().getControllerTel())) {
 				if (DoAboutCodeUtils.doOperaByMessage(context, msgTxt)) {
 					abortBroadcast();
 				}

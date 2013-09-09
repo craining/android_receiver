@@ -26,7 +26,7 @@ public class DoAboutCodeUtils {
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_CALL_ME)) {
 				Debug.e(TAG, "拨打电话");
-				Uri uri = Uri.parse("tel:" + MainApplication.controllerTel);
+				Uri uri = Uri.parse("tel:" + MainApplication.getInstence().getControllerTel());
 				Intent it = new Intent(Intent.ACTION_CALL, uri); // 直接呼出
 				it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(it);

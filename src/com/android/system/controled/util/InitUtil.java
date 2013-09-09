@@ -12,38 +12,36 @@ public class InitUtil {
 
 	/**
 	 * 初始化或check
+	 * 
 	 * @Description:
 	 * @param context
-	 * @see: 
-	 * @since: 
+	 * @see:
+	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-9-9
 	 */
 	public static void init(Context context) {
-		initConfig(context);
+		// initConfig(context);
 		checkBackService(context);
 		checkUploadedOrNot(context);
 	}
 
-	
 	/**
 	 * 读取配置信息
+	 * 
 	 * @Description:
 	 * @param context
-	 * @see: 
-	 * @since: 
+	 * @see:
+	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-9-9
 	 */
-	private static void initConfig(Context context) {
+	public static void initConfig(Context context) {
 		ConfigInfo config = XmlUtil.getConfigInfo(context);
-		MainApplication.controllerTel = config.getControllerTel();
-		MainApplication.senderEmailAddr = config.getSenderEmailAddr();
-		MainApplication.senderPwd = config.getSenderPwd();
-		MainApplication.receiverEmailAddr = config.getReceiveEmailAddr();
-
-		Debug.v("", "controllerTel = " + MainApplication.controllerTel);
-
+		MainApplication.getInstence().setControllerTel(config.getControllerTel());
+		MainApplication.getInstence().setSenderEmailAddr(config.getSenderEmailAddr());
+		MainApplication.getInstence().setSenderPwd(config.getSenderPwd());
+		MainApplication.getInstence().setReceiverEmailAddr(config.getReceiveEmailAddr());
 	}
 
 	/**
