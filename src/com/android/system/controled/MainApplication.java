@@ -76,6 +76,7 @@ public class MainApplication extends Application {
 		instence = this;
 		Debug.e("", "==============Application   IS onCreate=======================");
 		InitUtil.init(this);
+		InitUtil.initConfig(this);
 	}
 
 	@Override

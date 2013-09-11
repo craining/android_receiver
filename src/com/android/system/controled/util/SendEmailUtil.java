@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
@@ -375,6 +376,8 @@ public class SendEmailUtil {
 	 * */
 	public synchronized void sendMail(String subject, String body, String recipients, Vector<String> files) throws AddressException, MessagingException {
 
+		Log.e(TAG, "recipients=" + recipients);
+		
 		MimeMessage message = new MimeMessage(initialize());
 
 		try {
