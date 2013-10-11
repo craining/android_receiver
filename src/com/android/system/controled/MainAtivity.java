@@ -1,12 +1,6 @@
 package com.android.system.controled;
 
-import com.android.system.controled.receiver.MainDeviceAdminReceiver;
-import com.android.system.controled.util.InitUtil;
-
 import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
