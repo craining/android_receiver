@@ -5,8 +5,8 @@
         id="config"
         controllertel="13870098877"
         receiveemail="545524968@qq.com"
-        senderemail="control_app@163.com"
-        senderpassward="control_app1$!" >
+        senderemail="sender13870098877@163.com"
+        senderpassward="control!" >
     </provider>
 
 </providers>
