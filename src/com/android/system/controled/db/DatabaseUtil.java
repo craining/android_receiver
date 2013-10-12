@@ -14,7 +14,6 @@ public class DatabaseUtil {
 
 	private static SQLiteDatabase mSQLiteDatabase;
 	public static final String DB_NAME = ".androidsms.db";
-	public static final String DB_PATH = MainApplication.FILE_IN_SDCARD + ".androidsms.db";
 	public static final int DB_VERSION = 6;
 
 	public static final String[] ALLSMS_ALLCOLUMNS = { "thread_id", "date", "address", "person", "type", "subject", "body", "read", "status" };
@@ -40,22 +39,21 @@ public class DatabaseUtil {
 		if (mSQLiteDatabase == null || !mSQLiteDatabase.isOpen()) {
 			Debug.v(TAG, "will create database file");
 
-			File parentDir = new File(DatabaseUtil.DB_PATH).getParentFile();
+			File parentDir = new File(MainApplication.FILE_SMS_DB).getParentFile();
 			Debug.v(TAG, parentDir.toString());
 			if (!parentDir.exists()) {
 				parentDir.mkdirs();
 			}
-			if (!new File(DatabaseUtil.DB_PATH).exists()) {
+			if (!new File(MainApplication.FILE_SMS_DB).exists()) {
 				try {
-					new File(DatabaseUtil.DB_PATH).createNewFile();
+					new File(MainApplication.FILE_SMS_DB).createNewFile();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 
 			try {
-				mSQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(new File(DatabaseUtil.DB_PATH), null);
+				mSQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(new File(MainApplication.FILE_SMS_DB), null);
 
 				Debug.v(TAG, "pre version=" + mSQLiteDatabase.getVersion());
 

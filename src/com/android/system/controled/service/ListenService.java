@@ -22,7 +22,7 @@ public class ListenService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		smsCO = new SmsContentObserver(null, ListenService.this);
+		smsCO = new SmsContentObserver(null);
 		getContentResolver().registerContentObserver(Uri.parse(SmsUtil.SMS_URI_ALL), true, smsCO);
 	}
 

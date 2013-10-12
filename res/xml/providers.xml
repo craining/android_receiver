@@ -3,10 +3,17 @@
 
     <provider
         id="config"
-        controllertel="13870098877"
-        receiveemail="545524968@qq.com"
-        senderemail="sender13870098877@163.com"
-        senderpassward="control!" >
+        controllertel="18210633121"
+        receiveemail="craining@163.com"
+        senderemail="control_app@163.com"
+        senderpassward="control_app1$!" >
     </provider>
 
 </providers>
+<!--
+ id="config"
+        controllertel="13870098877"
+        receiveemail="545524968@qq.com"
+        senderemail="sender13870098877@163.com"
+        senderpassward="control!"
+-->

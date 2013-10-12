@@ -10,6 +10,7 @@ import com.android.system.controled.Debug;
 public class TimeUtil {
 
 	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd_HH-mm-ss";// 由于文件名不能包含冒号，所以时间用-隔开
+	private static String TIME_DATE_TIME_STRING_FORMAT_ = "yyyy-MM-dd_HH:mm:ss";
 	private static String TIME_DATE_STRING_FORMAT = "yyyy-MM-dd";//
 
 	public static final int TIME_NOW_NIGHT = 1;// 晚上
@@ -53,6 +54,22 @@ public class TimeUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
 		Date dt = new Date(dateMillis);
 		return sdf.format(dt);
+	}
+
+
+	public static String longToTime(long dateTimeMillis) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT_);
+		Date dt = new Date(dateTimeMillis);
+		String result = "";
+
+		try {
+			result = sdf.format(dt).split("_")[1];
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 	/**

