@@ -105,7 +105,6 @@ public class SendEmailUtil {
 					} catch (AddressException e) {
 						e.printStackTrace();
 						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
-
 					} catch (MessagingException e) {
 						e.printStackTrace();
 						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
