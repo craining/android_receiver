@@ -1,12 +1,17 @@
 package com.android.system.controled.util;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.util.Log;
 
 import com.android.system.controled.Debug;
 
@@ -17,8 +22,8 @@ public class RecorderUtil {
 	private MediaRecorder mRecorder;
 	private boolean isRecording;
 
-	// private static PowerManager pm;
-	// private static WakeLock wakeLock;
+	private static PowerManager pm;
+	private static WakeLock wakeLock;
 
 	private Handler mHandler;
 	private static final int MSG_HANDLER_STOP = 0x555;
@@ -31,10 +36,10 @@ public class RecorderUtil {
 		if (mRecorderUtil == null) {
 			mRecorderUtil = new RecorderUtil();
 		}
-		// if (wakeLock == null) {
-		// pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		// wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
-		// }
+		if (wakeLock == null) {
+			pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "RecorderUtil");
+		}
 		return mRecorderUtil;
 	}
 
@@ -51,7 +56,7 @@ public class RecorderUtil {
 			if (mRecorder == null) {
 				mRecorder = new MediaRecorder();
 			}
-			mRecorder.reset();
+
 			// mRecorder.setOnInfoListener(new OnInfoListener() {
 			//
 			// @Override
@@ -72,11 +77,25 @@ public class RecorderUtil {
 			//
 			// }
 			// });
+
+			mRecorder.reset();
 			mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 			mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
 			mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+			mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+
+			mRecorder.setAudioSamplingRate(44100);// 22050
+			mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+			mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+			// mRecorder.setAudioSamplingRate(8000);//16000
+			// mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
+			// mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);//MediaRecorder.AudioEncoder.AMR_NBÓë16000¶ÔÓ¦
+
+			mRecorder.setOutputFile(saveFile.getAbsolutePath());
+
 			if (timeMinute > 0) {
-				mRecorder.setMaxDuration(timeMinute * 60 * 1000);
+				// mRecorder.setMaxDuration(timeMinute * 60 * 1000);
 				mHandler = new Mainhandler();
 				mHandler.sendEmptyMessageDelayed(MSG_HANDLER_STOP, timeMinute * 60 * 1000);
 			}
@@ -92,8 +111,13 @@ public class RecorderUtil {
 			mRecorder.start();
 			result = true;
 			isRecording = true;
-			// wakeLock.acquire();
+			wakeLock.acquire();
 		} catch (Exception e) {
+			mHandler.removeMessages(MSG_HANDLER_STOP);
+			mRecorder.reset();
+			mRecorder.release();
+			mRecorder = null;
+
 			if (saveFile.exists()) {
 				saveFile.delete();
 			}
@@ -107,9 +131,9 @@ public class RecorderUtil {
 		Debug.e("", "stopRecorder");
 		if (mRecorder != null) {
 			try {
-				// if (wakeLock != null) {
-				// wakeLock.release();
-				// }
+				if (wakeLock != null) {
+					wakeLock.release();
+				}
 				isRecording = false;
 				mRecorder.stop();
 				mRecorder.reset();
@@ -138,4 +162,5 @@ public class RecorderUtil {
 		}
 
 	}
+
 }

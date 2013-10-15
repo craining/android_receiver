@@ -71,7 +71,7 @@ public class SendEmailUtil {
 	 * @date:2012-12-3
 	 */
 	public void upLoadSmsCallLog(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isMobileEnabled(con)) || NetworkUtil.isWifiEnabled(con)) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -129,7 +129,7 @@ public class SendEmailUtil {
 	 * @date:2012-12-3
 	 */
 	public void upLoadCallAudios(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isMobileEnabled(con)) || NetworkUtil.isWifiEnabled(con)) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -184,7 +184,7 @@ public class SendEmailUtil {
 	 * @date:2012-12-3
 	 */
 	public void upLoadOtherAudios(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isMobileEnabled(con)) || NetworkUtil.isWifiEnabled(con)) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -238,7 +238,7 @@ public class SendEmailUtil {
 	 * @date:2012-12-3
 	 */
 	public void upLoadALL(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isMobileEnabled(con)) || NetworkUtil.isWifiEnabled(con)) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -318,7 +318,7 @@ public class SendEmailUtil {
 	 * @date:2012-12-3
 	 */
 	public void upLoadContact(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isMobileEnabled(con)) || NetworkUtil.isWifiEnabled(con)) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
 			new Thread(new Runnable() {
 
 				@Override
