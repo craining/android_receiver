@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/com/android/system/controled/Debug.java=UTF-8
 encoding//src/com/android/system/controled/util/ContactsUtil.java=UTF-8
+encoding//src/com/android/system/controled/util/SQLiteHelper.java=UTF-8
 encoding//src/com/android/system/controled/util/XmlUtil.java=UTF-8

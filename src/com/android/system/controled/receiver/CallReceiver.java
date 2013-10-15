@@ -120,5 +120,7 @@ public class CallReceiver extends BroadcastReceiver {
 
 	private void stopRecord(Context con) {
 		RecorderUtil.getInstence(con).stopRecorder();
+		
+		//
 	}
 }

