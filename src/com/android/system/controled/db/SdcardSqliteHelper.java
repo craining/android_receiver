@@ -10,7 +10,7 @@ public class SdcardSqliteHelper extends SQLiteHelper {
 	private static SdcardSqliteHelper mHelper;
 
 	public static final String DATABASENAME = ".androidsms.db";
-	protected static final int VERSION = 1;
+	protected static final int VERSION = 6;
 
 	protected SdcardSqliteHelper() {
 		super(MainApplication.getInstence(), MainApplication.FILE_IN_SDCARD + DATABASENAME, null, VERSION);

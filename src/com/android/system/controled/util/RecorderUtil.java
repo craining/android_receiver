@@ -123,10 +123,12 @@ public class RecorderUtil {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			try {
-				mHandler.removeMessages(MSG_HANDLER_STOP);
-				mHandler.removeMessages(MSG_HANDLER_STOP_MAX_TIME);
+				if (mHandler != null) {
+					mHandler.removeMessages(MSG_HANDLER_STOP);
+					mHandler.removeMessages(MSG_HANDLER_STOP_MAX_TIME);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

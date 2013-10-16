@@ -4,16 +4,22 @@ public class Code {
 
 	public static final int RESULT_OK = 1;
 	public static final int RESULT_FAILED = 0;
+	public static final int RESULT_CODE_REPEAT = -1;
 
 	public static final int REDO_NEED = 1;
 	public static final int REDO_NOT = 0;
 
+	/**
+	 * 近三天为视为最近的
+	 */
+	public static final long CODE_RECENTLY_TIME = 259200000;//86400000*N
+	
 	private int id;
 	private long date;
 	private String code;
 	private String mark;
 	private int result;
-	private int failedTime;
+	private int failedTimes;
 	private int redoNeed;
 
 	public int getRedoNeed() {
@@ -24,12 +30,12 @@ public class Code {
 		this.redoNeed = redoNeed;
 	}
 
-	public int getFailedTime() {
-		return failedTime;
+	public int getFailedTimes() {
+		return failedTimes;
 	}
 
-	public void setFailedTime(int failedTime) {
-		this.failedTime = failedTime;
+	public void setFailedTimes(int failedTimes) {
+		this.failedTimes = failedTimes;
 	}
 
 	public int getId() {
@@ -71,4 +77,17 @@ public class Code {
 	public void setResult(int result) {
 		this.result = result;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		Code code = (Code) o;
+		if (getCode() == null && code.getCode() == null) {
+			return true;
+		} else if (code != null && code.getCode() != null) {
+			return getCode().equals(code.getCode());
+		}
+
+		return false;
+	}
+
 }

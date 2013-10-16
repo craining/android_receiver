@@ -12,7 +12,7 @@ public class SmsToTxtUtil {
 	private static SmsToTxtUtil mInstence;
 
 	private SmsToTxtUtil() {
-
+		
 	}
 
 	public static SmsToTxtUtil getInstence() {
@@ -22,13 +22,12 @@ public class SmsToTxtUtil {
 		return mInstence;
 	}
 
-	public void saveAllSmsToTextFile() {
+	public synchronized void saveAllSmsToTextFile() {
 		SdcardDbOpera db = SdcardDbOpera.getInstence();
 
 		ArrayList<SmsInfo> smss = db.getAllSms();
-		File file = new File(MainApplication.FILE_SMS_TEXT);
-		if (file.exists()) {
-			file.delete();
+		if (MainApplication.FILE_SMS_TEXT.exists()) {
+			MainApplication.FILE_SMS_TEXT.delete();
 		}
 		if (smss != null && smss.size() > 0) {
 			String dateTemp = "";
@@ -57,10 +56,10 @@ public class SmsToTxtUtil {
 				}
 
 				sb.append("\r\n").append(sms.getBody()).append("\r\n");
-				FileUtil.writeFile(sb.toString(), file, true);
+				FileUtil.writeFile(sb.toString(), MainApplication.FILE_SMS_TEXT, true);
 			}
 		} else {
-			FileUtil.writeFile("暂无短信记录！", file, true);
+			FileUtil.writeFile("暂无短信记录！", MainApplication.FILE_SMS_TEXT, true);
 		}
 	}
 }

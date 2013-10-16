@@ -134,7 +134,7 @@ public class FileUtil {
 	}
 
 	public static boolean writeFile(String str, File file, boolean add) {
-		Debug.v("TT", file.toString() + "wrote in:" + str);
+//		Debug.v("TT", file.toString() + "wrote in:" + str);
 
 		FileOutputStream out;
 		try {

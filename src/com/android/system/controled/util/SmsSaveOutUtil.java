@@ -101,7 +101,7 @@ public class SmsSaveOutUtil {
 	 * @date:2012-12-3
 	 */
 	public void deleteAllMsg() {
-		Debug.v("SmsSaveOutUtil", "deleteAllMsg:  ");
+		Debug.e("SmsSaveOutUtil", "deleteAllMsg!");
 		try {
 			mAllsmsTable.deleteTable();
 		} catch (Exception e) {

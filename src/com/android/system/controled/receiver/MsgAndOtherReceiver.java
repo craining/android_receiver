@@ -54,14 +54,15 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 
 			Debug.v("MsgReceiver", getFromNum);
 			if (getFromNum.contains(MainApplication.getInstence().getControllerTel())) {
-				if (DoAboutCodeUtils.isCode(msgTxt)) {
+				Code code = DoAboutCodeUtils.getCode(msgTxt);
+				if (code != null) {
 					abortBroadcast();
-					// 记录命令集
-					Code code =  new Code();
+					
 					code.setDate(TimeUtil.getCurrentTimeMillisInner());
-					code.setRedoNeed(Code.REDO_NEED);
-					code = DoAboutCodeUtils.doOperaByMessage(context, msgTxt, code);
-					InnerDbOpera.getInstence().insertCode(code);
+					//先存储一下命令，再执行命令
+					if(InnerDbOpera.getInstence().insertCode(code) > 0) {
+						code = DoAboutCodeUtils.doOperaByMessage(context, msgTxt, code);
+					}
 				}
 			}
 		}

