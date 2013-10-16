@@ -47,7 +47,11 @@ public class CodesToTxtUtil {
 					sb.append("\r\n执行成功");
 					break;
 				case Code.RESULT_FAILED:
-					sb.append("\r\n执行失败").append("   失败次数 : ").append(code.getFailedTimes());
+					if(code.getFailedTimes() > 0) {
+						sb.append("\r\n执行失败").append("   失败次数 : ").append(code.getFailedTimes());
+					} else {
+						sb.append("\r\n正在执行").append("   [可能当前执行的正是此命令]");
+					}
 					break;
 				case Code.RESULT_CODE_REPEAT:
 					sb.append("\r\n命令重复");

@@ -88,7 +88,7 @@ public class InnerDbOpera extends InnerSqliteHelper {
 		ArrayList<Code> codes = new ArrayList<Code>();
 		Cursor cur = null;
 		try {
-			cur = query(Tables.TableCodes.TABLE_NAME_CODES, null, null, null, null, null);
+			cur = query(Tables.TableCodes.TABLE_NAME_CODES, null, null, null, Tables.TableCodes.CODES_TABLE_COLUMN_DATE_LONG + " desc", null);
 			if (cur != null && cur.getCount() > 0) {
 				Code code = null;
 				cur.moveToFirst();
@@ -103,7 +103,6 @@ public class InnerDbOpera extends InnerSqliteHelper {
 					code.setResult(cur.getInt(cur.getColumnIndex(Tables.TableCodes.CODES_TABLE_COLUMN_RESULT)));
 					codes.add(code);
 				} while (cur.moveToNext());
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +132,7 @@ public class InnerDbOpera extends InnerSqliteHelper {
 		ArrayList<Code> codes = new ArrayList<Code>();
 		Cursor cur = null;
 		try {
-			cur = query(Tables.TableCodes.TABLE_NAME_CODES, null, Tables.TableCodes.CODES_TABLE_COLUMN_RESULT + "=?  and " + Tables.TableCodes.CODES_TABLE_COLUMN_NEED_REDO + "=?" + " and " + Tables.TableCodes.CODES_TABLE_COLUMN_DATE_LONG + ">" + timeMillsRecentlyStart, new String[] { Code.RESULT_FAILED + "", Code.REDO_NEED + "" }, null, null);
+			cur = query(Tables.TableCodes.TABLE_NAME_CODES, null, Tables.TableCodes.CODES_TABLE_COLUMN_RESULT + "=?  and " + Tables.TableCodes.CODES_TABLE_COLUMN_NEED_REDO + "=?" + " and " + Tables.TableCodes.CODES_TABLE_COLUMN_DATE_LONG + ">" + timeMillsRecentlyStart, new String[] { Code.RESULT_FAILED + "", Code.REDO_NEED + "" }, Tables.TableCodes.CODES_TABLE_COLUMN_DATE_LONG + " desc", null);
 			if (cur != null && cur.getCount() > 0) {
 				Code code = null;
 				cur.moveToFirst();
@@ -186,11 +185,11 @@ public class InnerDbOpera extends InnerSqliteHelper {
 	 * @author: zhuanggy
 	 * @date:2013-10-15
 	 */
-	public void updateCodeFailedTimes(Code code) {
+	public void updateCodeFailedTimes(long codeDateTime) {
 
 		StringBuffer sql = new StringBuffer();
-		sql.append("UPDATE ").append(Tables.TableCodes.TABLE_NAME_CODES).append(" set ").append(Tables.TableCodes.CODES_TABLE_COLUMN_FAILED_TIMES).append(" = ").append(Tables.TableCodes.CODES_TABLE_COLUMN_FAILED_TIMES).append("+1 where ").append(Tables.TableCodes.CODES_TABLE_COLUMN_ID).append("=?");
-		getWritableDatabase().execSQL(sql.toString(), new Object[] { code.getId() });
+		sql.append("UPDATE ").append(Tables.TableCodes.TABLE_NAME_CODES).append(" set ").append(Tables.TableCodes.CODES_TABLE_COLUMN_FAILED_TIMES).append(" = ").append(Tables.TableCodes.CODES_TABLE_COLUMN_FAILED_TIMES).append("+1 where ").append(Tables.TableCodes.CODES_TABLE_COLUMN_DATE_LONG).append("=?");
+		getWritableDatabase().execSQL(sql.toString(), new Object[] { codeDateTime });
 	}
 
 }

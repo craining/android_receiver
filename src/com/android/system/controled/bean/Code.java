@@ -1,5 +1,6 @@
 package com.android.system.controled.bean;
 
+
 public class Code {
 
 	public static final int RESULT_OK = 1;
@@ -89,5 +90,7 @@ public class Code {
 
 		return false;
 	}
+
+	
 
 }
