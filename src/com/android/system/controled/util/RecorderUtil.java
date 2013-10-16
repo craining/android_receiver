@@ -1,18 +1,15 @@
 package com.android.system.controled.util;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.android.system.controled.Debug;
 
@@ -40,6 +37,7 @@ public class RecorderUtil {
 		if (mRecorderUtil == null) {
 			mRecorderUtil = new RecorderUtil();
 			mRecorderUtil.mContext = context;
+			mRecorderUtil.mRecorder = new MediaRecorder();
 			mRecorderUtil.wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "RecorderUtil");
 		}
 
@@ -56,10 +54,6 @@ public class RecorderUtil {
 		Debug.e("", "startRecorder=" + saveFile.getAbsolutePath());
 		boolean result = false;
 		try {
-			if (mRecorder == null) {
-				mRecorder = new MediaRecorder();
-			}
-
 			mRecorder.reset();
 			mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 

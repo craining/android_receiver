@@ -27,18 +27,6 @@ public class XmlUtil {
 		}
 	}
 
-	/**
-	 * public static final String PHONE_NUMBER = "18210633121";// 控制者的电话号码
-	 * 
-	 * public final static String senderName = "control_app@163.com"; public final static String senderPwd =
-	 * "control_app1$!";
-	 * 
-	 * 
-	 * public final static String receiverEmail = "craining@163.com";
-	 * 
-	 * 
-	 */
-
 	public static ConfigInfo getConfigInfo(Context context) {
 		ConfigInfo result = new ConfigInfo();
 		try {

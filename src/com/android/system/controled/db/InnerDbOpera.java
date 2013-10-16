@@ -35,7 +35,7 @@ public class InnerDbOpera extends InnerSqliteHelper {
 	 * @param up
 	 * @return
 	 */
-	public long insertCode(Code code) {
+	public long insertNewCode(Code code) {
 
 		long result = -1;
 		Cursor cur = null;

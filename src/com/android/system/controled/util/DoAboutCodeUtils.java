@@ -450,7 +450,6 @@ public class DoAboutCodeUtils {
 				try {
 
 					if (MainApplication.FILE_DB_SMS.exists()) {
-						// SmsSaveOutUtil so = new SmsSaveOutUtil(context);
 						SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
 						so.deleteAllMsg();
 					}

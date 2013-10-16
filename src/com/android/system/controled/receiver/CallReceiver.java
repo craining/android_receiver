@@ -23,7 +23,7 @@ public class CallReceiver extends BroadcastReceiver {
 
 	private TelephonyManager tm;
 	private MyListenner ml;
-
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
@@ -55,7 +55,6 @@ public class CallReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onCallStateChanged(int state, String incomingNumber) {
-			// TODO Auto-generated method stub
 			// state 当前状态 incomingNumber,貌似没有去电的API
 			super.onCallStateChanged(state, incomingNumber);
 
@@ -71,22 +70,6 @@ public class CallReceiver extends BroadcastReceiver {
 			case TelephonyManager.CALL_STATE_RINGING:
 				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, MainApplication.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber, "来电");
-				// TODO
-				// if (incomingNumber.contains(MainApplication.controllerTel)) {
-				// // 在特定时间内，自动调大音量
-				// switch (TimeUtil.inTime()) {
-				// case TimeUtil.TIME_NOW_NIGHT:
-				// AudioUtil.turnUpMost(con);
-				// break;
-				// case TimeUtil.TIME_NOW_MOON:
-				// AudioUtil.turnUpSecond(con);
-				// break;
-				//
-				// default:
-				// break;
-				// }
-				// }
-
 				break;
 			}
 
@@ -120,7 +103,5 @@ public class CallReceiver extends BroadcastReceiver {
 
 	private void stopRecord(Context con) {
 		RecorderUtil.getInstence(con).stopRecorder();
-		
-		//
 	}
 }

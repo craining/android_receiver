@@ -35,9 +35,7 @@ public class SdcardDbOpera extends SdcardSqliteHelper {
 	 * @param up
 	 * @return
 	 */
-	// public long insertData(int thread_id, long datelong, String dateString, String address, int personId,
-	// String personName, int type, String subject, String body, int read, int status) {
-	public long insertData(SmsInfo sms, String persionName) {
+	public long insertNewSms(SmsInfo sms, String persionName) {
 
 		long result = -1;
 		Cursor cur = null;
@@ -75,8 +73,13 @@ public class SdcardDbOpera extends SdcardSqliteHelper {
 	 * 
 	 * @param db
 	 */
-	public void deleteTable() {
-		 delete(Tables.TableSms.TABLE_NAME_ALLSMS, null, null);
+	public void deleteAllSms() {
+		try {
+			delete(Tables.TableSms.TABLE_NAME_ALLSMS, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
 	}
 
 	/**

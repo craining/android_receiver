@@ -14,7 +14,7 @@ import com.android.system.controled.service.ListenService;
 
 public class InitUtil {
 
-	private static final int MAX_OPERAS = 3;
+	private static final int MAX_OPERAS = 5;
 
 	/**
 	 * ≥ı ºªØªÚcheck
