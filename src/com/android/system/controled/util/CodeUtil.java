@@ -48,11 +48,11 @@ public class CodeUtil {
 			code.setRedoNeed(Code.REDO_NEED);
 			// Debug.e(TAG, "上传短信通话记录");
 			if (msgTxt.contains(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE)) {
-				code.setCode(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MARK);
-				code.setMark(MainApplication.PHONE_CODE_CALL_ME_MARK);
-			} else {
 				code.setCode(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE);
 				code.setMark(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MOBILE_MARK);
+			} else {
+				code.setCode(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL);
+				code.setMark(MainApplication.PHONE_CODE_UPLOAD_SMS_CALL_MARK);
 			}
 			return code;
 		}

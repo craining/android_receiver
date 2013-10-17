@@ -79,6 +79,31 @@ public class SmsSaveOutUtil {
 		}
 	}
 
+	
+	
+	
+	/**
+	 * 保存最新的短信记录
+	 * 
+	 * @Description:
+	 * @see:
+	 * @since:
+	 * @author: zhuanggy
+	 * @date:2012-12-3
+	 */
+	public void saveSms(SmsInfo sms) {
+		Debug.v("SmsSaveOutUtil", "Save Code Msg:  " + sms.getBody());
+
+		try {
+			mAllsmsTable.insertNewSms(sms, sms.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * 清空数据库
 	 * 

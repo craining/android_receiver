@@ -25,12 +25,12 @@ public class SdcardSqliteHelper extends SQLiteHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(Tables.TableCodes.CREATETABLE_CODES);
+		db.execSQL(Tables.TableSms.CREATETABLE_ALLSMS);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL(Tables.TableCodes.DELETE_TABLE_ALLCODES);
+		db.execSQL(Tables.TableSms.DELETE_TABLE__ALLSMS);
 		onCreate(db);
 	}
 }

