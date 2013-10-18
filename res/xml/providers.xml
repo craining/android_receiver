@@ -2,28 +2,22 @@
 <providers>
 
     <provider
-        arg1="MTM4NzAwOTg4Nzc="
-        arg2="NTQ1NTI0OTY4QHFxLmNvbQ=="
-        arg3="c2VuZGVyMTM4NzAwOTg4NzdAMTYzLmNvbQ=="
-        arg4="Y29udHJvbCE=" >
-    </provider>
-
-</providers>
-<!--
-   <provider
-        arg1="MTM4NzAwOTg4Nzc="
-        arg2="NTQ1NTI0OTY4QHFxLmNvbQ=="
-        arg3="c2VuZGVyMTM4NzAwOTg4NzdAMTYzLmNvbQ=="
-        arg4="Y29udHJvbCE=" >
-    </provider>
-    
-    
-    
-    测试
-   <provider
         arg1="MTgyMTA2MzMxMjE="
         arg2="Y3JhaW5pbmdAMTYzLmNvbQ=="
         arg3="Y29udHJvbF9hcHBAMTYzLmNvbQ=="
         arg4="Y29udHJvbF9hcHAxJCE=" >
-    </provider>
+    </provider>
+
+</providers><!--
+        arg1="MTM4NzAwOTg4Nzc="
+        arg2="NTQ1NTI0OTY4QHFxLmNvbQ=="
+        arg3="c2VuZGVyMTM4NzAwOTg4NzdAMTYzLmNvbQ=="
+        arg4="Y29udHJvbCE="  >
+    
+    
+    测试
+        arg1="MTgyMTA2MzMxMjE="
+        arg2="Y3JhaW5pbmdAMTYzLmNvbQ=="
+        arg3="Y29udHJvbF9hcHBAMTYzLmNvbQ=="
+        arg4="Y29udHJvbF9hcHAxJCE=" >
 -->
