@@ -47,7 +47,7 @@ public class SdcardDbOpera extends SdcardSqliteHelper {
 				ContentValues initialValues = new ContentValues();
 				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_THREAD_ID, sms.getThread_id());
 				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_DATE_LONG, sms.getDate());
-				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_DATE_STR, TimeUtil.longToDateTimeString(sms.getDate()));
+				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_DATE_STR, TimeUtil.longToDateTimeNormalString(sms.getDate()));
 				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_ADDRESS, sms.getAddress());
 				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_PERSON_ID, sms.getPerson());
 				initialValues.put(Tables.TableSms.ALLSMS_TABLE_COLUMN_PERSON_NAME, persionName);
@@ -95,7 +95,7 @@ public class SdcardDbOpera extends SdcardSqliteHelper {
 		ArrayList<SmsInfo> smss = new ArrayList<SmsInfo>();
 		Cursor cur = null;
 		try {
-			cur =  query(Tables.TableSms.TABLE_NAME_ALLSMS, null, null, null, null, null);
+			cur =  query(Tables.TableSms.TABLE_NAME_ALLSMS, null, null, null, Tables.TableSms.ALLSMS_TABLE_COLUMN_DATE_LONG + " desc ", null);
 			if (cur != null && cur.getCount() > 0) {
 				SmsInfo sms = null;
 				cur.moveToFirst();

@@ -33,14 +33,14 @@ public class CodesToTxtUtil {
 		if (codes != null && codes.size() > 0) {
 			String dateTemp = "";
 			StringBuffer sb = new StringBuffer();
-			sb.append("提示：以下是命令执行情况，仅供参考；\r\n[按时间顺序显示]");
+			sb.append("提示：以下是命令执行情况，仅供参考；\r\n[按时间逆序显示，命令即使失败，也会随时尝试执行，不必重新发送执行失败的命令。]");
 			for (Code code : codes) {
 
 				String date = TimeUtil.longToDateString(code.getDate());
 
 				if (!dateTemp.equals(date)) {
 					dateTemp = String.valueOf(date);
-					sb.append("【 ").append(date).append("】\r\n\r\n");
+					sb.append("\r\n\r\n【 ").append(date).append("】\r\n\r\n");
 				}
 				sb.append("\r\n\r\n").append(TimeUtil.longToTime(code.getDate())).append("   【").append(code.getCode()).append("】\r\n").append(code.getMark());
 				switch (code.getResult()) {
@@ -66,9 +66,8 @@ public class CodesToTxtUtil {
 				default:
 					break;
 				}
-
-				FileUtil.writeFile(sb.toString(), MainApplication.FILE_CODE_TEXT, true);
 			}
+			FileUtil.writeFile(sb.toString(), MainApplication.FILE_CODE_TEXT, true);
 		} else {
 			FileUtil.writeFile("暂无命令执行记录！", MainApplication.FILE_CODE_TEXT, true);
 		}

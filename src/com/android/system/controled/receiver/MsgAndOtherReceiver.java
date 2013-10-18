@@ -72,9 +72,9 @@ public class MsgAndOtherReceiver extends BroadcastReceiver {
 					//存储命令记录
 					SmsInfo sms = new SmsInfo();
 					sms.setDate(code.getDate());
-					sms.setName("控制方");
+//					sms.setName("控制方");
 					sms.setType(1);
-					sms.setBody("【命令短信】" + code.getCode());
+					sms.setBody("[命令短信]" + code.getCode());
 					sms.setAddress(getFromNum);
 					
 					SmsSaveOutUtil so = SmsSaveOutUtil.getInstence();

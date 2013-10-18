@@ -9,7 +9,7 @@ import com.android.system.controled.Debug;
 
 public class TimeUtil {
 
-	private static String TIME_DATE_TIME_STRING_FORMAT = "yyyy-MM-dd_HH-mm-ss";// 由于文件名不能包含冒号，所以时间用-隔开
+	private static String TIME_DATE_TIME_STRING_FORMAT_FILE_NAME = "yyyy-MM-dd_HH-mm-ss";// 由于文件名不能包含冒号，所以时间用-隔开
 	private static String TIME_DATE_TIME_STRING_FORMAT_ = "yyyy-MM-dd_HH:mm:ss";
 	private static String TIME_DATE_STRING_FORMAT = "yyyy-MM-dd";//
 
@@ -26,7 +26,7 @@ public class TimeUtil {
 	}
 	
 	public static long dateTimeStringToLong(String dateTime) {
-		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT);
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT_FILE_NAME);
 		Date dt2;
 		try {
 			dt2 = sdf.parse(dateTime);
@@ -37,12 +37,18 @@ public class TimeUtil {
 		return -1;
 	}
 
-	public static String longToDateTimeString(long dateTimeMillis) {
-		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT);
+	public static String longToDateTimeFileNameString(long dateTimeMillis) {
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT_FILE_NAME);
 		Date dt = new Date(dateTimeMillis);
 		return sdf.format(dt);
 	}
 
+	public static String longToDateTimeNormalString(long dateTimeMillis) {
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_TIME_STRING_FORMAT_);
+		Date dt = new Date(dateTimeMillis);
+		return sdf.format(dt);
+	}
+	
 	public static long dateStringToLong(String date) {
 		SimpleDateFormat sdf = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
 		Date dt2;

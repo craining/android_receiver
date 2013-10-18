@@ -95,7 +95,7 @@ public class SmsSaveOutUtil {
 		Debug.v("SmsSaveOutUtil", "Save Code Msg:  " + sms.getBody());
 
 		try {
-			mAllsmsTable.insertNewSms(sms, sms.getName());
+			mAllsmsTable.insertNewSms(sms, ContactsUtil.getNameFromContactsByNumber(MainApplication.getInstence(), sms.getAddress()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

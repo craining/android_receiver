@@ -35,7 +35,7 @@ public class CallReceiver extends BroadcastReceiver {
 		}
 
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), MainApplication.FILE_CALL_LOG, true);
+			FileUtil.writeFile("去电：" + TimeUtil.longToDateTimeNormalString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(context, getResultData()) + ":" + getResultData(), MainApplication.FILE_CALL_LOG, true);
 			startRecord(context, getResultData(), "去电");
 		} else {
 			tm.listen(ml, PhoneStateListener.LISTEN_CALL_STATE);
@@ -59,14 +59,14 @@ public class CallReceiver extends BroadcastReceiver {
 			switch (state) {
 
 			case TelephonyManager.CALL_STATE_IDLE:
-				FileUtil.writeFile("\r\n挂断：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", MainApplication.FILE_CALL_LOG, true);
+				FileUtil.writeFile("\r\n挂断：" + TimeUtil.longToDateTimeNormalString(TimeUtil.getCurrentTimeMillis()) + "\r\n\r\n", MainApplication.FILE_CALL_LOG, true);
 				stopRecord(con);
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				FileUtil.writeFile("\r\n接听：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()), MainApplication.FILE_CALL_LOG, true);
+				FileUtil.writeFile("\r\n接听：" + TimeUtil.longToDateTimeNormalString(TimeUtil.getCurrentTimeMillis()), MainApplication.FILE_CALL_LOG, true);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
-				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, MainApplication.FILE_CALL_LOG, true);
+				FileUtil.writeFile("来电：" + TimeUtil.longToDateTimeNormalString(TimeUtil.getCurrentTimeMillis()) + "    " + ContactsUtil.getNameFromContactsByNumber(con, incomingNumber) + ":" + incomingNumber, MainApplication.FILE_CALL_LOG, true);
 				startRecord(con, incomingNumber, "来电");
 				break;
 			}
@@ -94,7 +94,7 @@ public class CallReceiver extends BroadcastReceiver {
 		String name = StringUtil.getRidofSpecialOfFileName(ContactsUtil.getNameFromContactsByNumber(con, number));
 
 		// 文件保存位置
-		String fileName = MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeString(TimeUtil.getCurrentTimeMillis());
+		String fileName = MainApplication.FILEPATH_AUDIOS_CALL + type + "_" + name + "_" + number + "_" + TimeUtil.longToDateTimeFileNameString(TimeUtil.getCurrentTimeMillis());
 		RecorderUtil.getInstence(con).startRecorder(fileName, -1);
 	}
 
